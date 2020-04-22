@@ -1,0 +1,349 @@
+package brainfuckide.interpreter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+
+/**
+ *
+ * @author Nelson Earle (nwewnh)
+ */
+public final class Tape /*implements List<Cell>*/ {
+
+    private Integer segmentSize;
+
+    private LinkedList<ArrayList<Cell>> segments;
+
+    private final UnsupportedOperationException addException =
+        new UnsupportedOperationException(
+            "Cells cannot be added to a tape."
+        );
+    private final UnsupportedOperationException removeException =
+        new UnsupportedOperationException(
+            "Cells cannot be removed from a tape."
+        );
+    private final UnsupportedOperationException sublistException =
+        new UnsupportedOperationException(
+            "Cannot create sub-tape."
+        );
+
+    Tape() {
+        this(64);
+    }
+
+    Tape(Integer segmentSize) {
+        this.segmentSize = segmentSize;
+        this.segments = new LinkedList<>();
+        this.addSegment();
+    }
+
+    public void addSegment() {
+        Cell segment[] = new Cell[this.segmentSize];
+        for (int i=0; i<this.segmentSize; i++)
+            segment[i] = new Cell();
+        this.segments.add(new ArrayList<>(Arrays.asList(segment)));
+    }
+
+    public int getSegmentSize() {
+        return this.segmentSize;
+    }
+
+    public int getNumSegments() {
+        return this.segments.size();
+    }
+
+    /**
+     * List Interface
+     */
+
+//    @Override
+    public int size() {
+        return this.segments.size() * this.segmentSize;
+    }
+
+    /*
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        Iterator<Cell> iterator = this.iterator();
+        while (iterator.hasNext()) {
+            Cell cell = iterator.next();
+            if (cell.equals(o))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Cell[] toArray() {
+        Cell array[] = new Cell[this.segments.size() * this.segmentSize];
+        Iterator<Cell> iterator = this.iterator();
+        int i = 0;
+        while (iterator.hasNext())
+            array[i++] = iterator.next();
+        return array;
+    }
+
+    @Override
+    public <Cell> Cell[] toArray(Cell[] a) {
+        // TODO
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean add(Cell e) {
+        throw this.addException;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        throw this.removeException;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        // TODO
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Cell> c) {
+        throw this.addException;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends Cell> c) {
+        throw this.addException;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        throw this.removeException;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw this.removeException;
+    }
+
+    @Override
+    public void clear() {
+        throw this.removeException;
+    }
+    */
+
+//    @Override
+    public Cell get(int index) {
+//        return this.listIterator(index).next();
+        int segmentIndex = index / this.segmentSize;
+        int cellIndex = index % this.segmentSize;
+        while (this.segments.size() <= segmentIndex)
+            this.addSegment();
+        return this.segments.get(segmentIndex).get(cellIndex);
+    }
+
+    /*
+    @Override
+    public Cell set(int index, Cell cell) {
+        ListIterator<Cell> iterator = this.listIterator(index);
+        Cell oldCell = iterator.next();
+        iterator.set(cell);
+        return oldCell;
+    }
+
+    @Override
+    public void add(int index, Cell cell) {
+        throw this.addException;
+    }
+
+    @Override
+    public Cell remove(int index) {
+        throw this.removeException;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        ListIterator<Cell> iterator = this.listIterator();
+        for (int i=0; iterator.hasNext(); i++) {
+            if (iterator.next().equals(o))
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        ListIterator<Cell> iterator = this.listIterator(this.size());
+        // TODO
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Cell> subList(int fromIndex, int toIndex) {
+        throw this.sublistException;
+    }
+    */
+
+    /**
+     * Iterators
+     */
+
+    /*
+    private static class TapeIterator implements Iterator<Cell> {
+
+        protected final Tape tape;
+
+        private final Iterator<ArrayList<Cell>> segmentIterator;
+        protected int segmentIndex;
+        protected ArrayList<Cell> segment;
+
+        protected int index;
+
+        TapeIterator(Tape tape) {
+            this.tape = tape;
+
+            this.segmentIterator = tape.segments.iterator();
+            this.segmentIndex = 0;
+            this.segment = this.segmentIterator.next();
+
+            this.index = -1;
+        }
+
+        protected boolean hasNextSegment() {
+            return this.segmentIndex < this.tape.segments.size() - 1;
+        }
+
+        protected void nextSegment() {
+            System.out.println("nextSegment() : hasNext = " + this.segmentIterator.hasNext());
+            this.segment = this.segmentIterator.next();
+        }
+
+        @Override
+        public boolean hasNext() {
+            System.out.print("hasNext() index=" + this.index + " segIndex=" + this.segmentIndex + " segSize=" + this.tape.segmentSize);
+            if (this.index < this.tape.segmentSize - 1) {
+                System.out.println(" : true");
+                return true;
+            }
+            System.out.println(" : " + this.segmentIterator.hasNext());
+            return this.segmentIterator.hasNext();
+        }
+
+        @Override
+        public Cell next() {
+            System.out.println("next()");
+//            if (this.hasNext() == false)
+//                throw new NoSuchElementException();
+
+            this.index++;
+            if (this.index >= this.tape.segmentSize) {
+                this.index = 0;
+                this.nextSegment();
+            }
+
+            return this.segment.get(this.index);
+        }
+
+    }
+
+    private static class TapeListIterator extends TapeIterator implements ListIterator<Cell> {
+
+        private ListIterator<ArrayList<Cell>> segmentListIterator;
+
+        TapeListIterator(Tape tape) {
+            this(tape, 0);
+        }
+
+        TapeListIterator(Tape tape, int index) {
+            super(tape);
+
+            this.segmentListIterator = tape.segments.listIterator();
+
+            this.segmentIndex = index / this.tape.segmentSize;
+            for (int i=0; i<this.segmentIndex; i++)
+                super.nextSegment();
+
+            this.index = index % this.tape.segmentSize;
+        }
+
+        private boolean hasPreviousSegment() {
+            return this.segmentIndex > 0;
+        }
+
+        private void previousSegment() {
+            if (this.hasPreviousSegment() == false)
+                throw new NoSuchElementException();
+            this.segment = this.segmentListIterator.previous();
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return (this.segmentIndex == 0 && this.index == 0) == false;
+        }
+
+        @Override
+        public Cell previous() {
+            if (this.hasPrevious() == false)
+                throw new NoSuchElementException();
+
+            this.index--;
+            if (this.index < 0) {
+                this.index = this.tape.segmentSize - 1;
+                this.previousSegment();
+            }
+
+            return this.segment.get(this.index);
+        }
+
+        @Override
+        public int nextIndex() {
+            if (this.hasNext() == false)
+                throw new NoSuchElementException();
+            return this.index + 1;
+        }
+
+        @Override
+        public int previousIndex() {
+            if (this.hasPrevious() == false)
+                throw new NoSuchElementException();
+            return this.index - 1;
+        }
+
+        @Override
+        public void remove() {
+            throw this.tape.removeException;
+        }
+
+        @Override
+        public void set(Cell cell) {
+            this.segment.set(this.index, cell);
+        }
+
+        @Override
+        public void add(Cell e) {
+            throw this.tape.addException;
+        }
+
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return new TapeIterator(this);
+    }
+
+    @Override
+    public ListIterator<Cell> listIterator() {
+        return new TapeListIterator(this);
+    }
+
+    @Override
+    public ListIterator<Cell> listIterator(int index) {
+        return new TapeListIterator(this, index);
+    }
+    */
+
+}

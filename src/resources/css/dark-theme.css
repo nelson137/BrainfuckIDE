@@ -1,0 +1,40 @@
+/* 
+    Created on : Apr 8, 2020, 4:37:32 PM
+    Author     : Nelson Earle (nwewnh)
+*/
+
+* {
+    /**
+     * Main
+     */
+
+    primary-color: #2e3843;
+    primary-light-color: derive(primary-color, 15%);
+    primary-lightest-color: derive(primary-light-color, 15%);
+
+    accent-color: #fc5185;
+    accent-light-color: derive(accent-color, 40%);
+
+    bf-shadow: dropshadow(three-pass-box, #000000cc, 16, 0, -2, 2);
+
+    /**
+     * Scrollbars
+     */
+
+    scrollbar-color: #a6a8b6;
+    scrollbar-border-color: #ffffff4c;
+
+    /**
+     * Visualizer
+     */
+
+    visualizer-cell-text-color: #ffffff;
+    visualizer-cell-highlight-text-color: #ffffff;
+
+    /**
+     * Output
+     */
+
+    output-background-color: primary-color;
+    output-text-color: #ffffff;
+}
