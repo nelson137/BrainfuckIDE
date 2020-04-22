@@ -70,6 +70,6 @@
             </HBox>
          </children>
       </HBox>
-      <TabPane fx:id="editorTabPane" styleClass="editor-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+      <TabPane fx:id="editorTabPane" styleClass="ide-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

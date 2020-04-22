@@ -84,7 +84,7 @@
 }
 
 /**
- * ScrollBar
+ * ScrollBars
  */
 
 .scroll-bar {
@@ -128,21 +128,23 @@
 }
 
 /**
- * SplitPane Grabber
- */
-
-.split-pane > .vertical-grabber,
-.split-pane > .horizontal-grabber {
-    -fx-background-color: blue;
-}
-
-/**
  * IDE
  */
 
-.split-pane .split-pane-divider {
-    -fx-background-color: scrollbar-color;
-    -fx-padding: 2px;
+.ide-tab-pane {
+    -fx-background-color: primary-light-color;
+}
+
+.ide-tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: primary-light-color;
+}
+
+.ide-tab-pane > .tab-header-area .tab {
+    -fx-background-color: primary-color;
+}
+
+.ide-tab-pane > .tab-header-area .tab .tab-label {
+    -fx-text-fill: #ffffff;
 }
 
 /**
@@ -155,7 +157,7 @@
 
 .welcome-content > .label {
     -fx-padding: 96px;
-    -fx-font-family: 'MuseoSans-500';
+    -fx-font-family: MuseoSans-500;
     -fx-font-size: 64px;
     -fx-text-fill: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
 }
@@ -180,20 +182,9 @@
  * Editor Tab
  */
 
-.editor-tab-pane {
-    -fx-background-color: primary-light-color;
-}
-
-.editor-tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: primary-light-color;
-}
-
-.editor-tab-pane > .tab-header-area .tab {
-    -fx-background-color: primary-color;
-}
-
-.editor-tab-pane > .tab-header-area .tab .tab-label {
-    -fx-text-fill: #ffffff;
+.split-pane .split-pane-divider {
+    -fx-background-color: scrollbar-color;
+    -fx-padding: 2px;
 }
 
 .editor-tabs-shadow {
@@ -212,30 +203,6 @@
     -fx-text-fill: #ffffff;
     -fx-font-family: monospaced;
     -fx-font-size: 14px;
-}
-
-/**
- * How To Tab
- */
-
-.how-to-content {
-    -fx-background-color: primary-color;
-}
-
-.how-to-card {
-    -fx-background-color: primary-light-color;
-    -fx-background-radius: 16px;
-}
-
-.how-to-card .label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-}
-
-.how-to-card .button {
-    -fx-background-color: accent-color;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
 }
 
 /**
@@ -317,4 +284,28 @@
 }
 
 .predef-input {
+}
+
+/**
+ * How To Tab
+ */
+
+.how-to-content {
+    -fx-background-color: primary-color;
+}
+
+.how-to-card {
+    -fx-background-color: primary-light-color;
+    -fx-background-radius: 16px;
+}
+
+.how-to-card .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+}
+
+.how-to-card .button {
+    -fx-background-color: accent-color;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
 }
