@@ -1,5 +1,6 @@
 package brainfuckide;
 
+import brainfuckide.util.BfLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +27,7 @@ public class BrainfuckIDE extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        BfLogger.setActiveTags("tab");
+        BfLogger.setActiveTags("interpreter");
 
         Font.loadFont(
             this.getClass().getResource(WELCOME_FONT).toExternalForm(),

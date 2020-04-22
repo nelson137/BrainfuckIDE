@@ -76,6 +76,7 @@ public class InterpreterModel extends MVCModel {
     public void playInterpreter() {
         new BfLogger("interpreter").logMethod();
         this.timeline.play();
+        this.isInterpreting = true;
         this.firePropertyChange(PLAY, null);
     }
 
@@ -83,6 +84,7 @@ public class InterpreterModel extends MVCModel {
         new BfLogger("interpreter").logMethod();
         // Does nothing if not running
         this.timeline.pause();
+        this.isInterpreting = false;
         this.firePropertyChange(PAUSE, null);
     }
 

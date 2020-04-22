@@ -55,6 +55,7 @@ public class BfSpinner implements Initializable {
 
     public void play() {
         this.timeline.play();
+        this.label.setVisible(true);
     }
 
     public void pause() {
