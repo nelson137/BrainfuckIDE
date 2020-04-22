@@ -206,14 +206,14 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
     public void play() {
         new BfLogger("interpreter").logMethod();
         this.interpreterModel.playInterpreter();
-        this.spinnerController.play();
+        this.spinnerController.start();
     }
 
     public void pause() {
         new BfLogger("interpreter").logMethod();
         this.interpreterModel.pauseInterpreter();
         this.inputPromptSetVisible(false);
-        this.spinnerController.pause();
+        this.spinnerController.stop();
     }
 
     public void stop() {
