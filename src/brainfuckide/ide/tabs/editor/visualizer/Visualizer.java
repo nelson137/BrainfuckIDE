@@ -112,8 +112,8 @@ public class Visualizer implements Initializable, PropertyChangeListener {
 
         switch (event.getPropertyName()) {
 
-            case InterpreterModel.CURSOR_MOVE_RIGHT:
-            case InterpreterModel.CURSOR_MOVE_LEFT:
+            case InterpreterModel.CURSOR_RIGHT:
+            case InterpreterModel.CURSOR_LEFT:
                 this.setCurrentCell((int) newValue);
                 break;
 

@@ -81,7 +81,7 @@ public class Interpreter {
             this.cursorValue = value;
         }
 
-        public boolean isDone() {
+        public boolean isFinished() {
             return this.cursorPos == -1 || this.cursorValue == -1;
         }
 

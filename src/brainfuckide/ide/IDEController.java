@@ -417,16 +417,19 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
                 case STOPPED:  // Start new
                     tab.content.startNew();
-                    this.buttonPlayPause.setText("Pause");
-                    this.buttonStop.setDisable(false);
-                    this.visualizerEnabled.setDisable(true);
                     break;
 
             }
         });
     }
 
-    private void onDone() {
+    private void onStart() {
+        this.buttonPlayPause.setText("Pause");
+        this.buttonStop.setDisable(false);
+        this.visualizerEnabled.setDisable(true);
+    }
+
+    private void onFinish() {
         this.buttonPlayPause.setText("Play");
         this.buttonStop.setDisable(true);
         this.visualizerEnabled.setDisable(false);
@@ -434,8 +437,8 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
     @FXML
     public void onButtonStop() {
-        this.onDone();
-        this.currentEditorTabDo((EditorTab tab) -> tab.content.onDone());
+        this.onFinish();
+        this.currentEditorTabDo((EditorTab tab) -> tab.content.onFinish());
     }
 
     @FXML
@@ -451,8 +454,10 @@ public class IDEController implements Initializable, PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()) {
-            case InterpreterModel.DONE:
-                this.onDone();
+            case InterpreterModel.START:
+                this.onStart();
+            case InterpreterModel.FINISH:
+                this.onFinish();
                 break;
         }
     }

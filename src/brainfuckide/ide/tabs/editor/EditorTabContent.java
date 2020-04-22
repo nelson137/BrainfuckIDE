@@ -212,7 +212,7 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
         this.spinnerController.pause();
     }
 
-    public void onDone() {
+    public void onFinish() {
         this.interpreterModel.stopInterpreter();
         this.inputPromptSetVisible(false);
         this.spinnerController.stop();
@@ -257,8 +257,8 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
             case InterpreterModel.READ_CHAR:
                 this.inputPromptSetVisible(true);
                 break;
-            case InterpreterModel.DONE:
-                this.onDone();
+            case InterpreterModel.FINISH:
+                this.onFinish();
         }
     }
 

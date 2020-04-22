@@ -21,12 +21,13 @@ public class InterpreterModel extends MVCModel {
 
     private boolean isInterpreting;
 
-    public static final String CURSOR_MOVE_RIGHT = "CURSOR_MOVE_RIGHT";
-    public static final String CURSOR_MOVE_LEFT = "CURSOR_MOVE_LEFT";
-    public static final String SET_VALUE = "SET_VALUE";
+    public static final String CURSOR_LEFT = "CURSOR_LEFT";
+    public static final String CURSOR_RIGHT = "CURSOR_RIGHT";
+    public static final String FINISH = "FINISH";
     public static final String PRINT_CHAR = "PRINT_CHAR";
     public static final String READ_CHAR = "READ_CHAR";
-    public static final String DONE = "DONE";
+    public static final String SET_VALUE = "SET_VALUE";
+    public static final String START = "START";
 
     public InterpreterModel() {
         this.timeline = new Timeline(
@@ -65,6 +66,7 @@ public class InterpreterModel extends MVCModel {
             this.interpreter = new Interpreter(code, input);
         this.playInterpreter();
         this.isInterpreting = true;
+        this.firePropertyChange(START, null);
     }
 
     public void playInterpreter() {
@@ -78,7 +80,6 @@ public class InterpreterModel extends MVCModel {
 
     private void setWaitingForInput(boolean value) {
         this.isInterpreting = value;
-        System.out.println("waitingForInput(" + value + ")");
     }
 
     public void stopInterpreter() {
@@ -98,19 +99,19 @@ public class InterpreterModel extends MVCModel {
     private void interpretNextCommand() {
         Interpreter.Frame frame = this.interpreter.interpretNextCommand();
 
-        if (frame.isDone()) {
-            this.firePropertyChange(DONE, null);
+        if (frame.isFinished()) {
+            this.firePropertyChange(FINISH, null);
             return;
         }
 
         switch (frame.command) {
 
             case '>':
-                this.firePropertyChange(CURSOR_MOVE_RIGHT, frame.cursorPos);
+                this.firePropertyChange(CURSOR_RIGHT, frame.cursorPos);
                 break;
 
             case '<':
-                this.firePropertyChange(CURSOR_MOVE_LEFT, frame.cursorPos);
+                this.firePropertyChange(CURSOR_LEFT, frame.cursorPos);
                 break;
 
             case '+':
