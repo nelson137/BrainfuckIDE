@@ -402,31 +402,21 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
     @FXML
     public void onButtonPlayPause() {
-        this.currentEditorTabDo((EditorTab tab) -> {
-            switch (tab.content.getStatus()) {
-
-                case RUNNING:  // Pause
-                    tab.content.pause();
-                    this.buttonPlayPause.setText("Play");
-                    break;
-
-                case PAUSED:  // Play
-                    tab.content.play();
-                    this.buttonPlayPause.setText("Pause");
-                    break;
-
-                case STOPPED:  // Start new
-                    tab.content.startNew();
-                    break;
-
-            }
-        });
+        this.currentEditorTabDo((EditorTab tab) -> tab.onButtonPlayPause());
     }
 
     private void onStart() {
         this.buttonPlayPause.setText("Pause");
         this.buttonStop.setDisable(false);
         this.visualizerEnabled.setDisable(true);
+    }
+
+    private void onPause() {
+        this.buttonPlayPause.setText("Play");
+    }
+
+    private void onPlay() {
+        this.buttonPlayPause.setText("Pause");
     }
 
     private void onFinish() {
@@ -438,7 +428,7 @@ public class IDEController implements Initializable, PropertyChangeListener {
     @FXML
     public void onButtonStop() {
         this.onFinish();
-        this.currentEditorTabDo((EditorTab tab) -> tab.content.onFinish());
+        this.currentEditorTabDo((EditorTab tab) -> tab.onButtonStop());
     }
 
     @FXML
@@ -454,11 +444,10 @@ public class IDEController implements Initializable, PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()) {
-            case InterpreterModel.START:
-                this.onStart();
-            case InterpreterModel.FINISH:
-                this.onFinish();
-                break;
+            case InterpreterModel.START:  this.onStart();  break;
+            case InterpreterModel.PAUSE:  this.onPause();  break;
+            case InterpreterModel.PLAY:   this.onPlay();   break;
+            case InterpreterModel.FINISH: this.onFinish(); break;
         }
     }
 

@@ -1,6 +1,7 @@
 package brainfuckide.ide.tabs.editor.interpreter;
 
 import brainfuckide.interpreter.Interpreter;
+import brainfuckide.util.BfLogger;
 import brainfuckide.util.MVCModel;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
@@ -24,6 +25,8 @@ public class InterpreterModel extends MVCModel {
     public static final String CURSOR_LEFT = "CURSOR_LEFT";
     public static final String CURSOR_RIGHT = "CURSOR_RIGHT";
     public static final String FINISH = "FINISH";
+    public static final String PAUSE = "PAUSE";
+    public static final String PLAY = "PLAY";
     public static final String PRINT_CHAR = "PRINT_CHAR";
     public static final String READ_CHAR = "READ_CHAR";
     public static final String SET_VALUE = "SET_VALUE";
@@ -61,6 +64,7 @@ public class InterpreterModel extends MVCModel {
     }
 
     public void startNewInterpreter(String code, String input) {
+        new BfLogger("interpreter").logMethod();
         // Only start new interpreter if stopped
         if (this.timeline.getStatus() == Status.STOPPED)
             this.interpreter = new Interpreter(code, input);
@@ -70,12 +74,16 @@ public class InterpreterModel extends MVCModel {
     }
 
     public void playInterpreter() {
+        new BfLogger("interpreter").logMethod();
         this.timeline.play();
+        this.firePropertyChange(PLAY, null);
     }
 
     public void pauseInterpreter() {
+        new BfLogger("interpreter").logMethod();
         // Does nothing if not running
         this.timeline.pause();
+        this.firePropertyChange(PAUSE, null);
     }
 
     private void setWaitingForInput(boolean value) {
@@ -83,6 +91,7 @@ public class InterpreterModel extends MVCModel {
     }
 
     public void stopInterpreter() {
+        new BfLogger("interpreter").logMethod();
         // Does nothing if not running
         this.timeline.stop();
         this.interpreter = null;
@@ -125,7 +134,9 @@ public class InterpreterModel extends MVCModel {
 
             case ',':
                 if (this.interpreter.isOutOfInput()) {
-                    this.pauseInterpreter();
+                    // Using this.pauseInterpreter() will fire the PAUSE event
+                    // causing the Play/Pause button text to change
+                    this.timeline.pause();
                     this.setWaitingForInput(true);
                     this.firePropertyChange(READ_CHAR, null);
                 }

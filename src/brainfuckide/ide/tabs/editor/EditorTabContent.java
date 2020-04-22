@@ -4,6 +4,7 @@ import brainfuckide.ide.IDEController;
 import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.editor.spinner.BfSpinner;
 import brainfuckide.ide.tabs.editor.visualizer.Visualizer;
+import brainfuckide.util.BfLogger;
 import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -190,6 +191,7 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
     }
 
     public void startNew() {
+        new BfLogger("interpreter").logMethod();
         // Reset
         this.output.clear();
         this.visualizerController.resetVisualizer();
@@ -202,17 +204,20 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
     }
 
     public void play() {
+        new BfLogger("interpreter").logMethod();
         this.interpreterModel.playInterpreter();
         this.spinnerController.play();
     }
 
     public void pause() {
+        new BfLogger("interpreter").logMethod();
         this.interpreterModel.pauseInterpreter();
         this.inputPromptSetVisible(false);
         this.spinnerController.pause();
     }
 
-    public void onFinish() {
+    public void stop() {
+        new BfLogger("interpreter").logMethod();
         this.interpreterModel.stopInterpreter();
         this.inputPromptSetVisible(false);
         this.spinnerController.stop();
@@ -258,7 +263,7 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
                 this.inputPromptSetVisible(true);
                 break;
             case InterpreterModel.FINISH:
-                this.onFinish();
+                this.stop();
         }
     }
 

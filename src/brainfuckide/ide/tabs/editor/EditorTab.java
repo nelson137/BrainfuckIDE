@@ -66,6 +66,18 @@ public final class EditorTab extends BfTab {
      * Utility Methods
      *************************************************************************/
 
+    public void onButtonPlayPause() {
+        switch (this.content.getStatus()) {
+            case RUNNING: this.content.pause();    break;
+            case PAUSED:  this.content.play();     break;
+            case STOPPED: this.content.startNew(); break;
+        }
+    }
+
+    public void onButtonStop() {
+        this.content.stop();
+    }
+
     private void assignFile(File file) {
         this.hasFile = true;
         this.fileType = FileType.FILE;
