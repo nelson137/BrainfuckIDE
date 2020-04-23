@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.nio.file.Paths;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -78,6 +79,10 @@ public final class EditorTab extends BfTab {
         this.content.stop();
     }
 
+    private String getUserHome() {
+        return System.getProperty("user.home");
+    }
+
     private void assignFile(File file) {
         this.hasFile = true;
         this.fileType = FileType.FILE;
@@ -88,8 +93,10 @@ public final class EditorTab extends BfTab {
         super.setTooltip(new Tooltip(file.getAbsolutePath()));
     }
 
-    private void assignResource(File file) {
-        this.assignFile(file);
+    private void assignResource(String path) {
+        String parentDir = this.getUserHome();
+        String basename = new File(path).getName();
+        this.assignFile(Paths.get(parentDir, basename).toFile());
         this.fileType = FileType.RESOURCE;
     }
 
@@ -108,7 +115,7 @@ public final class EditorTab extends BfTab {
 
     public File getParentDirectory() {
         if (this.parentDirectory == null || this.fileType == FileType.RESOURCE)
-            return new File(System.getProperty("user.home"));
+            return new File(this.getUserHome());
         return this.parentDirectory;
     }
 
@@ -164,6 +171,13 @@ public final class EditorTab extends BfTab {
      * File Methods
      *************************************************************************/
 
+    public void openResource(String path) {
+        this.assignResource(path);
+
+        this.openFile(new InputStreamReader(
+            this.getClass().getResourceAsStream(path)));
+    }
+
     public void openFile(File file) {
         this.assignFile(file);
 
@@ -172,13 +186,6 @@ public final class EditorTab extends BfTab {
         } catch (FileNotFoundException ex) {
             this.alertError(ex);
         }
-    }
-
-    public void openResource(File file) {
-        this.assignResource(file);
-
-        this.openFile(new InputStreamReader(
-            this.getClass().getResourceAsStream(file.getAbsolutePath())));
     }
 
     private void openFile(Reader reader) {

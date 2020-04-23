@@ -3,7 +3,6 @@ package brainfuckide.ide.tabs.howto;
 import brainfuckide.ide.IDEController;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -21,7 +20,7 @@ import javafx.scene.layout.VBox;
 public class HowToTabContent extends VBox implements Initializable {
 
     private static final String FXML_PATH = "HowToTabContent.fxml";
-    private static final String EXAMPLES_DIR = "/resources/examples";
+    private static final String EXAMPLES_DIR = "/resources/examples/";
 
     private final IDEController controller;
 
@@ -63,8 +62,7 @@ public class HowToTabContent extends VBox implements Initializable {
     @FXML
     public void openExampleFile(ActionEvent event) {
         String fileName = this.buttonFiles.get((Button) event.getSource());
-        this.controller.newEditorTab().openResource(
-            Paths.get(EXAMPLES_DIR, fileName).toFile());
+        this.controller.newEditorTab().openResource(EXAMPLES_DIR + fileName);
     }
 
 }
