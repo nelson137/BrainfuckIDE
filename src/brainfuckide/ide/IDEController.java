@@ -15,6 +15,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -37,8 +38,14 @@ import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.controlsfx.glyphfont.GlyphFont;
+import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  * FXML Controller class
@@ -53,6 +60,36 @@ public class IDEController implements Initializable, PropertyChangeListener {
     private AsciiPopup asciiTablePopup;
 
     private FileChooser fileChooser;
+
+    private static final GlyphFont FONT_AWESOME =
+        GlyphFontRegistry.font("FontAwesome");
+
+    /* Program Buttons */
+
+    @FXML
+    private Button iconifyButton;
+    private final Glyph ICONIFY_BUTTON_GRAPHIC = FONT_AWESOME
+        .create(FontAwesome.Glyph.MINUS)
+        .size(18)
+        .color(Color.WHITE);
+
+    @FXML
+    private Button maximizeButton;
+    private final Glyph MAXIMIZE_BUTTON_GRAPHIC_EXPAND = FONT_AWESOME
+        .create(FontAwesome.Glyph.EXPAND)
+        .size(18)
+        .color(Color.WHITE);
+    private final Glyph MAXIMIZE_BUTTON_GRAPHIC_COMPRESS = FONT_AWESOME
+        .create(FontAwesome.Glyph.COMPRESS)
+        .size(18)
+        .color(Color.WHITE);
+
+    @FXML
+    private Button closeButton;
+    private final Glyph CLOSE_BUTTON_GRAPHIC = FONT_AWESOME
+        .create(FontAwesome.Glyph.TIMES)
+        .size(18)
+        .color(Color.WHITE);
 
     /* Menu File */
 
@@ -196,6 +233,15 @@ public class IDEController implements Initializable, PropertyChangeListener {
     private void setupUI() {
         this.asciiTablePopup = new AsciiPopup();
 
+        this.iconifyButton.setText(null);
+        this.iconifyButton.setGraphic(ICONIFY_BUTTON_GRAPHIC);
+
+        this.maximizeButton.setText(null);
+        this.maximizeButton.setGraphic(MAXIMIZE_BUTTON_GRAPHIC_EXPAND);
+
+        this.closeButton.setText(null);
+        this.closeButton.setGraphic(CLOSE_BUTTON_GRAPHIC);
+
         Util.bindManagedToVisible(this.visualizerEnabled);
         Util.bindManagedToVisible(this.executionRateSlider);
 
@@ -306,6 +352,28 @@ public class IDEController implements Initializable, PropertyChangeListener {
     /**************************************************************************
      * Event Handlers
      *************************************************************************/
+
+    @FXML
+    public void onClose() {
+        Platform.exit();
+    }
+
+    @FXML
+    public void onMaximize() {
+        Stage stage = (Stage) this.getStage();
+        stage.setMaximized(!stage.isMaximized());
+        this.maximizeButton.setGraphic(
+            stage.isMaximized()
+                ? MAXIMIZE_BUTTON_GRAPHIC_COMPRESS
+                : MAXIMIZE_BUTTON_GRAPHIC_EXPAND);
+    }
+
+    @FXML
+    public void onIconify() {
+        Stage stage = (Stage) this.getStage();
+        // Undecorated windows cannot animate (de-)iconification :(
+        stage.setIconified(true);
+    }
 
     @FXML
     public void onNewFile() {

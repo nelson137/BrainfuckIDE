@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -39,6 +40,7 @@ public class BrainfuckIDE extends Application {
         scene.getStylesheets().addAll(CSS_STYLE, CSS_DARK);
 
         stage.setTitle(TITLE);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
     }

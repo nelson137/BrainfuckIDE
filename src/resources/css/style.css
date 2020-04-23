@@ -1,4 +1,4 @@
-/* 
+/*
     Created on : Apr 7, 2020, 1:15:08 AM
     Author     : Nelson Earle (nwewnh)
 */
@@ -81,6 +81,30 @@
 
 .context-menu .label {
     -fx-text-fill: #ffffff;
+}
+
+.iconify-button {
+    -fx-background-color: primary-lightest-color;
+    -fx-background-radius: 0;
+}
+.iconify-button:hover {
+    -fx-background-color: primary-light-color;
+}
+
+.maximize-button {
+    -fx-background-color: primary-lightest-color;
+    -fx-background-radius: 0;
+}
+.maximize-button:hover {
+    -fx-background-color: primary-light-color;
+}
+
+.close-button {
+    -fx-background-color: primary-lightest-color;
+    -fx-background-radius: 0;
+}
+.close-button:hover {
+    -fx-background-color: red;
 }
 
 /**
