@@ -1,6 +1,6 @@
 package brainfuckide.ide.popups;
 
-import brainfuckide.ide.popups.AsciiGridPane;
+import brainfuckide.util.DragOffset;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
@@ -14,10 +14,7 @@ public class AsciiPopup extends Popup {
 
     private final AsciiGridPane grid;
 
-    private static class DragDelta {
-        double x, y;
-    }
-    private final DragDelta dragDelta;
+    private final DragOffset dragOffset;
 
     private static final String CSS_ASCII_TABLE = "ascii-table";
 
@@ -26,7 +23,7 @@ public class AsciiPopup extends Popup {
 
         this.grid = new AsciiGridPane();
 
-        this.dragDelta = new DragDelta();
+        this.dragOffset = new DragOffset();
 
         this.setupUI();
 
@@ -52,9 +49,9 @@ public class AsciiPopup extends Popup {
 
             if (event.isPrimaryButtonDown() == false)
                 return;
-            Window window = super.getScene().getWindow();
-            this.dragDelta.x = window.getX() - event.getScreenX();
-            this.dragDelta.y = window.getY() - event.getScreenY();
+
+            this.dragOffset.x = event.getSceneX();
+            this.dragOffset.y = event.getSceneY();
             this.grid.setCursor(Cursor.MOVE);
         });
 
@@ -62,8 +59,8 @@ public class AsciiPopup extends Popup {
             if (event.isPrimaryButtonDown() == false)
                 return;
             Window window = super.getScene().getWindow();
-            window.setX(event.getScreenX() + this.dragDelta.x);
-            window.setY(event.getScreenY() + this.dragDelta.y);
+            window.setX(event.getScreenX() - this.dragOffset.x);
+            window.setY(event.getScreenY() - this.dragOffset.y);
         });
 
         this.grid.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {

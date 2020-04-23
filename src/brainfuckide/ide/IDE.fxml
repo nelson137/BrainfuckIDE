@@ -13,7 +13,7 @@
 
 <VBox fx:id="root" prefHeight="600.0" prefWidth="1012.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brainfuckide.ide.IDEController">
    <children>
-      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="64.0" styleClass="ribbon" VBox.vgrow="NEVER">
+      <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="64.0" styleClass="ribbon" VBox.vgrow="NEVER">
          <children>
             <MenuBar HBox.hgrow="NEVER">
                <menus>

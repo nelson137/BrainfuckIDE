@@ -7,6 +7,7 @@ import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import brainfuckide.util.BfLogger;
+import brainfuckide.util.DragOffset;
 import brainfuckide.util.PropertiesState;
 import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
@@ -36,6 +37,7 @@ import static javafx.scene.input.KeyCode.O;
 import static javafx.scene.input.KeyCode.S;
 import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -63,6 +65,11 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
     private static final GlyphFont FONT_AWESOME =
         GlyphFontRegistry.font("FontAwesome");
+
+    @FXML
+    private HBox ribbon;
+
+    private DragOffset dragOffset = new DragOffset();
 
     /* Program Buttons */
 
@@ -163,6 +170,17 @@ public class IDEController implements Initializable, PropertyChangeListener {
     }
 
     private void setupListeners() {
+        // Listeners for dragging around the window
+        this.ribbon.setOnMousePressed((MouseEvent event) -> {
+            this.dragOffset.x = event.getSceneX();
+            this.dragOffset.y = event.getSceneY();
+        });
+        this.ribbon.setOnMouseDragged((MouseEvent event) -> {
+            Stage stage = (Stage) this.getStage();
+            stage.setX(event.getScreenX() - this.dragOffset.x);
+            stage.setY(event.getScreenY() - this.dragOffset.y);
+        });
+
         // KeyEvent listeners for menu options
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.isControlDown()) {
