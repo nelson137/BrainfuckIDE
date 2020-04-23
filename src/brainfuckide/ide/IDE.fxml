@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.*?>
+<?import javafx.gemoetry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
@@ -13,9 +13,9 @@
 
 <VBox fx:id="root" prefHeight="600.0" prefWidth="1012.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brainfuckide.ide.IDEController">
    <children>
-      <HBox spacing="24.0" styleClass="ribbon">
+      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="64.0" styleClass="ribbon" VBox.vgrow="NEVER">
          <children>
-            <MenuBar prefHeight="29.0" HBox.hgrow="NEVER">
+            <MenuBar HBox.hgrow="NEVER">
                <menus>
                   <Menu mnemonicParsing="false" text="File">
                      <items>
@@ -53,14 +53,12 @@
                   </Menu>
                </menus>
             </MenuBar>
-            <Pane maxWidth="64.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER_LEFT" spacing="8.0">
                <children>
                   <Button fx:id="buttonPlayPause" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
                   <Button fx:id="buttonStop" disable="true" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />
                </children>
             </HBox>
-            <Pane maxWidth="64.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
             <HBox fx:id="visualizerSettingsBox" alignment="CENTER_LEFT" spacing="8.0">
                <children>
                   <Label styleClass="ribbon-text" text="Visualizer:" />
