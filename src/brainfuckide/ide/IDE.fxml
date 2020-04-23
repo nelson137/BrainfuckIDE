@@ -30,7 +30,7 @@
                   <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">
                      <items>
                         <CheckMenuItem fx:id="menuVisualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" text="Enabled" />
-                        <MenuItem fx:id="menuViewVisualizerSettingsSetExecutionRate" mnemonicParsing="false" onAction="#onVisualizerSetExecutionRate" text="Set Execution Rate..." />
+                        <MenuItem fx:id="menuVisualizerSetExecutionRate" mnemonicParsing="false" onAction="#onVisualizerSetExecutionRate" text="Set Execution Rate..." />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="View">
@@ -39,7 +39,7 @@
                            <items>
                               <CheckMenuItem fx:id="menuViewVisualizerSettingsAll" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="All" />
                               <CheckMenuItem fx:id="menuViewVisualizerSettingsEnabled" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Enabled" />
-                              <CheckMenuItem fx:id="menuVisualizerSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
+                              <CheckMenuItem fx:id="menuViewVisualizerSettingsSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
                            </items>
                         </Menu>
                      </items>
