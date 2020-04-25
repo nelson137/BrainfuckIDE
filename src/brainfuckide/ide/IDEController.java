@@ -7,8 +7,8 @@ import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import brainfuckide.util.BfLogger;
-import brainfuckide.util.DragOffset;
 import brainfuckide.util.PropertiesState;
+import brainfuckide.util.StageControlBuilder;
 import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -37,7 +37,6 @@ import static javafx.scene.input.KeyCode.O;
 import static javafx.scene.input.KeyCode.S;
 import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -68,8 +67,6 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
     @FXML
     private HBox ribbon;
-
-    private DragOffset dragOffset = new DragOffset();
 
     /* Program Buttons */
 
@@ -170,16 +167,11 @@ public class IDEController implements Initializable, PropertyChangeListener {
     }
 
     private void setupListeners() {
-        // Listeners for dragging around the window
-        this.ribbon.setOnMousePressed((MouseEvent event) -> {
-            this.dragOffset.x = event.getSceneX();
-            this.dragOffset.y = event.getSceneY();
-        });
-        this.ribbon.setOnMouseDragged((MouseEvent event) -> {
-            Stage stage = (Stage) this.getStage();
-            stage.setX(event.getScreenX() - this.dragOffset.x);
-            stage.setY(event.getScreenY() - this.dragOffset.y);
-        });
+        Platform.runLater(() ->
+            new StageControlBuilder((Stage) this.getStage())
+                .doubleClickToMaximize()
+                .node(this.ribbon)
+                .build());
 
         // KeyEvent listeners for menu options
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -380,6 +372,11 @@ public class IDEController implements Initializable, PropertyChangeListener {
     public void onMaximize() {
         Stage stage = (Stage) this.getStage();
         stage.setMaximized(!stage.isMaximized());
+
+        // Make sure window isn't clipped by screen on un-maximize
+        if (stage.getY() < 0)
+            stage.setY(0);
+
         this.maximizeButton.setGraphic(
             stage.isMaximized()
                 ? MAXIMIZE_BUTTON_GRAPHIC_COMPRESS

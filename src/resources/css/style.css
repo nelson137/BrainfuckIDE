@@ -7,6 +7,20 @@
 }
 
 /**
+ * Maximize Indicator
+ */
+
+.maximize-indicator {
+    -fx-padding: 8px;
+}
+.maximize-indicator-inner {
+    -fx-background-color: #ffffff11;
+    -fx-border-color: #ffffff22;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+/**
  * ASCII Tabel Popup
  */
 
