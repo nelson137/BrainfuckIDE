@@ -7,6 +7,7 @@ import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import brainfuckide.util.BfLogger;
+import brainfuckide.util.MaximizeController;
 import brainfuckide.util.PropertiesState;
 import brainfuckide.util.StageControlBuilder;
 import brainfuckide.util.Util;
@@ -22,6 +23,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -41,6 +43,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -53,7 +56,9 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
  *
  * @author Nelson Earle (nwewnh)
  */
-public class IDEController implements Initializable, PropertyChangeListener {
+public class IDEController implements Initializable,
+                                      PropertyChangeListener,
+                                      MaximizeController {
 
     @FXML
     private VBox root;
@@ -145,6 +150,11 @@ public class IDEController implements Initializable, PropertyChangeListener {
 
     private WelcomeTab welcomeTab;
 
+    /* MaximizeController */
+
+    private boolean isMaximized = false;
+    private Rectangle2D unmaximizedState = Rectangle2D.EMPTY;
+
     /**************************************************************************
      * Initialization
      *************************************************************************/
@@ -169,7 +179,7 @@ public class IDEController implements Initializable, PropertyChangeListener {
     private void setupListeners() {
         Platform.runLater(() ->
             new StageControlBuilder((Stage) this.getStage())
-                .doubleClickToMaximize()
+                .doubleClickToMaximize(this)
                 .node(this.ribbon)
                 .build());
 
@@ -368,19 +378,52 @@ public class IDEController implements Initializable, PropertyChangeListener {
         Platform.exit();
     }
 
-    @FXML
-    public void onMaximize() {
+    @Override
+    public boolean isMaximized() {
+        return this.isMaximized;
+    }
+
+    @Override
+    public void setMaximized(boolean value) {
         Stage stage = (Stage) this.getStage();
-        stage.setMaximized(!stage.isMaximized());
 
-        // Make sure window isn't clipped by screen on un-maximize
-        if (stage.getY() < 0)
-            stage.setY(0);
+        if (value) {
+            // Prevent window from going out of screen
+            double x = Math.max(stage.getX(), 0);
+            double y = Math.max(stage.getY(), 0);
+            // Save current position and size of stage
+            this.unmaximizedState = new Rectangle2D(
+                x, y, stage.getWidth(), stage.getHeight());
 
-        this.maximizeButton.setGraphic(
-            stage.isMaximized()
-                ? MAXIMIZE_BUTTON_GRAPHIC_COMPRESS
-                : MAXIMIZE_BUTTON_GRAPHIC_EXPAND);
+            // Maximize the stage, not covering the taskbar
+            Util.currentScreenDo(stage, (Screen screen) -> {
+                Rectangle2D bounds = screen.getVisualBounds();
+                stage.setX(bounds.getMinX());
+                stage.setY(bounds.getMinY());
+                stage.setWidth(bounds.getWidth());
+                stage.setHeight(bounds.getHeight());
+            });
+
+            // Update maximize button icon
+            this.maximizeButton.setGraphic(MAXIMIZE_BUTTON_GRAPHIC_COMPRESS);
+        } else {
+            // Restore unmaximized state
+            stage.setX(this.unmaximizedState.getMinX());
+            stage.setY(this.unmaximizedState.getMinY());
+            stage.setWidth(this.unmaximizedState.getWidth());
+            stage.setHeight(this.unmaximizedState.getHeight());
+
+            // Update maximize button icon
+            this.maximizeButton.setGraphic(MAXIMIZE_BUTTON_GRAPHIC_EXPAND);
+        }
+
+        this.isMaximized = value;
+    }
+
+    @FXML
+    @Override
+    public void toggleMaximized() {
+        this.setMaximized(!this.isMaximized);
     }
 
     @FXML

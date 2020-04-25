@@ -69,7 +69,7 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="iconifyButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onIconify" prefWidth="48.0" styleClass="iconify-button" text="Icon" />
-                  <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onMaximize" prefWidth="48.0" styleClass="maximize-button" text="Max" />
+                  <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleMaximized" prefWidth="48.0" styleClass="maximize-button" text="Max" />
                   <Button fx:id="closeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClose" prefWidth="48.0" styleClass="close-button" text="Close" />
                </children>
             </HBox>

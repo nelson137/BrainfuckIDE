@@ -1,6 +1,5 @@
 package brainfuckide.util;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.PopupControl;
 import javafx.scene.input.MouseButton;
@@ -19,6 +18,7 @@ public class StageControlBuilder extends WindowControlBuilder {
     private final Stage stage;
 
     private boolean doubleClickCanMaximize = false;
+    private MaximizeController maximizeController;
     private MouseButton doubleClickButton = MouseButton.PRIMARY;
     private boolean doMaximizeOnRelease = false;
 
@@ -48,8 +48,9 @@ public class StageControlBuilder extends WindowControlBuilder {
         return this.stage;
     }
 
-    public StageControlBuilder doubleClickToMaximize() {
+    public StageControlBuilder doubleClickToMaximize(MaximizeController controller) {
         this.doubleClickCanMaximize = true;
+        this.maximizeController = controller;
         return this;
     }
 
@@ -60,7 +61,7 @@ public class StageControlBuilder extends WindowControlBuilder {
          && event.getButton().equals(this.doubleClickButton)
          && event.getClickCount() == 2
          && event.isStillSincePress())
-            this.stage.setMaximized(!this.stage.isMaximized());
+            this.maximizeController.toggleMaximized();
     }
 
     @Override
@@ -75,8 +76,8 @@ public class StageControlBuilder extends WindowControlBuilder {
     protected void onMouseDrag(MouseEvent event) {
         super.onMouseDrag(event);
         if (event.isPrimaryButtonDown()) {
-            if (this.stage.isMaximized()) {
-                this.stage.setMaximized(false);
+            if (this.maximizeController.isMaximized()) {
+                this.maximizeController.setMaximized(false);
                 // Adjust x offset so that the window gets horizontally
                 // centered on the cursor
                 this.dragOffset.x = this.stage.getWidth() / 2;
@@ -92,7 +93,7 @@ public class StageControlBuilder extends WindowControlBuilder {
         super.onMouseRelease(event);
         if (event.isPrimaryButtonDown() == false) {
             if (this.doMaximizeOnRelease) {
-                this.getEventStage(event).setMaximized(true);
+                this.maximizeController.setMaximized(true);
                 this.doMaximizeOnRelease = false;
                 this.willMaximizeOnReleaseIndicator();
             }
@@ -108,8 +109,8 @@ public class StageControlBuilder extends WindowControlBuilder {
         if (this.maximizeIndicator.isShowing())
             return;
 
-        this.currentScreenDo(screen -> {
-            Rectangle2D bounds = screen.getBounds();
+        Util.currentScreenDo(this.stage, (Screen screen) -> {
+            Rectangle2D bounds = screen.getVisualBounds();
             this.root.setPrefSize(bounds.getMaxX(), bounds.getMaxY());
             this.maximizeIndicator.setWidth(bounds.getMaxX());
             this.maximizeIndicator.setHeight(bounds.getMaxY());
@@ -117,18 +118,6 @@ public class StageControlBuilder extends WindowControlBuilder {
                 this.stage,
                 bounds.getMinX(), bounds.getMinY());
         });
-    }
-
-    private interface ScreenAction {
-        void doAction(Screen screen);
-    }
-
-    private void currentScreenDo(ScreenAction action) {
-        ObservableList<Screen> screens = Screen.getScreensForRectangle(
-            this.stage.getX(), this.stage.getY(),
-            this.stage.getWidth(), this.stage.getHeight());
-        if (screens.size() > 0)
-            action.doAction(screens.get(0));
     }
 
 }
