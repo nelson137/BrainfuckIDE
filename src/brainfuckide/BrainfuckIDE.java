@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -26,6 +27,8 @@ public class BrainfuckIDE extends Application {
     private static final String WELCOME_FONT =
         "/resources/fonts/MuseoSans_500.otf";
 
+    private static final String ICON = "/resources/images/icon.png";
+
     @Override
     public void start(Stage stage) throws Exception {
         BfLogger.setActiveTags("interpreter");
@@ -41,6 +44,7 @@ public class BrainfuckIDE extends Application {
 
         stage.setTitle(TITLE);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image(ICON));
         stage.setScene(scene);
         stage.show();
     }
