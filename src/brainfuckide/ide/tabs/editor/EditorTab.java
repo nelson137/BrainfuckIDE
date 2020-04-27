@@ -53,7 +53,7 @@ public final class EditorTab extends BfTab {
         ) -> {
             this.updateDirtyIndicator();
         });
-        this.setContent(this.content);
+        super.setBfContent(this.content);
     }
 
     @Override

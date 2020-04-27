@@ -4,8 +4,10 @@ import brainfuckide.util.BfLogger;
 import brainfuckide.util.PropertiesState;
 import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
 import com.sun.javafx.scene.control.skin.TabPaneSkin;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -24,16 +26,17 @@ public abstract class BfTab extends Tab {
 
     public BfTab(String title) {
         super(title);
-        this.init();
-    }
-
-    private void init() {
-        this.root = new VBox();
-        super.setContent(this.root);
 
         Pane shadowBox = new Pane();
         shadowBox.getStyleClass().add(CSS_TABS_SHADOW);
-        this.root.getChildren().add(shadowBox);
+
+        this.root = new VBox(shadowBox);
+        super.setContent(this.root);
+    }
+
+    public void setBfContent(Node node) {
+        VBox.setVgrow(node, Priority.ALWAYS);
+        this.root.getChildren().add(node);
     }
 
     public void onEnter() {

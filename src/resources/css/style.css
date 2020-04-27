@@ -222,6 +222,10 @@
  * Editor Tab
  */
 
+.split-pane {
+    -fx-background-color: primary-color;
+}
+
 .split-pane .split-pane-divider {
     -fx-background-color: scrollbar-color;
     -fx-padding: 2px;
