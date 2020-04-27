@@ -13,9 +13,9 @@
 
 <VBox fx:id="root" prefHeight="600.0" prefWidth="1012.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brainfuckide.ide.IDEController">
    <children>
-      <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="64.0" styleClass="ribbon" VBox.vgrow="NEVER">
+      <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="48.0" styleClass="ribbon" VBox.vgrow="NEVER">
          <children>
-            <MenuBar HBox.hgrow="NEVER">
+            <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="NEVER">
                <menus>
                   <Menu mnemonicParsing="false" text="File">
                      <items>
@@ -53,24 +53,24 @@
                   </Menu>
                </menus>
             </MenuBar>
-            <HBox alignment="CENTER_LEFT" spacing="8.0">
+            <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
                <children>
-                  <Button fx:id="buttonPlayPause" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
-                  <Button fx:id="buttonStop" disable="true" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />
+                  <Button fx:id="buttonPlayPause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
+                  <Button fx:id="buttonStop" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />
                </children>
             </HBox>
-            <HBox fx:id="visualizerSettingsBox" alignment="CENTER_LEFT" spacing="8.0">
+            <HBox fx:id="visualizerSettingsBox" alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
                <children>
-                  <Label styleClass="ribbon-text" text="Visualizer:" />
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="ribbon-text" text="Visualizer:" />
                   <CheckBox fx:id="visualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" textFill="WHITE" />
-                  <Slider fx:id="executionRateSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" min="1.0" minorTickCount="0" prefWidth="128.0" value="1.0" />
+                  <Slider fx:id="executionRateSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefWidth="128.0" value="1.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="iconifyButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onIconify" prefWidth="48.0" styleClass="iconify-button" text="Icon" />
-                  <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleMaximized" prefWidth="48.0" styleClass="maximize-button" text="Max" />
-                  <Button fx:id="closeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClose" prefWidth="48.0" styleClass="close-button" text="Close" />
+                  <Button fx:id="iconifyButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onIconify" prefWidth="48.0" styleClass="iconify-button" text="Icon" />
+                  <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#toggleMaximized" prefWidth="48.0" styleClass="maximize-button" text="Max" />
+                  <Button fx:id="closeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClose" prefWidth="48.0" styleClass="close-button" text="Close" />
                </children>
             </HBox>
          </children>
