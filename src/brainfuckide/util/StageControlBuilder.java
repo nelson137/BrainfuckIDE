@@ -19,15 +19,14 @@ public class StageControlBuilder extends WindowControlBuilder {
 
     private boolean doubleClickCanMaximize = false;
     private MaximizeController maximizeController;
-    private MouseButton doubleClickButton = MouseButton.PRIMARY;
     private boolean doMaximizeOnRelease = false;
 
     private static final String CSS_INDICATOR = "maximize-indicator";
     private static final String CSS_INDICATOR_INNER = "maximize-indicator-inner";
 
-    private PopupControl maximizeIndicator;
-    private StackPane root;
-    private Pane rootInner;
+    private final PopupControl maximizeIndicator;
+    private final StackPane root;
+    private final Pane rootInner;
 
     public StageControlBuilder(Stage stage) {
         super();
@@ -58,7 +57,7 @@ public class StageControlBuilder extends WindowControlBuilder {
     protected void onMouseClick(MouseEvent event) {
         super.onMouseClick(event);
         if (this.doubleClickCanMaximize
-         && event.getButton().equals(this.doubleClickButton)
+         && event.getButton().equals(MouseButton.PRIMARY)
          && event.getClickCount() == 2
          && event.isStillSincePress())
             this.maximizeController.toggleMaximized();
