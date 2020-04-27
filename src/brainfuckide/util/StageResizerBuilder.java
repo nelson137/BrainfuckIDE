@@ -95,23 +95,27 @@ public class StageResizerBuilder {
         if (this.cursorEdge.equals(Cursor.DEFAULT))
             return;
 
-        double x = event.getScreenX();
-        double y = event.getScreenY();
+        double stageX = this.stage.getX();
+        double stageY = this.stage.getY();
+        double stageW = this.stage.getWidth();
+
+        double eventX = event.getScreenX();
+        double eventY = event.getScreenY();
 
         if (this.cursorEdge.equals(Cursor.SE_RESIZE)) {
-            this.setWidth(x - this.stage.getX());
-            this.setHeight(y - this.stage.getY());
+            this.setWidth(eventX - stageX);
+            this.setHeight(eventY - stageY);
         } else if (this.cursorEdge.equals(Cursor.SW_RESIZE)) {
-            if (this.setWidth(this.stage.getWidth() + this.stage.getX() - x))
-                this.stage.setX(x);
-            this.setHeight(y - this.stage.getY());
+            if (this.setWidth(stageW + stageX - eventX))
+                this.stage.setX(eventX);
+            this.setHeight(eventY - stageY);
         } else if (this.cursorEdge.equals(Cursor.E_RESIZE)) {
-            this.setWidth(x - this.stage.getX());
+            this.setWidth(eventX - stageX);
         } else if (this.cursorEdge.equals(Cursor.S_RESIZE)) {
-            this.setHeight(y - this.stage.getY());
+            this.setHeight(eventY - stageY);
         } else if (this.cursorEdge.equals(Cursor.W_RESIZE)) {
-            if (this.setWidth(this.stage.getWidth() + this.stage.getX() - x))
-                this.stage.setX(x);
+            if (this.setWidth(stageW + stageX - eventX))
+                this.stage.setX(eventX);
         }
     }
 
