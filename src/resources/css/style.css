@@ -4,6 +4,7 @@
 */
 
 .root {
+    -fx-background-color: primary-light-color;
 }
 
 /**

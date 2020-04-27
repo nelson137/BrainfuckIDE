@@ -75,6 +75,9 @@
             </HBox>
          </children>
       </HBox>
-      <TabPane fx:id="editorTabPane" styleClass="ide-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+      <TabPane fx:id="editorTabPane" styleClass="ide-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="2.0" left="2.0" right="2.0" />
+         </VBox.margin></TabPane>
    </children>
 </VBox>

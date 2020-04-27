@@ -10,6 +10,7 @@ import brainfuckide.util.BfLogger;
 import brainfuckide.util.MaximizeController;
 import brainfuckide.util.PropertiesState;
 import brainfuckide.util.StageControlBuilder;
+import brainfuckide.util.StageResizerBuilder;
 import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -181,6 +182,11 @@ public class IDEController implements Initializable,
             new StageControlBuilder((Stage) this.getStage())
                 .doubleClickToMaximize(this)
                 .node(this.ribbon)
+                .build());
+
+        Platform.runLater(() ->
+            new StageResizerBuilder()
+                .stage((Stage) this.getStage())
                 .build());
 
         // KeyEvent listeners for menu options
