@@ -5,18 +5,21 @@ import static brainfuckide.util.Constants.CSS_THEME_DARK;
 import static brainfuckide.util.Constants.MAIN_FXML;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,6 +35,9 @@ public class Splash implements Initializable {
 
     @FXML
     private AnchorPane content;
+
+    @FXML
+    private Label loadingBar;
 
     /**
      * Initializes the controller class.
@@ -51,7 +57,30 @@ public class Splash implements Initializable {
     }
 
     private Animation makeLoadingAnimation() {
-        return new PauseTransition(Duration.millis(1000));
+        return new Transition() {
+
+            {
+                setDelay(Duration.millis(250));
+                setCycleCount(1);
+                setCycleDuration(Duration.millis(4000));
+                setInterpolator(Interpolator.EASE_BOTH);
+            }
+
+            private String repeatChar(char c, int count) {
+                char s[] = new char[count];
+                Arrays.fill(s, c);
+                return new String(s);
+            }
+
+            @Override
+            protected void interpolate(double frac) {
+                int width = loadingBar.getText().length() - 2;
+                String filled = this.repeatChar('>', (int)(width * frac));
+                String empty = this.repeatChar(' ', width - filled.length());
+                loadingBar.setText(String.format("[" + filled + empty + "]"));
+            }
+
+        };
     }
 
     private Animation makeFadeOutAnimation() {
