@@ -11,73 +11,79 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" prefHeight="600.0" prefWidth="1012.0" styleClass="ide-root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brainfuckide.ide.IDEController">
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1012.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brainfuckide.ide.IDEController">
    <children>
-      <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="48.0" styleClass="ribbon" VBox.vgrow="NEVER">
+      <VBox prefHeight="600.0" prefWidth="1012.0" styleClass="ide-root">
          <children>
-            <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="NEVER">
-               <menus>
-                  <Menu mnemonicParsing="false" text="File">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onNewFile" text="New File" />
-                        <MenuItem mnemonicParsing="false" onAction="#onOpenFile" text="Open File..." />
-                        <MenuItem fx:id="menuFileSave" mnemonicParsing="false" onAction="#onSave" text="Save" />
-                        <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" onAction="#onSaveAs" text="Save As..." />
-                        <MenuItem mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
-                        <MenuItem mnemonicParsing="false" onAction="#onExit" text="Exit" />
-                     </items>
-                  </Menu>
-                  <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">
-                     <items>
-                        <CheckMenuItem fx:id="menuVisualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" text="Enabled" />
-                        <MenuItem fx:id="menuVisualizerSetExecutionRate" mnemonicParsing="false" onAction="#onVisualizerSetExecutionRate" text="Set Execution Rate..." />
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="View">
-                     <items>
-                        <Menu fx:id="menuViewVisualizerSettings" mnemonicParsing="false" text="Visualizer Settings">
+            <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="48.0" styleClass="ribbon" VBox.vgrow="NEVER">
+               <children>
+                  <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="NEVER">
+                     <menus>
+                        <Menu mnemonicParsing="false" text="File">
                            <items>
-                              <CheckMenuItem fx:id="menuViewVisualizerSettingsAll" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="All" />
-                              <CheckMenuItem fx:id="menuViewVisualizerSettingsEnabled" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Enabled" />
-                              <CheckMenuItem fx:id="menuViewVisualizerSettingsSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
+                              <MenuItem mnemonicParsing="false" onAction="#onNewFile" text="New File" />
+                              <MenuItem mnemonicParsing="false" onAction="#onOpenFile" text="Open File..." />
+                              <MenuItem fx:id="menuFileSave" mnemonicParsing="false" onAction="#onSave" text="Save" />
+                              <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" onAction="#onSaveAs" text="Save As..." />
+                              <MenuItem mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
+                              <MenuItem mnemonicParsing="false" onAction="#onExit" text="Exit" />
                            </items>
                         </Menu>
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Help">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
-                        <MenuItem mnemonicParsing="false" onAction="#onHowToBrainfuck" text="How To Brainfuck" />
-                        <MenuItem mnemonicParsing="false" onAction="#onHelpAbout" text="About" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
-            <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
-               <children>
-                  <Button fx:id="buttonPlayPause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
-                  <Button fx:id="buttonStop" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />
+                        <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">
+                           <items>
+                              <CheckMenuItem fx:id="menuVisualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" text="Enabled" />
+                              <MenuItem fx:id="menuVisualizerSetExecutionRate" mnemonicParsing="false" onAction="#onVisualizerSetExecutionRate" text="Set Execution Rate..." />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="View">
+                           <items>
+                              <Menu fx:id="menuViewVisualizerSettings" mnemonicParsing="false" text="Visualizer Settings">
+                                 <items>
+                                    <CheckMenuItem fx:id="menuViewVisualizerSettingsAll" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="All" />
+                                    <CheckMenuItem fx:id="menuViewVisualizerSettingsEnabled" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Enabled" />
+                                    <CheckMenuItem fx:id="menuViewVisualizerSettingsSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
+                                 </items>
+                              </Menu>
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
+                              <MenuItem mnemonicParsing="false" onAction="#onHowToBrainfuck" text="How To Brainfuck" />
+                              <MenuItem mnemonicParsing="false" onAction="#onHelpAbout" text="About" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Button fx:id="buttonPlayPause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
+                        <Button fx:id="buttonStop" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="visualizerSettingsBox" alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="ribbon-text" text="Visualizer:" />
+                        <CheckBox fx:id="visualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" textFill="WHITE" />
+                        <Slider fx:id="executionRateSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefWidth="128.0" value="1.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="iconifyButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onIconify" prefWidth="48.0" styleClass="iconify-button" text="Icon" />
+                        <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#toggleMaximized" prefWidth="48.0" styleClass="maximize-button" text="Max" />
+                        <Button fx:id="closeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClose" prefWidth="48.0" styleClass="close-button" text="Close" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-            <HBox fx:id="visualizerSettingsBox" alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
-               <children>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="ribbon-text" text="Visualizer:" />
-                  <CheckBox fx:id="visualizerEnabled" mnemonicParsing="false" onAction="#onVisualizerEnabled" selected="true" textFill="WHITE" />
-                  <Slider fx:id="executionRateSlider" blockIncrement="1.0" majorTickUnit="1.0" max="50.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefWidth="128.0" value="1.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-               <children>
-                  <Button fx:id="iconifyButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onIconify" prefWidth="48.0" styleClass="iconify-button" text="Icon" />
-                  <Button fx:id="maximizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#toggleMaximized" prefWidth="48.0" styleClass="maximize-button" text="Max" />
-                  <Button fx:id="closeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClose" prefWidth="48.0" styleClass="close-button" text="Close" />
-               </children>
-            </HBox>
+            <TabPane fx:id="editorTabPane" styleClass="ide-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" />
+               </VBox.margin>
+            </TabPane>
          </children>
-      </HBox>
-      <TabPane fx:id="editorTabPane" styleClass="ide-tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
-         <VBox.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" />
-         </VBox.margin></TabPane>
+      </VBox>
    </children>
-</VBox>
+</StackPane>

@@ -3,7 +3,11 @@
     Author     : Nelson Earle (nwewnh)
 */
 
-.ide-root {
+/**
+ * Splash
+ */
+
+.splash-fade-pane {
     -fx-background-color: primary-light-color;
 }
 
@@ -23,7 +27,7 @@
 }
 
 /**
- * ASCII Tabel Popup
+ * ASCII Table Popup
  */
 
 .ascii-table {
@@ -160,16 +164,12 @@
 }
 
 /**
- * Page Content
- */
-
-.page-content {
-    -fx-background-color: primary-light-color;
-}
-
-/**
  * IDE
  */
+
+.ide-root {
+    -fx-background-color: primary-light-color;
+}
 
 .ide-tab-pane {
     -fx-background-color: primary-light-color;

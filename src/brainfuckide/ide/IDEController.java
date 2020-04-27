@@ -6,6 +6,7 @@ import brainfuckide.ide.tabs.editor.EditorTab;
 import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
+import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;
 import brainfuckide.util.MaximizeController;
 import brainfuckide.util.PropertiesState;
@@ -18,6 +19,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -41,12 +44,14 @@ import static javafx.scene.input.KeyCode.S;
 import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.controlsfx.glyphfont.GlyphFont;
@@ -62,7 +67,7 @@ public class IDEController implements Initializable,
                                       MaximizeController {
 
     @FXML
-    private VBox root;
+    private StackPane root;
 
     private AsciiPopup asciiTablePopup;
 
@@ -165,6 +170,10 @@ public class IDEController implements Initializable,
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Pane fadePane = new Pane();
+        fadePane.getStyleClass().add(CSS_SPLASH_FADE);
+        this.root.getChildren().add(fadePane);
+
         this.fileChooser = new FileChooser();
         this.fileChooser.setInitialDirectory(new File(
             System.getProperty("user.home")
@@ -175,6 +184,8 @@ public class IDEController implements Initializable,
         this.setupListeners();
 
         this.setupUI();
+
+        this.fadeOutPane(fadePane);
     }
 
     private void setupListeners() {
@@ -279,6 +290,18 @@ public class IDEController implements Initializable,
         this.setExecutionRateSliderTooltip();
 
         this.editorTabPane.getTabs().add(this.welcomeTab);
+    }
+
+    private void fadeOutPane(Pane pane) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(pane);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setInterpolator(Interpolator.EASE_IN);
+        fadeTransition.setOnFinished(event ->
+            this.root.getChildren().remove(pane));
+        fadeTransition.play();
     }
 
     /**************************************************************************
