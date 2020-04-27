@@ -1,4 +1,4 @@
-package brainfuckide.util;
+package brainfuckide.util.ui;
 
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;

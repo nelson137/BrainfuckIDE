@@ -1,4 +1,4 @@
-package brainfuckide.util;
+package brainfuckide.util.ui;
 
 import java.util.Arrays;
 import java.util.List;

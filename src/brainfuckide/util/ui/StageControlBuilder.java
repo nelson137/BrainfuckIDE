@@ -1,5 +1,6 @@
-package brainfuckide.util;
+package brainfuckide.util.ui;
 
+import brainfuckide.util.Util;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.PopupControl;
 import javafx.scene.input.MouseButton;
