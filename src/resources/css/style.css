@@ -196,26 +196,27 @@
 }
 
 .welcome-content > .label {
-    -fx-padding: 96px;
     -fx-font-family: MuseoSans-500;
     -fx-font-size: 64px;
-    -fx-text-fill: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
+    -fx-text-fill: welcome-gradient;
 }
 
 .welcome-content .button {
-    -fx-background-color: accent-color;
-    -fx-background-radius: 16px;
+    -fx-background-color: primary-color;
+    -fx-background-radius: 24px;
+    -fx-border-color: derive(primary-color, 50%);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 24px;
     -fx-font-size: 24px;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: derive(primary-color, 50%);
     -fx-padding: 48px;
 }
-
 .welcome-content .button:hover {
-    -fx-background-color: derive(accent-color, 10%);
+    -fx-border-color: welcome-gradient;
+    -fx-text-fill: welcome-gradient;
 }
-
-.welcome-content .button:pressed {
-    -fx-background-color: derive(accent-color, 5%);
+.welcome-content .button:hover > * {
+    -fx-text-fill: welcome-gradient;
 }
 
 /**

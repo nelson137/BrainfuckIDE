@@ -28,6 +28,9 @@ public class WelcomeContent extends AnchorPane implements Initializable {
     private static final GlyphFont FONT_AWESOME =
         GlyphFontRegistry.font("FontAwesome");
 
+    private static final Color FA_GLYPH_COLOR =
+        Color.web("#2e3843").deriveColor(0, 1, 1.55, 1);
+
     @FXML
     private Button newFileButton;
 
@@ -58,7 +61,7 @@ public class WelcomeContent extends AnchorPane implements Initializable {
     }
 
     private Glyph makeGlyph(FontAwesome.Glyph glyph) {
-        return FONT_AWESOME.create(glyph).size(48).color(Color.WHITE);
+        return FONT_AWESOME.create(glyph).size(48).color(FA_GLYPH_COLOR);
     }
 
     public void setOnNewFile(EventHandler<ActionEvent> handler) {

@@ -17,6 +17,8 @@
 
     bf-shadow: dropshadow(three-pass-box, #000000cc, 16, 0, -2, 2);
 
+    welcome-gradient: linear-gradient(to bottom right, #ed6ea0 0%, #ec8c69 100%);
+
     /**
      * Scrollbars
      */
