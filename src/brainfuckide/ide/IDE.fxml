@@ -17,7 +17,7 @@
          <children>
             <AnchorPane styleClass="ide-root">
                <children>
-                  <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="48.0" styleClass="ribbon" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox fx:id="ribbon" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" spacing="48.0" styleClass="ribbon" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                      <children>
                         <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="NEVER">
                            <menus>
