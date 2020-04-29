@@ -58,10 +58,18 @@ public class StageResizerBuilder {
         double w = this.stage.getWidth();
         double h = this.stage.getHeight();
 
-        if (diffThreshold(x, w, T) && diffThreshold(y, h, T))
+        // Corners take priority
+        if (diffThreshold(x, w, T) && diffThreshold(y, 0, T))
+            this.cursorEdge = Cursor.NE_RESIZE;
+        else if (diffThreshold(x, w, T) && diffThreshold(y, h, T))
             this.cursorEdge = Cursor.SE_RESIZE;
         else if (diffThreshold(x, 0, T) && diffThreshold(y, h, T))
             this.cursorEdge = Cursor.SW_RESIZE;
+        else if (diffThreshold(x, 0, T) && diffThreshold(y, 0, T))
+            this.cursorEdge = Cursor.NW_RESIZE;
+        // Then edges
+        else if (diffThreshold(y, 0, T))
+            this.cursorEdge = Cursor.N_RESIZE;
         else if (diffThreshold(x, w, T))
             this.cursorEdge = Cursor.E_RESIZE;
         else if (diffThreshold(y, h, T))
@@ -81,17 +89,30 @@ public class StageResizerBuilder {
         double stageX = this.stage.getX();
         double stageY = this.stage.getY();
         double stageW = this.stage.getWidth();
+        double stageH = this.stage.getHeight();
 
         double eventX = event.getScreenX();
         double eventY = event.getScreenY();
 
-        if (this.cursorEdge.equals(Cursor.SE_RESIZE)) {
+        if (this.cursorEdge.equals(Cursor.NE_RESIZE)) {
+            if (this.setHeight(stageH + stageY - eventY))
+                this.stage.setY(eventY);
+            this.setWidth(eventX - stageX);
+        } else if (this.cursorEdge.equals(Cursor.SE_RESIZE)) {
             this.setWidth(eventX - stageX);
             this.setHeight(eventY - stageY);
         } else if (this.cursorEdge.equals(Cursor.SW_RESIZE)) {
             if (this.setWidth(stageW + stageX - eventX))
                 this.stage.setX(eventX);
             this.setHeight(eventY - stageY);
+        } else if (this.cursorEdge.equals(Cursor.NW_RESIZE)) {
+            if (this.setWidth(stageW + stageX - eventX))
+                this.stage.setX(eventX);
+            if (this.setHeight(stageH + stageY - eventY))
+                this.stage.setY(eventY);
+        } else if (this.cursorEdge.equals(Cursor.N_RESIZE)) {
+            if (this.setHeight(stageH + stageY - eventY))
+                this.stage.setY(eventY);
         } else if (this.cursorEdge.equals(Cursor.E_RESIZE)) {
             this.setWidth(eventX - stageX);
         } else if (this.cursorEdge.equals(Cursor.S_RESIZE)) {
