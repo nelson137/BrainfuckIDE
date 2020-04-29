@@ -1,8 +1,6 @@
 package brainfuckide.util.ui;
 
 import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -38,21 +36,6 @@ public class StageResizerBuilder {
 
         this.scene.addEventFilter(
             MouseEvent.MOUSE_DRAGGED, event -> this.onMouseDrag(event));
-
-        for (Node child : this.scene.getRoot().getChildrenUnmodifiable())
-            this.addListenerDeeply(child);
-    }
-
-    private void addListenerDeeply(Node node) {
-        node.addEventFilter(
-            MouseEvent.MOUSE_MOVED, event -> this.onMouseMove(event));
-
-        node.addEventFilter(
-            MouseEvent.MOUSE_DRAGGED, event -> this.onMouseDrag(event));
-
-        if (node instanceof Parent)
-            for (Node child : ((Parent) node).getChildrenUnmodifiable())
-                this.addListenerDeeply(child);
     }
 
     private static boolean diffThreshold(double a, double b, double threshold) {
