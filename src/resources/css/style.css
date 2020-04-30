@@ -209,7 +209,6 @@
     -fx-border-radius: 24px;
     -fx-font-size: 24px;
     -fx-text-fill: derive(primary-color, 50%);
-    -fx-padding: 48px;
 }
 .welcome-content .button:hover {
     -fx-border-color: welcome-gradient;

@@ -32,4 +32,8 @@ public class WelcomeTab extends BfTab {
         this.content.setOnOpenFile(handler);
     }
 
+    public void setOnHowTo(EventHandler<ActionEvent> handler) {
+        this.content.setOnHowTo(handler);
+    }
+
 }

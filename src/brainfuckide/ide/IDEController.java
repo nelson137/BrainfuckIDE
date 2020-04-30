@@ -238,8 +238,8 @@ public class IDEController implements Initializable,
         );
 
         this.welcomeTab.setOnNewFile(e -> this.onNewFile());
-
         this.welcomeTab.setOnOpenFile(e -> this.onOpenFile());
+        this.welcomeTab.setOnHowTo(e -> this.onHowToBrainfuck());
 
         // Show ASCII Popup while Shift+Ctrl+Alt is down
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

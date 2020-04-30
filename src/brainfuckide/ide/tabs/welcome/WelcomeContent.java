@@ -37,6 +37,9 @@ public class WelcomeContent extends AnchorPane implements Initializable {
     @FXML
     private Button openFileButton;
 
+    @FXML
+    private Button howToButton;
+
     public WelcomeContent() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -58,6 +61,8 @@ public class WelcomeContent extends AnchorPane implements Initializable {
             FontAwesome.Glyph.FILE_ALT));
         this.openFileButton.setGraphic(this.makeGlyph(
             FontAwesome.Glyph.FOLDER_OPEN_ALT));
+        this.howToButton.setGraphic(this.makeGlyph(
+            FontAwesome.Glyph.QUESTION_CIRCLE));
     }
 
     private Glyph makeGlyph(FontAwesome.Glyph glyph) {
@@ -70,6 +75,10 @@ public class WelcomeContent extends AnchorPane implements Initializable {
 
     public void setOnOpenFile(EventHandler<ActionEvent> handler) {
         this.openFileButton.setOnAction(handler);
+    }
+
+    public void setOnHowTo(EventHandler<ActionEvent> handler) {
+        this.howToButton.setOnAction(handler);
     }
 
 }

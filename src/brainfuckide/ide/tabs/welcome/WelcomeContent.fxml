@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -11,10 +13,21 @@
       <HBox alignment="CENTER" fillHeight="false" spacing="96.0" styleClass="welcome-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Welcome" />
-            <VBox alignment="CENTER" spacing="64.0">
+            <VBox alignment="CENTER" spacing="48.0">
                <children>
-                  <Button fx:id="newFileButton" graphicTextGap="24.0" mnemonicParsing="false" text="New File" />
-                  <Button fx:id="openFileButton" graphicTextGap="24.0" mnemonicParsing="false" text="Open File" />
+                  <Button fx:id="newFileButton" graphicTextGap="24.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="New File">
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding></Button>
+                  <Button fx:id="openFileButton" graphicTextGap="24.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Open File">
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding></Button>
+                  <Button fx:id="howToButton" graphicTextGap="24.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="How To">
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                  </Button>
                </children>
             </VBox>
          </children>
