@@ -18,7 +18,7 @@ public class StageResizerBuilder {
     private Stage stage;
     private Scene scene;
 
-    private Cursor cursorEdge;
+    private Cursor cursorEdge = Cursor.DEFAULT;
 
     private static final double T = 8;
     private static final double MIN_WIDTH = 800;
