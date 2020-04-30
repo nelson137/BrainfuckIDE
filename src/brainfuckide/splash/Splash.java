@@ -17,10 +17,12 @@ import javafx.animation.Transition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,6 +41,10 @@ public class Splash implements Initializable {
     @FXML
     private Label loadingBar;
 
+    private static final Duration INITIAL_PAUSE = Duration.millis(250);
+    private static final Duration LOADING_DURATION = Duration.millis(4000);
+    private static final Duration TRANSITION_DURATION = Duration.millis(1000);
+
     /**
      * Initializes the controller class.
      */
@@ -48,6 +54,7 @@ public class Splash implements Initializable {
             this.makeLoadingAnimation(),
             this.makeFadeOutAnimation()
         );
+        animation.setDelay(INITIAL_PAUSE);
         animation.setOnFinished(event -> this.loadMainScene());
         animation.play();
     }
@@ -59,11 +66,17 @@ public class Splash implements Initializable {
     private Animation makeLoadingAnimation() {
         return new Transition() {
 
+            private double charWidth;
+
             {
-                setDelay(Duration.millis(250));
                 setCycleCount(1);
-                setCycleDuration(Duration.millis(4000));
+                setCycleDuration(LOADING_DURATION);
                 setInterpolator(Interpolator.EASE_BOTH);
+
+                // Calculate width of one character (font must be  monospaced)
+                Text dummy = new Text(" ");
+                dummy.setFont(loadingBar.getFont());
+                this.charWidth = dummy.getLayoutBounds().getWidth();
             }
 
             private String repeatChar(char c, int count) {
@@ -74,10 +87,18 @@ public class Splash implements Initializable {
 
             @Override
             protected void interpolate(double frac) {
-                int width = loadingBar.getText().length() - 2;
-                String filled = this.repeatChar('>', (int)(width * frac));
-                String empty = this.repeatChar(' ', width - filled.length());
-                loadingBar.setText(String.format("[" + filled + empty + "]"));
+                Insets paddig = loadingBar.getPadding();
+                double width = loadingBar.getWidth()
+                               - paddig.getLeft()
+                               - paddig.getRight();
+                if (width >= this.charWidth * 2) {
+                    int nChars = (int) (width / this.charWidth) - 2;
+                    int nBar = (int) (nChars * frac);
+                    int nSpace = nChars - nBar;
+                    String bar = this.repeatChar('>', nBar);
+                    String space = this.repeatChar(' ', nSpace);
+                    loadingBar.setText(String.format("[" + bar + space + "]"));
+                }
             }
 
         };
@@ -85,7 +106,7 @@ public class Splash implements Initializable {
 
     private Animation makeFadeOutAnimation() {
         FadeTransition fadeOut = new FadeTransition();
-        fadeOut.setDuration(Duration.millis(1000));
+        fadeOut.setDuration(TRANSITION_DURATION);
         fadeOut.setNode(this.content);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
