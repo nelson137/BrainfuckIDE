@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
@@ -23,9 +22,6 @@ import org.controlsfx.glyphfont.Glyph;
 public class WelcomeContent extends AnchorPane implements Initializable {
 
     private static final String FXML_PATH = "WelcomeContent.fxml";
-
-    private static final Color FA_GLYPH_COLOR =
-        Color.web("#2e3843").deriveColor(0, 1, 1.55, 1);
 
     @FXML
     private Button newFileButton;
@@ -62,7 +58,7 @@ public class WelcomeContent extends AnchorPane implements Initializable {
     }
 
     private Glyph makeGlyph(FontAwesome.Glyph glyph) {
-        return FONT_AWESOME.create(glyph).size(48).color(FA_GLYPH_COLOR);
+        return FONT_AWESOME.create(glyph).size(48);
     }
 
     public void setOnNewFile(EventHandler<ActionEvent> handler) {

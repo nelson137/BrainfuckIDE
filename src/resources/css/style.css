@@ -210,6 +210,9 @@
     -fx-font-size: 24px;
     -fx-text-fill: derive(primary-color, 50%);
 }
+.welcome-content .button > * {
+    -fx-text-fill: derive(primary-color, 50%);
+}
 .welcome-content .button:hover {
     -fx-border-color: welcome-gradient;
     -fx-text-fill: welcome-gradient;
