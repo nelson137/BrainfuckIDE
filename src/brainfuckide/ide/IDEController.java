@@ -347,10 +347,6 @@ public class IDEController implements Initializable,
         tab.onLeave();
     }
 
-    private BfTab getCurrentTab() {
-        return (BfTab) this.editorTabPane.getSelectionModel().getSelectedItem();
-    }
-
     public EditorTab newEditorTab() {
         int newTabIndex = this.editorTabPane.getTabs().size();
 
@@ -368,10 +364,18 @@ public class IDEController implements Initializable,
         return newTab;
     }
 
+    private void currentTabDo(Consumer<BfTab> consumer) {
+        BfTab currentTab =
+            (BfTab) this.editorTabPane.getSelectionModel().getSelectedItem();
+        if (currentTab != null)
+            consumer.accept(currentTab);
+    }
+
     private void currentEditorTabDo(Consumer<EditorTab> consumer) {
-        BfTab currentTab = this.getCurrentTab();
-        if (currentTab.getType() == BfTab.Type.EDITOR)
-            consumer.accept((EditorTab) currentTab);
+        this.currentTabDo((BfTab tab) -> {
+            if (tab.getType() == BfTab.Type.EDITOR)
+                consumer.accept((EditorTab) tab);
+        });
     }
 
     private void forEachExampleFile(Consumer<String> consumer) {
@@ -500,7 +504,7 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onCloseTab() {
-        this.getCurrentTab().tryClose();
+        this.currentTabDo((BfTab tab) -> tab.tryClose());
     }
 
     @FXML
