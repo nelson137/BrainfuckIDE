@@ -23,12 +23,12 @@
                            <menus>
                               <Menu mnemonicParsing="false" text="File">
                                  <items>
-                                    <MenuItem mnemonicParsing="false" onAction="#onNewFile" text="New File" />
-                                    <MenuItem mnemonicParsing="false" onAction="#onOpenFile" text="Open File..." />
+                                    <MenuItem fx:id="menuFileNew" mnemonicParsing="false" onAction="#onNewFile" text="New File" />
+                                    <MenuItem fx:id="menuFileOpen" mnemonicParsing="false" onAction="#onOpenFile" text="Open File..." />
                                     <MenuItem fx:id="menuFileSave" mnemonicParsing="false" onAction="#onSave" text="Save" />
                                     <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" onAction="#onSaveAs" text="Save As..." />
-                                    <MenuItem mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
-                                    <MenuItem mnemonicParsing="false" onAction="#onExit" text="Exit" />
+                                    <MenuItem fx:id="menuFileCloseTab" mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
+                                    <MenuItem fx:id="menuFileExit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
                                  </items>
                               </Menu>
                               <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">

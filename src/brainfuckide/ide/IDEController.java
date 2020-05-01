@@ -42,10 +42,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tooltip;
-import static javafx.scene.input.KeyCode.N;
-import static javafx.scene.input.KeyCode.O;
-import static javafx.scene.input.KeyCode.S;
-import static javafx.scene.input.KeyCode.W;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -113,9 +112,17 @@ public class IDEController implements Initializable,
     /* Menu File */
 
     @FXML
+    private MenuItem menuFileNew;
+    @FXML
+    private MenuItem menuFileOpen;
+    @FXML
     private MenuItem menuFileSave;
     @FXML
     private MenuItem menuFileSaveAs;
+    @FXML
+    private MenuItem menuFileCloseTab;
+    @FXML
+    private MenuItem menuFileExit;
 
     /* Menu Visualizer */
 
@@ -220,9 +227,26 @@ public class IDEController implements Initializable,
             }
         );
 
-        // KeyEvent listeners for menu options
-        this.root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-            this.onKeyPress(event));
+        this.menuFileNew.setAccelerator(new KeyCodeCombination(
+            KeyCode.N,
+            KeyCombination.CONTROL_DOWN));
+        this.menuFileOpen.setAccelerator(new KeyCodeCombination(
+            KeyCode.O,
+            KeyCombination.CONTROL_DOWN));
+        this.menuFileSave.setAccelerator(new KeyCodeCombination(
+            KeyCode.S,
+            KeyCombination.CONTROL_DOWN));
+        this.menuFileSaveAs.setAccelerator(new KeyCodeCombination(
+            KeyCode.S,
+            KeyCombination.SHIFT_DOWN,
+            KeyCombination.CONTROL_DOWN));
+        this.menuFileCloseTab.setAccelerator(new KeyCodeCombination(
+            KeyCode.W,
+            KeyCombination.CONTROL_DOWN));
+        this.menuFileExit.setAccelerator(new KeyCodeCombination(
+            KeyCode.Q,
+            KeyCombination.SHIFT_DOWN,
+            KeyCombination.CONTROL_DOWN));
 
         // Update program execution rate while slider value is changing
         this.executionRateSlider.valueProperty().addListener(
@@ -615,32 +639,6 @@ public class IDEController implements Initializable,
      *************************************************************************/
 
     // <editor-fold defaultstate="collapsed">
-
-    private void onKeyPress(KeyEvent event) {
-        if (event.isControlDown()) {
-            switch (event.getCode()) {
-
-                // New File
-                case N: this.onNewFile(); event.consume(); break;
-
-                // Open File
-                case O: this.onOpenFile(); event.consume(); break;
-
-                // Save, Save As
-                case S:
-                    if (event.isShiftDown())
-                        this.onSaveAs();
-                    else
-                        this.onSave();
-                    event.consume();
-                    break;
-
-                // Close Tab
-                case W: this.onCloseTab(); event.consume(); break;
-
-            }
-        }
-    }
 
     private void onStart() {
         this.buttonPlayPause.setText("Pause");
