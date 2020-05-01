@@ -138,11 +138,6 @@ public final class EditorTab extends BfTab {
     }
 
     @Override
-    public Type getType() {
-        return Type.EDITOR;
-    }
-
-    @Override
     public boolean isDirty() {
         String currentText = this.content.getEditorText();
 

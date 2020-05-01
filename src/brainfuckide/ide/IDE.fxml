@@ -39,11 +39,11 @@
                               </Menu>
                               <Menu mnemonicParsing="false" text="View">
                                  <items>
-                                    <Menu fx:id="menuViewVisualizerSettings" mnemonicParsing="false" text="Visualizer Settings">
+                                    <Menu fx:id="menuViewVisualizer" mnemonicParsing="false" text="Visualizer Settings">
                                        <items>
-                                          <CheckMenuItem fx:id="menuViewVisualizerSettingsAll" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="All" />
-                                          <CheckMenuItem fx:id="menuViewVisualizerSettingsEnabled" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Enabled" />
-                                          <CheckMenuItem fx:id="menuViewVisualizerSettingsSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
+                                          <CheckMenuItem fx:id="menuViewVisualizerAll" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="All" />
+                                          <CheckMenuItem fx:id="menuViewVisualizerEnabled" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Enabled" />
+                                          <CheckMenuItem fx:id="menuViewVisualizerSetExecutionRate" mnemonicParsing="false" onAction="#onViewVisualizerSetting" selected="true" text="Execution Rate" />
                                        </items>
                                     </Menu>
                                  </items>
@@ -57,7 +57,7 @@
                               </Menu>
                            </menus>
                         </MenuBar>
-                        <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
+                        <HBox fx:id="interpreterControlsBox" alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="NEVER">
                            <children>
                               <Button fx:id="buttonPlayPause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonPlayPause" text="Play" />
                               <Button fx:id="buttonStop" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonStop" text="Stop" />

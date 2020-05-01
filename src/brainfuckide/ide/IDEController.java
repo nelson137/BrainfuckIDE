@@ -27,7 +27,6 @@ import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -144,13 +143,13 @@ public class IDEController implements Initializable,
     /* Menu View > Visualizer Settings */
 
     @FXML
-    private Menu menuViewVisualizerSettings;
+    private Menu menuViewVisualizer;
     @FXML
-    private CheckMenuItem menuViewVisualizerSettingsAll;
+    private CheckMenuItem menuViewVisualizerAll;
     @FXML
-    private CheckMenuItem menuViewVisualizerSettingsEnabled;
+    private CheckMenuItem menuViewVisualizerEnabled;
     @FXML
-    private MenuItem menuViewVisualizerSettingsSetExecutionRate;
+    private CheckMenuItem menuViewVisualizerSetExecutionRate;
 
     /* Menu Help > How To Brainfuck */
 
@@ -160,6 +159,8 @@ public class IDEController implements Initializable,
 
     /* Program Run Controls */
 
+    @FXML
+    private HBox interpreterControlsBox;
     @FXML
     private Button buttonPlayPause;
     @FXML
@@ -282,6 +283,9 @@ public class IDEController implements Initializable,
         this.closeButton.setText(null);
         this.closeButton.setGraphic(CLOSE_BUTTON_GRAPHIC);
 
+        Util.bindManagedToVisible(this.interpreterControlsBox);
+
+        Util.bindManagedToVisible(this.visualizerSettingsBox);
         Util.bindManagedToVisible(this.visualizerEnabled);
         Util.bindManagedToVisible(this.executionRateSlider);
 
@@ -297,8 +301,6 @@ public class IDEController implements Initializable,
                 this.menuHelpHowToBrainfuck.getItems().add(menuItem);
             }
         });
-
-        Util.bindManagedToVisible(this.visualizerSettingsBox);
 
         this.updateExecutionRateSliderTooltip();
 
@@ -330,26 +332,42 @@ public class IDEController implements Initializable,
     }
 
     private void onEnterTab(BfTab tab) {
-        BooleanProperty properties[] = new BooleanProperty[] {
-            this.menuFileSave.disableProperty(),
-            this.menuFileSaveAs.disableProperty(),
-            this.menuViewVisualizerSettings.disableProperty(),
-            this.menuVisualizer.disableProperty()
-        };
-        boolean shouldDisable = tab.getType() != BfTab.Type.EDITOR;
-        for (BooleanProperty p : properties)
-            p.set(shouldDisable);
-
-        tab.onEnter();
+        if (tab.interpreterSettingsState == null) {
+            // Default state
+            boolean isEditorTab = tab instanceof EditorTab;
+            this.menuFileSave.setDisable(!isEditorTab);
+            this.menuFileSaveAs.setDisable(!isEditorTab);
+            this.menuViewVisualizer.setDisable(!isEditorTab);
+            this.menuVisualizer.setDisable(!isEditorTab);
+            this.interpreterControlsBox.setVisible(isEditorTab);
+            this.visualizerSettingsBox.setVisible(isEditorTab);
+            this.visualizerEnabled.setVisible(isEditorTab);
+            this.executionRateSlider.setVisible(isEditorTab);
+        } else {
+            // Restore state
+            tab.onEnter();
+        }
     }
 
     private void onLeaveTab(BfTab tab) {
         // Set tab-specific properties to preserve
         tab.interpreterSettingsState = new PropertiesState(
+            // Menu
+            this.menuVisualizer.disableProperty(),
+            this.menuViewVisualizer.disableProperty(),
+            this.menuViewVisualizerAll.selectedProperty(),
+            this.menuViewVisualizerEnabled.selectedProperty(),
+            this.menuViewVisualizerSetExecutionRate.selectedProperty(),
+            // Interpreter Controls
+            this.interpreterControlsBox.visibleProperty(),
             this.buttonPlayPause.textProperty(),
             this.buttonStop.disableProperty(),
+            // Visualizer Settings
+            this.visualizerSettingsBox.visibleProperty(),
+            this.visualizerEnabled.visibleProperty(),
             this.visualizerEnabled.selectedProperty(),
             this.visualizerEnabled.disableProperty(),
+            this.executionRateSlider.visibleProperty(),
             this.executionRateSlider.valueProperty()
         );
 
@@ -383,7 +401,7 @@ public class IDEController implements Initializable,
 
     private void currentEditorTabDo(Consumer<EditorTab> consumer) {
         this.currentTabDo((BfTab tab) -> {
-            if (tab.getType() == BfTab.Type.EDITOR)
+            if (tab instanceof EditorTab)
                 consumer.accept((EditorTab) tab);
         });
     }
@@ -537,12 +555,12 @@ public class IDEController implements Initializable,
     public void onViewVisualizerSetting(ActionEvent event) {
         CheckMenuItem source = (CheckMenuItem) event.getSource();
 
-        if (source.equals(this.menuViewVisualizerSettingsAll)) {
+        if (source.equals(this.menuViewVisualizerAll)) {
             // If the source was the All CheckBox update the rest to have the
             // same value
-            boolean isSelected = this.menuViewVisualizerSettingsAll.isSelected();
+            boolean isSelected = this.menuViewVisualizerAll.isSelected();
             int i = 0;
-            for (MenuItem setting : this.menuViewVisualizerSettings.getItems()) {
+            for (MenuItem setting : this.menuViewVisualizer.getItems()) {
                 if (i++ > 0) {
                     ((CheckMenuItem) setting).setSelected(isSelected);
                     this.toggleVisualizerSetting((CheckMenuItem) setting);
@@ -554,13 +572,13 @@ public class IDEController implements Initializable,
             // iff all of the rest are selected
             int i = 0;
             boolean allSelected = true;
-            for (MenuItem setting : this.menuViewVisualizerSettings.getItems()) {
+            for (MenuItem setting : this.menuViewVisualizer.getItems()) {
                 if (i++ > 0 && !((CheckMenuItem) setting).isSelected()) {
                     allSelected = false;
                     break;
                 }
             }
-            this.menuViewVisualizerSettingsAll.setSelected(allSelected);
+            this.menuViewVisualizerAll.setSelected(allSelected);
         }
 
         this.toggleVisualizerSetting(source);
@@ -570,9 +588,9 @@ public class IDEController implements Initializable,
         boolean isSelected = source.isSelected();
 
         // Skip over this if source == menuViewVisualizerSettingsAll
-        if (source.equals(this.menuViewVisualizerSettingsEnabled))
+        if (source.equals(this.menuViewVisualizerEnabled))
             this.visualizerEnabled.setVisible(isSelected);
-        else if (source.equals(this.menuViewVisualizerSettingsSetExecutionRate))
+        else if (source.equals(this.menuViewVisualizerSetExecutionRate))
             this.executionRateSlider.setVisible(isSelected);
 
         // Hide visualizerSettingsBox if none of its children are visible

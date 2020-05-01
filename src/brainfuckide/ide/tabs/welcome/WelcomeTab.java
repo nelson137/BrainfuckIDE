@@ -20,11 +20,6 @@ public class WelcomeTab extends BfTab {
     }
 
     @Override
-    public Type getType() {
-        return Type.WELCOME;
-    }
-
-    @Override
     public boolean isDirty() {
         return false;
     }

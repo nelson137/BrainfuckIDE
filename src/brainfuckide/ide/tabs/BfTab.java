@@ -51,14 +51,6 @@ public abstract class BfTab extends Tab {
             this.interpreterSettingsState.save();
     }
 
-    public enum Type {
-        WELCOME,
-        EDITOR,
-        HOW_TO
-    }
-
-    public abstract Type getType();
-
     public abstract boolean isDirty();
 
     public boolean tryClose() {
