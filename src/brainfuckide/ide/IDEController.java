@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
@@ -34,7 +35,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
@@ -81,6 +84,8 @@ public class IDEController implements Initializable,
     private StackPane root;
 
     private AsciiPopup asciiTablePopup;
+
+    public Alert unsavedWorkAlert;
 
     private FileChooser fileChooser;
 
@@ -202,6 +207,11 @@ public class IDEController implements Initializable,
         this.fileChooser.setInitialDirectory(new File(
             System.getProperty("user.home")
         ));
+
+        this.unsavedWorkAlert = new Alert(
+            Alert.AlertType.WARNING,
+            "Do you want to quit without saving?",
+            ButtonType.YES, ButtonType.NO);
 
         this.welcomeTab = new WelcomeTab();
 
@@ -464,11 +474,17 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onClose() {
-        this.editorTabPane.getTabs().stream()
-            .map((Tab tab) -> (BfTab) tab)
-            .filter((BfTab tab) -> tab.equals(this.welcomeTab) == false)
-            .forEach((BfTab tab) -> ((EditorTab) tab).save());
-        Platform.exit();
+        Stream<Tab> tabs = this.editorTabPane.getTabs().stream();
+        if (tabs.anyMatch(tab -> ((BfTab) tab).isDirty())) {
+            this.unsavedWorkAlert.setHeaderText(
+                "Some files have been modified.");
+            this.unsavedWorkAlert.showAndWait().ifPresent(ret -> {
+                if (ret == ButtonType.YES)
+                    Platform.exit();
+            });
+        } else {
+            Platform.exit();
+        }
     }
 
     // </editor-fold>

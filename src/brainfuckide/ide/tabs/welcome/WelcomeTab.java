@@ -24,6 +24,11 @@ public class WelcomeTab extends BfTab {
         return Type.WELCOME;
     }
 
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
+
     public void setOnNewFile(EventHandler<ActionEvent> handler) {
         this.content.setOnNewFile(handler);
     }

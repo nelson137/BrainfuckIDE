@@ -59,6 +59,8 @@ public abstract class BfTab extends Tab {
 
     public abstract Type getType();
 
+    public abstract boolean isDirty();
+
     public boolean tryClose() {
         new BfLogger("tab").logMethod();
 

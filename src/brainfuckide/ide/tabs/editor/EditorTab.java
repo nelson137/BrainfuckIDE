@@ -15,6 +15,7 @@ import java.io.StringWriter;
 import java.nio.file.Paths;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
@@ -60,6 +61,17 @@ public final class EditorTab extends BfTab {
             this.updateDirtyIndicator();
         });
         super.setBfContent(this.content);
+
+        this.setOnCloseRequest(event -> {
+            if (this.isDirty()) {
+                controller.unsavedWorkAlert.setHeaderText(
+                    "This file has unsaved changes.");
+                controller.unsavedWorkAlert.showAndWait().ifPresent(ret -> {
+                    if (ret != ButtonType.YES)
+                        event.consume();
+                });
+            }
+        });
     }
 
     // </editor-fold>
@@ -130,6 +142,7 @@ public final class EditorTab extends BfTab {
         return Type.EDITOR;
     }
 
+    @Override
     public boolean isDirty() {
         String currentText = this.content.getEditorText();
 
