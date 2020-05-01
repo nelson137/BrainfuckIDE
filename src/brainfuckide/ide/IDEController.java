@@ -33,6 +33,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
@@ -43,6 +44,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyCode.CONTROL;
+import static javafx.scene.input.KeyCode.SHIFT;
+import static javafx.scene.input.KeyCode.Z;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -53,6 +57,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -208,24 +213,8 @@ public class IDEController implements Initializable,
     }
 
     private void setupListeners() {
-        // When scene changes
-        this.root.sceneProperty().addListener(
-            (observableScene, oldScene, scene) -> {
-                // When scene's window changes
-                scene.windowProperty().addListener(
-                    (observableWindow, oldWindow, window) -> {
-                        // Setup window drag and resize listeners
-                        new StageControlBuilder((Stage) window)
-                            .doubleClickToMaximize(this)
-                            .node(this.ribbon)
-                            .build();
-                        new StageResizerBuilder()
-                            .stage((Stage) window)
-                            .build();
-                    }
-                );
-            }
-        );
+        this.root.sceneProperty().addListener((os, oldScene, newScene) ->
+            this.onStageChange(os, oldScene, newScene));
 
         this.menuFileNew.setAccelerator(new KeyCodeCombination(
             KeyCode.N,
@@ -260,16 +249,6 @@ public class IDEController implements Initializable,
         this.welcomeTab.setOnNewFile(e -> this.onNewFile());
         this.welcomeTab.setOnOpenFile(e -> this.onOpenFile());
         this.welcomeTab.setOnHowTo(e -> this.onHelpHowToBrainfuck());
-
-        // Show ASCII Popup while Shift+Ctrl+Alt is down
-        this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.A && event.isAltDown())
-                this.asciiTablePopup.show(this.getStage());
-        });
-        this.root.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            if (event.getCode() != KeyCode.A && event.isAltDown() == false)
-                this.asciiTablePopup.hide();
-        });
 
         this.editorTabPane.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) -> {
@@ -635,6 +614,49 @@ public class IDEController implements Initializable,
      *************************************************************************/
 
     // <editor-fold defaultstate="collapsed">
+
+    private void onStageChange(
+        ObservableValue<? extends Scene> observableScene,
+        Scene oldScene,
+        Scene scene
+    ) {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ALT)
+                // Prevent focusing MenuBar when Alt pressed
+                event.consume();
+            else if (event.getCode() == KeyCode.Z
+                  && event.isControlDown()
+                  && event.isShiftDown())
+                // Show Ascii Table on Ctrl+Shift+Z
+                this.asciiTablePopup.show(this.getStage());
+        });
+
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            switch (event.getCode()) {
+                case CONTROL: case SHIFT: case Z:
+                    this.asciiTablePopup.hide();
+                    break;
+            }
+        });
+
+        scene.windowProperty().addListener((ow, oldWindow, newWindow) ->
+            this.onWindowChange(ow, oldWindow, newWindow));
+    }
+
+    private void onWindowChange(
+        ObservableValue<? extends Window> observableValue,
+        Window oldWindow,
+        Window window
+    ) {
+        // Setup window drag and resize listeners
+        new StageControlBuilder((Stage) window)
+            .doubleClickToMaximize(this)
+            .node(this.ribbon)
+            .build();
+        new StageResizerBuilder()
+            .stage((Stage) window)
+            .build();
+    }
 
     private void onStart() {
         this.buttonPlayPause.setText("Pause");
