@@ -329,27 +329,3 @@
 
 .predef-input {
 }
-
-/**
- * How To Tab
- */
-
-.how-to-content {
-    -fx-background-color: primary-color;
-}
-
-.how-to-card {
-    -fx-background-color: primary-light-color;
-    -fx-background-radius: 16px;
-}
-
-.how-to-card .label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-}
-
-.how-to-card .button {
-    -fx-background-color: accent-color;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-}

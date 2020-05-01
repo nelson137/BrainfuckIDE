@@ -52,7 +52,6 @@
                                  <items>
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
                                     <Menu fx:id="menuHelpHowToBrainfuck" mnemonicParsing="false" text="How To Brainfuck" />
-                                    <MenuItem mnemonicParsing="false" onAction="#onHowToBrainfuck" text="How To Brainfuck" />
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAbout" text="About" />
                                  </items>
                               </Menu>

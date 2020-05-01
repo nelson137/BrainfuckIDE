@@ -4,7 +4,6 @@ import brainfuckide.ide.popups.AsciiPopup;
 import brainfuckide.ide.tabs.BfTab;
 import brainfuckide.ide.tabs.editor.EditorTab;
 import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
-import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;
@@ -236,7 +235,7 @@ public class IDEController implements Initializable,
 
         this.welcomeTab.setOnNewFile(e -> this.onNewFile());
         this.welcomeTab.setOnOpenFile(e -> this.onOpenFile());
-        this.welcomeTab.setOnHowTo(e -> this.onHowToBrainfuck());
+        this.welcomeTab.setOnHowTo(e -> this.onHelpHowToBrainfuck());
 
         // Show ASCII Popup while Shift+Ctrl+Alt is down
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -575,9 +574,8 @@ public class IDEController implements Initializable,
     }
 
     @FXML
-    public void onHowToBrainfuck() {
-        this.editorTabPane.getTabs().add(new HowToTab(this));
-        this.editorTabPane.getSelectionModel().selectLast();
+    public void onHelpHowToBrainfuck() {
+        this.menuVisualizer.show();
     }
 
     @FXML
