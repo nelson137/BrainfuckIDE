@@ -20,7 +20,7 @@ public class StageControlBuilder extends WindowControlBuilder {
 
     private boolean doubleClickCanMaximize = false;
     private MaximizeController maximizeController;
-    private boolean doMaximizeOnRelease = false;
+    private boolean maximizeOnRelease = false;
 
     private static final String CSS_INDICATOR = "maximize-indicator";
     private static final String CSS_INDICATOR_INNER = "maximize-indicator-inner";
@@ -69,12 +69,11 @@ public class StageControlBuilder extends WindowControlBuilder {
         super.onMousePress(event);
         if (event.isPrimaryButtonDown())
             // Make sure this gets reset every time primary is clicked
-            this.doMaximizeOnRelease = false;
+            this.maximizeOnRelease = false;
     }
 
     @Override
     protected void onMouseDrag(MouseEvent event) {
-        super.onMouseDrag(event);
         if (event.isPrimaryButtonDown()) {
             if (this.maximizeController.isMaximized()) {
                 this.maximizeController.setMaximized(false);
@@ -82,26 +81,25 @@ public class StageControlBuilder extends WindowControlBuilder {
                 // centered on the cursor
                 this.dragOffset.x = this.stage.getWidth() / 2;
             } else {
-                this.doMaximizeOnRelease = event.getScreenY() == 0;
-                this.willMaximizeOnReleaseIndicator();
+                this.maximizeOnRelease = event.getScreenY() == 0;
+                this.maximizeOnReleaseIndicator();
             }
         }
+        super.onMouseDrag(event);
     }
 
     @Override
     protected void onMouseRelease(MouseEvent event) {
         super.onMouseRelease(event);
-        if (event.isPrimaryButtonDown() == false) {
-            if (this.doMaximizeOnRelease) {
-                this.maximizeController.setMaximized(true);
-                this.doMaximizeOnRelease = false;
-                this.willMaximizeOnReleaseIndicator();
-            }
+        if (event.isPrimaryButtonDown() == false && this.maximizeOnRelease) {
+            this.maximizeController.setMaximized(true);
+            this.maximizeOnRelease = false;
+            this.maximizeOnReleaseIndicator();
         }
     }
 
-    private void willMaximizeOnReleaseIndicator() {
-        if (this.doMaximizeOnRelease == false) {
+    private void maximizeOnReleaseIndicator() {
+        if (this.maximizeOnRelease == false) {
             this.maximizeIndicator.hide();
             return;
         }

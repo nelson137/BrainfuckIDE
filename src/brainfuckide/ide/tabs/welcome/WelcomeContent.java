@@ -1,5 +1,6 @@
 package brainfuckide.ide.tabs.welcome;
 
+import static brainfuckide.util.Util.FONT_AWESOME;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,8 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  * FXML Controller class
@@ -24,9 +23,6 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
 public class WelcomeContent extends AnchorPane implements Initializable {
 
     private static final String FXML_PATH = "WelcomeContent.fxml";
-
-    private static final GlyphFont FONT_AWESOME =
-        GlyphFontRegistry.font("FontAwesome");
 
     private static final Color FA_GLYPH_COLOR =
         Color.web("#2e3843").deriveColor(0, 1, 1.55, 1);

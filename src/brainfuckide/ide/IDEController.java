@@ -8,11 +8,12 @@ import brainfuckide.ide.tabs.howto.HowToTab;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;
-import brainfuckide.util.ui.MaximizeController;
 import brainfuckide.util.PropertiesState;
+import brainfuckide.util.Util;
+import static brainfuckide.util.Util.FONT_AWESOME;
+import brainfuckide.util.ui.MaximizeController;
 import brainfuckide.util.ui.StageControlBuilder;
 import brainfuckide.util.ui.StageResizerBuilder;
-import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
@@ -53,12 +55,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  * FXML Controller class
@@ -69,15 +68,18 @@ public class IDEController implements Initializable,
                                       PropertyChangeListener,
                                       MaximizeController {
 
+    /**************************************************************************
+     * Fields
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
     @FXML
     private StackPane root;
 
     private AsciiPopup asciiTablePopup;
 
     private FileChooser fileChooser;
-
-    private static final GlyphFont FONT_AWESOME =
-        GlyphFontRegistry.font("FontAwesome");
 
     @FXML
     private HBox ribbon;
@@ -116,6 +118,13 @@ public class IDEController implements Initializable,
     @FXML
     private MenuItem menuFileSaveAs;
 
+    /* Menu Visualizer */
+
+    @FXML
+    private Menu menuVisualizer;
+    @FXML
+    private CheckMenuItem menuVisualizerEnabled;
+
     /* Menu View > Visualizer Settings */
 
     @FXML
@@ -126,15 +135,6 @@ public class IDEController implements Initializable,
     private CheckMenuItem menuViewVisualizerSettingsEnabled;
     @FXML
     private MenuItem menuViewVisualizerSettingsSetExecutionRate;
-
-    /* Menu Visualizer */
-
-    @FXML
-    private Menu menuVisualizer;
-    @FXML
-    private CheckMenuItem menuVisualizerEnabled;
-    @FXML
-    private MenuItem menuVisualizerSetExecutionRate;
 
     /* Menu Help > How To Brainfuck */
 
@@ -170,9 +170,13 @@ public class IDEController implements Initializable,
     private boolean isMaximized = false;
     private Rectangle2D unmaximizedState = Rectangle2D.EMPTY;
 
+    // </editor-fold>
+
     /**************************************************************************
      * Initialization
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     /**
      * Initializes the content class.
@@ -218,39 +222,15 @@ public class IDEController implements Initializable,
         );
 
         // KeyEvent listeners for menu options
-        this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.isControlDown()) {
-                switch (event.getCode()) {
-
-                    // New File
-                    case N: this.onNewFile(); event.consume(); break;
-
-                    // Open File
-                    case O: this.onOpenFile(); event.consume(); break;
-
-                    // Save, Save As
-                    case S:
-                        if (event.isShiftDown())
-                            this.onSaveAs();
-                        else
-                            this.onSave();
-                        event.consume();
-                        break;
-
-                    // Close Tab
-                    case W: this.onCloseTab(); event.consume(); break;
-
-                }
-            }
-        });
+        this.root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+            this.onKeyPress(event));
 
         // Update program execution rate while slider value is changing
         this.executionRateSlider.valueProperty().addListener(
             (ObservableValue<? extends Number> ov, Number o, Number value) -> {
-                this.currentEditorTabDo(
-                    (EditorTab tab) -> tab.content.setExecutionRate(value)
-                );
-                this.setExecutionRateSliderTooltip();
+                this.currentEditorTabDo((EditorTab tab) ->
+                    tab.setExecutionRate(value));
+                this.updateExecutionRateSliderTooltip();
             }
         );
 
@@ -262,16 +242,14 @@ public class IDEController implements Initializable,
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.isShiftDown()
              && event.isControlDown()
-             && event.isAltDown()) {
+             && event.isAltDown())
                 this.asciiTablePopup.show(this.getStage());
-            }
         });
         this.root.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
             if (event.isShiftDown() == false
              || event.isControlDown() == false
-             || event.isAltDown() == false) {
+             || event.isAltDown() == false)
                 this.asciiTablePopup.hide();
-            }
         });
 
         this.editorTabPane.getSelectionModel().selectedItemProperty().addListener(
@@ -302,30 +280,19 @@ public class IDEController implements Initializable,
         this.menuVisualizerEnabled.selectedProperty().bindBidirectional(
             this.visualizerEnabled.selectedProperty());
 
-        URL jar = this.getClass()
-            .getProtectionDomain()
-            .getCodeSource()
-            .getLocation();
-        try {
-            ZipInputStream zip = new ZipInputStream(jar.openStream());
-            ZipEntry ze = zip.getNextEntry();
-            for (; ze != null; ze = zip.getNextEntry()) {
-                String name = ze.getName();
-                if (name.startsWith(EXAMPLES_DIR) && name.endsWith(".bf")) {
-                    MenuItem menuItem = new MenuItem(
-                        name.substring(EXAMPLES_DIR.length()));
-                    menuItem.setOnAction(event ->
-                        this.newEditorTab().openResource("/" + name));
-                    this.menuHelpHowToBrainfuck.getItems().add(menuItem);
-                }
+        this.forEachExampleFile((String name) -> {
+            if (name.startsWith(EXAMPLES_DIR) && name.endsWith(".bf")) {
+                MenuItem menuItem = new MenuItem(
+                    name.substring(EXAMPLES_DIR.length()));
+                menuItem.setOnAction(event ->
+                    this.newEditorTab().openResource("/" + name));
+                this.menuHelpHowToBrainfuck.getItems().add(menuItem);
             }
-        } catch (IOException ex) {
-            new BfLogger().logMethod("Error opening file: " + jar);
-        }
+        });
 
         Util.bindManagedToVisible(this.visualizerSettingsBox);
 
-        this.setExecutionRateSliderTooltip();
+        this.updateExecutionRateSliderTooltip();
 
         this.editorTabPane.getTabs().add(this.welcomeTab);
     }
@@ -342,12 +309,16 @@ public class IDEController implements Initializable,
         fadeTransition.play();
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
 
-    private Window getStage() {
-        return this.root.getScene().getWindow();
+    // <editor-fold defaultstate="collapsed">
+
+    private Stage getStage() {
+        return (Stage) this.root.getScene().getWindow();
     }
 
     private void onEnterTab(BfTab tab) {
@@ -382,43 +353,6 @@ public class IDEController implements Initializable,
         return (BfTab) this.editorTabPane.getSelectionModel().getSelectedItem();
     }
 
-    private interface TabAction {
-        void doAction(EditorTab tab);
-    }
-
-    private void currentEditorTabDo(TabAction action) {
-        BfTab currentTab = this.getCurrentTab();
-        if (currentTab.getType() == BfTab.Type.EDITOR)
-            action.doAction((EditorTab) currentTab);
-    }
-
-    private void toggleVisualizerSetting(CheckMenuItem source) {
-        boolean isSelected = source.isSelected();
-
-        // Skip over this if source == menuViewVisualizerSettingsAll
-        if (source.equals(this.menuViewVisualizerSettingsEnabled))
-            this.visualizerEnabled.setVisible(isSelected);
-        else if (source.equals(this.menuViewVisualizerSettingsSetExecutionRate))
-            this.executionRateSlider.setVisible(isSelected);
-
-        // Hide visualizerSettingsBox if none of its children are visible
-        int i = 0;
-        boolean anySelected = false;
-        for (Node setting : this.visualizerSettingsBox.getChildren()) {
-            if (i++ > 0 && setting.isVisible()) {
-                anySelected = true;
-                break;
-            }
-        }
-        this.visualizerSettingsBox.setVisible(anySelected);
-    }
-
-    private void setExecutionRateSliderTooltip() {
-        double rate = this.executionRateSlider.getValue();
-        this.executionRateSlider.setTooltip(new Tooltip(
-            String.format("x%.2f", rate)));
-    }
-
     public EditorTab newEditorTab() {
         int newTabIndex = this.editorTabPane.getTabs().size();
 
@@ -431,18 +365,50 @@ public class IDEController implements Initializable,
         this.editorTabPane.getSelectionModel().select(newTabIndex);
 
         // Set focus on TextArea
-        newTab.content.requestFocus();
+        newTab.requestFocus();
 
         return newTab;
     }
 
+    private void currentEditorTabDo(Consumer<EditorTab> consumer) {
+        BfTab currentTab = this.getCurrentTab();
+        if (currentTab.getType() == BfTab.Type.EDITOR)
+            consumer.accept((EditorTab) currentTab);
+    }
+
+    private void forEachExampleFile(Consumer<String> consumer) {
+        URL jar = this.getClass()
+            .getProtectionDomain()
+            .getCodeSource()
+            .getLocation();
+        try {
+            ZipInputStream zip = new ZipInputStream(jar.openStream());
+            ZipEntry ze = zip.getNextEntry();
+            for (; ze != null; ze = zip.getNextEntry())
+                consumer.accept(ze.getName());
+        } catch (IOException ex) {
+            new BfLogger().logMethod("Error opening file: " + jar);
+        }
+    }
+
+    private void updateExecutionRateSliderTooltip() {
+        double rate = this.executionRateSlider.getValue();
+        this.executionRateSlider.setTooltip(new Tooltip(
+            String.format("x%.2f", rate)));
+    }
+
+    // </editor-fold>
+
     /**************************************************************************
-     * Event Handlers
+     * Window Button Handlers
      *************************************************************************/
 
+    // <editor-fold defaultstate="collapsed">
+
     @FXML
-    public void onClose() {
-        Platform.exit();
+    public void onIconify() {
+        // Undecorated windows cannot animate (de-)iconification :(
+        this.getStage().setIconified(true);
     }
 
     @Override
@@ -452,7 +418,7 @@ public class IDEController implements Initializable,
 
     @Override
     public void setMaximized(boolean value) {
-        Stage stage = (Stage) this.getStage();
+        Stage stage = this.getStage();
 
         if (value) {
             // Prevent window from going out of screen
@@ -494,11 +460,21 @@ public class IDEController implements Initializable,
     }
 
     @FXML
-    public void onIconify() {
-        Stage stage = (Stage) this.getStage();
-        // Undecorated windows cannot animate (de-)iconification :(
-        stage.setIconified(true);
+    public void onClose() {
+        this.editorTabPane.getTabs().stream()
+            .map((Tab tab) -> (BfTab) tab)
+            .filter((BfTab tab) -> tab.equals(this.welcomeTab) == false)
+            .forEach((BfTab tab) -> ((EditorTab) tab).save());
+        Platform.exit();
     }
+
+    // </editor-fold>
+
+    /**************************************************************************
+     * MenuBar Handlers
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void onNewFile() {
@@ -530,19 +506,7 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onExit() {
-        this.editorTabPane.getTabs().stream()
-            .map((Tab tab) -> (BfTab) tab)
-            .filter((BfTab tab) -> tab.equals(this.welcomeTab) == false)
-            .forEach((BfTab tab) -> ((EditorTab) tab).save());
-    }
-
-    @FXML
-    public void onVisualizerEnabled() {
-        this.currentEditorTabDo(
-            (EditorTab tab) -> tab.content.visualizerController.setVisible(
-                this.visualizerEnabled.isSelected()
-            )
-        );
+        this.onClose();
     }
 
     @FXML
@@ -583,9 +547,36 @@ public class IDEController implements Initializable,
         this.toggleVisualizerSetting(source);
     }
 
+    private void toggleVisualizerSetting(CheckMenuItem source) {
+        boolean isSelected = source.isSelected();
+
+        // Skip over this if source == menuViewVisualizerSettingsAll
+        if (source.equals(this.menuViewVisualizerSettingsEnabled))
+            this.visualizerEnabled.setVisible(isSelected);
+        else if (source.equals(this.menuViewVisualizerSettingsSetExecutionRate))
+            this.executionRateSlider.setVisible(isSelected);
+
+        // Hide visualizerSettingsBox if none of its children are visible
+        int i = 0;
+        boolean anySelected = false;
+        for (Node setting : this.visualizerSettingsBox.getChildren()) {
+            if (i++ > 0 && setting.isVisible()) {
+                anySelected = true;
+                break;
+            }
+        }
+        this.visualizerSettingsBox.setVisible(anySelected);
+    }
+
     @FXML
     public void onHelpAsciiTable() {
         this.asciiTablePopup.show(this.getStage());
+    }
+
+    @FXML
+    public void onHowToBrainfuck() {
+        this.editorTabPane.getTabs().add(new HowToTab(this));
+        this.editorTabPane.getSelectionModel().selectLast();
     }
 
     @FXML
@@ -593,9 +584,63 @@ public class IDEController implements Initializable,
         new BfLogger().logMethod();
     }
 
+    // </editor-fold>
+
+    /**************************************************************************
+     * Interpreter & Visualizer Control Handlers
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
     @FXML
     public void onButtonPlayPause() {
-        this.currentEditorTabDo((EditorTab tab) -> tab.onButtonPlayPause());
+        this.currentEditorTabDo((EditorTab tab) -> tab.onPlayPause());
+    }
+
+    @FXML
+    public void onButtonStop() {
+        this.onFinish();
+        this.currentEditorTabDo((EditorTab tab) -> tab.onStop());
+    }
+
+    @FXML
+    public void onVisualizerEnabled() {
+        this.currentEditorTabDo(tab ->
+            tab.setVisualizerVisible(this.visualizerEnabled.isSelected()));
+    }
+
+    // </editor-fold>
+
+    /**************************************************************************
+     * Event Handlers
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
+    private void onKeyPress(KeyEvent event) {
+        if (event.isControlDown()) {
+            switch (event.getCode()) {
+
+                // New File
+                case N: this.onNewFile(); event.consume(); break;
+
+                // Open File
+                case O: this.onOpenFile(); event.consume(); break;
+
+                // Save, Save As
+                case S:
+                    if (event.isShiftDown())
+                        this.onSaveAs();
+                    else
+                        this.onSave();
+                    event.consume();
+                    break;
+
+                // Close Tab
+                case W: this.onCloseTab(); event.consume(); break;
+
+            }
+        }
     }
 
     private void onStart() {
@@ -618,21 +663,13 @@ public class IDEController implements Initializable,
         this.visualizerEnabled.setDisable(false);
     }
 
-    @FXML
-    public void onButtonStop() {
-        this.onFinish();
-        this.currentEditorTabDo((EditorTab tab) -> tab.onButtonStop());
-    }
-
-    @FXML
-    public void onHowToBrainfuck() {
-        this.editorTabPane.getTabs().add(new HowToTab(this));
-        this.editorTabPane.getSelectionModel().selectLast();
-    }
+    // </editor-fold>
 
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -643,5 +680,7 @@ public class IDEController implements Initializable,
             case InterpreterModel.FINISH: this.onFinish(); break;
         }
     }
+
+    // </editor-fold>
 
 }

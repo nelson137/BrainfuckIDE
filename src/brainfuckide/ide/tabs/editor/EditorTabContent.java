@@ -24,14 +24,22 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.stage.Window;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
  *
  * @author Nelson Earle (nwewnh)
  */
-public class EditorTabContent extends SplitPane implements Initializable, PropertyChangeListener {
+public class EditorTabContent
+        extends SplitPane
+        implements Initializable, PropertyChangeListener {
+
+    /**************************************************************************
+     * Fields
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     private static final String FXML_PATH = "EditorTabContent.fxml";
 
@@ -61,9 +69,13 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
     @FXML
     private TextField input;
 
+    // </editor-fold>
+
     /**************************************************************************
      * Initialization
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     public EditorTabContent(IDEController controller) {
         super();
@@ -129,12 +141,16 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
         );
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
 
-    public Window getStage() {
-        return this.textArea.getScene().getWindow();
+    // <editor-fold defaultstate="collapsed">
+
+    public Stage getStage() {
+        return (Stage) this.textArea.getScene().getWindow();
     }
 
     public StringProperty getTextAreaTextProperty() {
@@ -154,9 +170,13 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
         this.textArea.setText(text);
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Interpreter Control Methods
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     public double getExecutionRate() {
         return this.interpreterModel.getRate();
@@ -223,9 +243,13 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
         this.spinnerController.stop();
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Event Handlers
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void forwardFocusToInputPromptCursor() {
@@ -247,9 +271,13 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
         event.consume();
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -266,5 +294,7 @@ public class EditorTabContent extends SplitPane implements Initializable, Proper
                 this.stop();
         }
     }
+
+    // </editor-fold>
 
 }

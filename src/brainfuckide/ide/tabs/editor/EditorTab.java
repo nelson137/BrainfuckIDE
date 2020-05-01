@@ -27,9 +27,15 @@ import javafx.stage.FileChooser;
  */
 public final class EditorTab extends BfTab {
 
+    /**************************************************************************
+     * Fields & Constructor
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
     private static int NUM_UNTITLED_TABS = 0;
 
-    public EditorTabContent content;
+    private EditorTabContent content;
 
     private enum FileType {
         FILE,
@@ -56,6 +62,14 @@ public final class EditorTab extends BfTab {
         super.setBfContent(this.content);
     }
 
+    // </editor-fold>
+
+    /**************************************************************************
+     * BfTab
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
     @Override
     public void onEnter() {
         super.onEnter();
@@ -63,21 +77,13 @@ public final class EditorTab extends BfTab {
             this.content.forwardFocusToInputPromptCursor();
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
 
-    public void onButtonPlayPause() {
-        switch (this.content.getStatus()) {
-            case RUNNING: this.content.pause();    break;
-            case PAUSED:  this.content.play();     break;
-            case STOPPED: this.content.startNew(); break;
-        }
-    }
-
-    public void onButtonStop() {
-        this.content.stop();
-    }
+    // <editor-fold defaultstate="collapsed">
 
     private String getUserHome() {
         return System.getProperty("user.home");
@@ -167,9 +173,13 @@ public final class EditorTab extends BfTab {
         alert.showAndWait();
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * File Methods
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     public void openResource(String path) {
         this.assignResource(path);
@@ -256,5 +266,47 @@ public final class EditorTab extends BfTab {
             }
         }
     }
+
+    // </editor-fold>
+
+    /**************************************************************************
+     * Visualizer Control
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
+    public void onPlayPause() {
+        switch (this.content.getStatus()) {
+            case RUNNING: this.content.pause();    break;
+            case PAUSED:  this.content.play();     break;
+            case STOPPED: this.content.startNew(); break;
+        }
+    }
+
+    public void onStop() {
+        this.content.stop();
+    }
+
+    // </editor-fold>
+
+    /**************************************************************************
+     * Pass through to content
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
+    public void setExecutionRate(Number value) {
+        this.content.setExecutionRate(value);
+    }
+
+    public void requestFocus() {
+        this.content.requestFocus();
+    }
+
+    public void setVisualizerVisible(boolean value) {
+        this.content.visualizerController.setVisible(value);
+    }
+
+    // </editor-fold>
 
 }

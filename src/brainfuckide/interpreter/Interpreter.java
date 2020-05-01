@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
  */
 public class Interpreter {
 
+    /**************************************************************************
+     * Fields & Constructor & Utility Methods
+     *************************************************************************/
+
     private final String code;
     private int codeIndex;
 
@@ -56,12 +60,16 @@ public class Interpreter {
         this.outOfInput = false;
     }
 
-    private void jumpToMatchingBracket() {
-        this.codeIndex = this.bracemap.get(this.codeIndex) - 1;
-    }
-
     public boolean isOutOfInput() {
         return this.outOfInput;
+    }
+
+    /**************************************************************************
+     * Commands
+     *************************************************************************/
+
+    private void jumpToMatchingBracket() {
+        this.codeIndex = this.bracemap.get(this.codeIndex) - 1;
     }
 
     public void pushInput(Character c) {

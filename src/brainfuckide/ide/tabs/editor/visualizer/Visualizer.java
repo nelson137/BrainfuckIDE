@@ -1,8 +1,8 @@
 package brainfuckide.ide.tabs.editor.visualizer;
 
 import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
-import brainfuckide.util.ui.PulseAnimation;
 import brainfuckide.util.Util;
+import brainfuckide.util.ui.PulseAnimation;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -38,6 +38,8 @@ public class Visualizer implements Initializable, PropertyChangeListener {
      * Initialization
      *************************************************************************/
 
+    // <editor-fold defaultstate="collapsed">
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Prevent height from shrinking < height calculated from children:
@@ -61,9 +63,13 @@ public class Visualizer implements Initializable, PropertyChangeListener {
         this.currentCell.setHighlighted(true);
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     private void addToTape() {
         this.cellViews.getChildren().add(new CellView());
@@ -99,9 +105,13 @@ public class Visualizer implements Initializable, PropertyChangeListener {
         this.currentCell.setHighlighted(true);
     }
 
+    // </editor-fold>
+
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -130,5 +140,7 @@ public class Visualizer implements Initializable, PropertyChangeListener {
 
         }
     }
+
+    // </editor-fold>
 
 }

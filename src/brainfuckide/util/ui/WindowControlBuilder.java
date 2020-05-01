@@ -14,7 +14,7 @@ import javafx.stage.Window;
  */
 public class WindowControlBuilder {
 
-    protected class DragOffset {
+    protected static class DragOffset {
         public double x, y;
     }
 
@@ -51,6 +51,12 @@ public class WindowControlBuilder {
     static protected Stage getEventStage(Event event) {
         return (Stage) ((Node)event.getSource()).getScene().getWindow();
     }
+
+    /**************************************************************************
+     * Manipulators
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
 
     public WindowControlBuilder node(Node node) {
         this.node = node;
@@ -100,6 +106,14 @@ public class WindowControlBuilder {
             MouseEvent.MOUSE_EXITED, event -> this.onMouseExit(event));
     }
 
+    // </editor-fold>
+
+    /**************************************************************************
+     * Event Handlers
+     *************************************************************************/
+
+    // <editor-fold defaultstate="collapsed">
+
     protected void onMouseEnter(MouseEvent event) {
         if (event.isPrimaryButtonDown() == false)
             this.node.setCursor(this.cursorOnEnter);
@@ -135,5 +149,7 @@ public class WindowControlBuilder {
         if (event.isPrimaryButtonDown() == false)
             this.node.setCursor(this.cursorOnExit);
     }
+
+    // </editor-fold>
 
 }

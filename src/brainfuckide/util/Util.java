@@ -4,12 +4,17 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.controlsfx.glyphfont.GlyphFont;
+import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  *
  * @author Nelson Earle (nwewnh)
  */
 public class Util {
+
+    public static final GlyphFont FONT_AWESOME =
+        GlyphFontRegistry.font("FontAwesome");
 
     /**
      * Set the visible property of node to also control whether the node is

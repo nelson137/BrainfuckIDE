@@ -17,6 +17,10 @@ public class Cursor {
         this.cell = this.tape.get(index);
     }
 
+    /**************************************************************************
+     * Utility Methods
+     *************************************************************************/
+
     public int getPos() {
         return this.index;
     }
@@ -29,9 +33,9 @@ public class Cursor {
         this.cell.set(value);
     }
 
-    /**
+    /**************************************************************************
      * Movement
-     */
+     *************************************************************************/
 
     public void right() {
         this.cell = this.tape.get(++this.index);
@@ -42,9 +46,9 @@ public class Cursor {
             this.cell = this.tape.get(--this.index);
     }
 
-    /**
+    /**************************************************************************
      * Cell manipulation
-     */
+     *************************************************************************/
 
     public void inc() {
         this.cell.inc();
