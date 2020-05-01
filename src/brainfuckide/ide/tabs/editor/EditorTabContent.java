@@ -126,10 +126,6 @@ public class EditorTabContent
     }
 
     private void setupUI() {
-        this.textArea.setText("++++[>++++[>+++++++<-]<-]>>.+.+.");
-        this.textArea.setText("                                                                                                                                                        \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        this.textArea.setText(",>,>,><.<.<.");
-
         this.inputPrompt.toFront();
         Util.bindManagedToVisible(this.inputPrompt);
     }
