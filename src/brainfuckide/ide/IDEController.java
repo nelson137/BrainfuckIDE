@@ -16,9 +16,12 @@ import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.application.Platform;
@@ -132,6 +135,12 @@ public class IDEController implements Initializable,
     private CheckMenuItem menuVisualizerEnabled;
     @FXML
     private MenuItem menuVisualizerSetExecutionRate;
+
+    /* Menu Help > How To Brainfuck */
+
+    @FXML
+    private Menu menuHelpHowToBrainfuck;
+    private static final String EXAMPLES_DIR = "resources/examples/";
 
     /* Program Run Controls */
 
@@ -284,6 +293,27 @@ public class IDEController implements Initializable,
 
         this.menuVisualizerEnabled.selectedProperty().bindBidirectional(
             this.visualizerEnabled.selectedProperty());
+
+        URL jar = this.getClass()
+            .getProtectionDomain()
+            .getCodeSource()
+            .getLocation();
+        try {
+            ZipInputStream zip = new ZipInputStream(jar.openStream());
+            ZipEntry ze = zip.getNextEntry();
+            for (; ze != null; ze = zip.getNextEntry()) {
+                String name = ze.getName();
+                if (name.startsWith(EXAMPLES_DIR) && name.endsWith(".bf")) {
+                    MenuItem menuItem = new MenuItem(
+                        name.substring(EXAMPLES_DIR.length()));
+                    menuItem.setOnAction(event ->
+                        this.newEditorTab().openResource("/" + name));
+                    this.menuHelpHowToBrainfuck.getItems().add(menuItem);
+                }
+            }
+        } catch (IOException ex) {
+            new BfLogger().logMethod("Error opening file: " + jar);
+        }
 
         Util.bindManagedToVisible(this.visualizerSettingsBox);
 
