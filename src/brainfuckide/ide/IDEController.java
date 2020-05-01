@@ -377,6 +377,7 @@ public class IDEController implements Initializable,
     }
 
     private void forEachExampleFile(Consumer<String> consumer) {
+        // https://stackoverflow.com/a/28057735/5673922
         URL jar = this.getClass()
             .getProtectionDomain()
             .getCodeSource()
