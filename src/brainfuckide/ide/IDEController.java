@@ -263,15 +263,11 @@ public class IDEController implements Initializable,
 
         // Show ASCII Popup while Shift+Ctrl+Alt is down
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.isShiftDown()
-             && event.isControlDown()
-             && event.isAltDown())
+            if (event.getCode() == KeyCode.A && event.isAltDown())
                 this.asciiTablePopup.show(this.getStage());
         });
         this.root.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            if (event.isShiftDown() == false
-             || event.isControlDown() == false
-             || event.isAltDown() == false)
+            if (event.getCode() != KeyCode.A && event.isAltDown() == false)
                 this.asciiTablePopup.hide();
         });
 

@@ -134,7 +134,8 @@ public class WindowControlBuilder {
     }
 
     protected void onMouseDrag(MouseEvent event) {
-        if (event.isPrimaryButtonDown()) {
+        boolean isCursorPress = this.node.getCursor() == this.cursorOnPress;
+        if (event.isPrimaryButtonDown() && isCursorPress) {
             this.getWindow().setX(event.getScreenX() - this.dragOffset.x);
             this.getWindow().setY(event.getScreenY() - this.dragOffset.y);
         }
