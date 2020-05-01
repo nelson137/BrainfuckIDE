@@ -198,16 +198,24 @@ public class IDEController implements Initializable,
     }
 
     private void setupListeners() {
-        Platform.runLater(() ->
-            new StageControlBuilder((Stage) this.getStage())
-                .doubleClickToMaximize(this)
-                .node(this.ribbon)
-                .build());
-
-        Platform.runLater(() ->
-            new StageResizerBuilder()
-                .stage((Stage) this.getStage())
-                .build());
+        // When scene changes
+        this.root.sceneProperty().addListener(
+            (observableScene, oldScene, scene) -> {
+                // When scene's window changes
+                scene.windowProperty().addListener(
+                    (observableWindow, oldWindow, window) -> {
+                        // Setup window drag and resize listeners
+                        new StageControlBuilder((Stage) window)
+                            .doubleClickToMaximize(this)
+                            .node(this.ribbon)
+                            .build();
+                        new StageResizerBuilder()
+                            .stage((Stage) window)
+                            .build();
+                    }
+                );
+            }
+        );
 
         // KeyEvent listeners for menu options
         this.root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
