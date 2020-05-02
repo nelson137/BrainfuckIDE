@@ -451,6 +451,7 @@ public class IDEController implements Initializable,
             this.visualizerSettingsBox.setVisible(isEditorTab);
             this.visualizerEnabled.setVisible(isEditorTab);
             this.executionRateSlider.setVisible(isEditorTab);
+            this.executionRateSlider.setValue(this.executionRateSlider.getMin());
         } else {
             // Restore state
             tab.onEnter();
