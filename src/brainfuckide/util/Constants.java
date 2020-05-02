@@ -11,6 +11,5 @@ public interface Constants {
 
     String CSS_STYLE = "/resources/css/style.css";
     String CSS_THEME_DARK = "/resources/css/dark-theme.css";
-    String CSS_THEME_LIGHT = "/resources/css/light-theme.css";
 
 }
