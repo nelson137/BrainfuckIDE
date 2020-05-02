@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -35,6 +36,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -49,6 +51,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -93,14 +96,18 @@ public class IDEController implements Initializable,
 
     private AsciiPopup asciiTablePopup;
 
-    public Alert unsavedWorkAlert;
-
-    private Alert openReadmeFailedAlert;
-
     private FileChooser fileChooser;
 
     @FXML
     private HBox ribbon;
+
+    /* Alerts */
+
+    public Alert unsavedWorkAlert;
+
+    private Alert openReadmeFailedAlert;
+
+    private Alert executionRateAlert;
 
     /* Program Buttons */
 
@@ -150,6 +157,8 @@ public class IDEController implements Initializable,
     private Menu menuVisualizer;
     @FXML
     private CheckMenuItem menuVisualizerEnabled;
+
+    private Slider menuVisualizerRateSlider;
 
     /* Menu View > Visualizer Settings */
 
@@ -350,10 +359,57 @@ public class IDEController implements Initializable,
             this.flashTooltipAboveNode(copyButton, "Copied!");
         });
 
-        VBox content = new VBox(text, copyButton);
-        content.setSpacing(12);
+        VBox aboutContent = new VBox(text, copyButton);
+        aboutContent.setSpacing(12);
 
-        this.openReadmeFailedAlert.getDialogPane().setContent(content);
+        this.openReadmeFailedAlert.getDialogPane().setContent(aboutContent);
+
+        /* Execution Rate */
+
+        this.executionRateAlert = new Alert(
+            Alert.AlertType.NONE,
+            null,
+            ButtonType.OK, ButtonType.CANCEL);
+
+        this.menuVisualizerRateSlider =
+            Util.cloneSlider(this.executionRateSlider);
+
+        TextField textField = new TextField();
+
+        BiConsumer<Node, Number> updateValue = (source, value) -> {
+            if (source.equals(this.menuVisualizerRateSlider)) {
+                textField.setText(String.format("%.2f", value));
+            } else {
+                this.menuVisualizerRateSlider.setValue(value.doubleValue());
+            }
+        };
+
+        this.menuVisualizerRateSlider.valueProperty().addListener(
+            (ov, v, value) -> {
+                if (this.menuVisualizerRateSlider.isValueChanging())
+                    updateValue.accept(this.menuVisualizerRateSlider, value);
+            }
+        );
+
+        textField.textProperty().addListener((ov, o, stringValue) -> {
+            try {
+                Double value = Double.valueOf(stringValue);
+                updateValue.accept(textField, value);
+            } catch (NumberFormatException ex) {
+            }
+        });
+
+        updateValue.accept(
+            this.menuVisualizerRateSlider,
+            this.menuVisualizerRateSlider.getValue());
+
+        VBox execRateContent = new VBox(
+            this.menuVisualizerRateSlider,
+            textField);
+        execRateContent.setAlignment(Pos.TOP_CENTER);
+        execRateContent.setSpacing(16);
+
+        this.executionRateAlert.getDialogPane().setContent(execRateContent);
     }
 
     private void fadeIn() {
@@ -627,7 +683,11 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onVisualizerSetExecutionRate() {
-        new BfLogger().logMethod();
+        this.executionRateAlert.showAndWait().ifPresent(ret -> {
+            if (ret == ButtonType.OK)
+                this.executionRateSlider.setValue(
+                    this.menuVisualizerRateSlider.getValue());
+        });
     }
 
     @FXML
