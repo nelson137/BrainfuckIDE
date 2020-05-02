@@ -1,6 +1,6 @@
 package brainfuckide.ide.tabs.editor.visualizer;
 
-import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
+import brainfuckide.ide.tabs.editor.InterpreterModel;
 import brainfuckide.util.Util;
 import brainfuckide.util.PulseAnimation;
 import java.beans.PropertyChangeEvent;

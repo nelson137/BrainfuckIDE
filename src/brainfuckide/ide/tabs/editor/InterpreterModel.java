@@ -1,4 +1,4 @@
-package brainfuckide.ide.tabs.editor.interpreter;
+package brainfuckide.ide.tabs.editor;
 
 import brainfuckide.interpreter.Interpreter;
 import brainfuckide.util.BfLogger;

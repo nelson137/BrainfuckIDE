@@ -3,7 +3,7 @@ package brainfuckide.ide;
 import brainfuckide.ide.popups.AsciiPopup;
 import brainfuckide.ide.tabs.BfTab;
 import brainfuckide.ide.tabs.editor.EditorTab;
-import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
+import brainfuckide.ide.tabs.editor.InterpreterModel;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;

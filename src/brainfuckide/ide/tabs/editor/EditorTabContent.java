@@ -1,7 +1,6 @@
 package brainfuckide.ide.tabs.editor;
 
 import brainfuckide.ide.IDEController;
-import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.ide.tabs.editor.spinner.BfSpinner;
 import brainfuckide.ide.tabs.editor.visualizer.Visualizer;
 import brainfuckide.util.BfLogger;
