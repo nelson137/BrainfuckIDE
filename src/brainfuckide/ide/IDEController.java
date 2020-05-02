@@ -151,7 +151,10 @@ public class IDEController implements Initializable,
     @FXML
     private CheckMenuItem menuViewVisualizerSetExecutionRate;
 
-    /* Menu Help > How To Brainfuck */
+    /* Menu Help */
+
+    @FXML
+    private Menu menuHelp;
 
     @FXML
     private Menu menuHelpHowToBrainfuck;
@@ -612,7 +615,8 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onHelpHowToBrainfuck() {
-        this.menuVisualizer.show();
+        this.menuHelp.show();
+        this.menuHelpHowToBrainfuck.show();
     }
 
     @FXML

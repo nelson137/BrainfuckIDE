@@ -48,7 +48,7 @@
                                     </Menu>
                                  </items>
                               </Menu>
-                              <Menu mnemonicParsing="false" text="Help">
+                              <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
                                  <items>
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
                                     <Menu fx:id="menuHelpHowToBrainfuck" mnemonicParsing="false" text="How To Brainfuck" />

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -69,8 +70,8 @@ public class WelcomeContent extends AnchorPane implements Initializable {
         this.openFileButton.setOnAction(handler);
     }
 
-    public void setOnHowTo(EventHandler<ActionEvent> handler) {
-        this.howToButton.setOnAction(handler);
+    public void setOnHowTo(EventHandler<MouseEvent> handler) {
+        this.howToButton.setOnMouseClicked(handler);
     }
 
 }

@@ -3,6 +3,7 @@ package brainfuckide.ide.tabs.welcome;
 import brainfuckide.ide.tabs.BfTab;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -32,7 +33,7 @@ public class WelcomeTab extends BfTab {
         this.content.setOnOpenFile(handler);
     }
 
-    public void setOnHowTo(EventHandler<ActionEvent> handler) {
+    public void setOnHowTo(EventHandler<MouseEvent> handler) {
         this.content.setOnHowTo(handler);
     }
 
