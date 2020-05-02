@@ -40,12 +40,20 @@ public class Interpreter {
         int start;
         CharacterIterator it = new StringCharacterIterator(rawCode);
         for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
-            if (c == '[') {
-                braceStack.push(it.getIndex());
-            } else if (c == ']') {
-                start = (int) braceStack.pop();
-                bracemap.put(start, it.getIndex());
-                bracemap.put(it.getIndex(), start);
+            switch (c) {
+                case '>': case '<': case '+': case '-': case '.': case ',':
+                    break;
+                case '[':
+                    braceStack.push(it.getIndex());
+                    break;
+                case ']':
+                    start = (int) braceStack.pop();
+                    bracemap.put(start, it.getIndex());
+                    bracemap.put(it.getIndex(), start);
+                    break;
+                default:
+                    // Non-brainfuck character
+                    continue;
             }
             codeBuilder.append(c);
         }
