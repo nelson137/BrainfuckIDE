@@ -20,9 +20,9 @@ import org.controlsfx.glyphfont.Glyph;
  *
  * @author Nelson Earle (nwewnh)
  */
-public class WelcomeContent extends AnchorPane implements Initializable {
+public class WelcomeTabContent extends AnchorPane implements Initializable {
 
-    private static final String FXML_PATH = "WelcomeContent.fxml";
+    private static final String FXML_PATH = "WelcomeTabContent.fxml";
 
     @FXML
     private Button newFileButton;
@@ -33,7 +33,7 @@ public class WelcomeContent extends AnchorPane implements Initializable {
     @FXML
     private Button howToButton;
 
-    public WelcomeContent() {
+    public WelcomeTabContent() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getResource(FXML_PATH));

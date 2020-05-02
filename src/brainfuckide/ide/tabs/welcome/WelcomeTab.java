@@ -11,12 +11,12 @@ import javafx.scene.input.MouseEvent;
  */
 public class WelcomeTab extends BfTab {
 
-    private WelcomeContent content;
+    private WelcomeTabContent content;
 
     public WelcomeTab() {
         super("Welcome");
 
-        this.content = new WelcomeContent();
+        this.content = new WelcomeTabContent();
         super.setBfContent(this.content);
     }
 
