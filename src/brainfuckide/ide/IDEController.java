@@ -30,7 +30,6 @@ import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -578,10 +577,10 @@ public class IDEController implements Initializable,
                 "Some files have been modified.");
             this.unsavedWorkAlert.showAndWait().ifPresent(ret -> {
                 if (ret == ButtonType.YES)
-                    Platform.exit();
+                    this.getStage().close();
             });
         } else {
-            Platform.exit();
+            this.getStage().close();
         }
     }
 
@@ -622,7 +621,7 @@ public class IDEController implements Initializable,
     }
 
     @FXML
-    public void onExit() {
+    public void onQuit() {
         this.onClose();
     }
 

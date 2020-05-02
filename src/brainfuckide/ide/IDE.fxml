@@ -28,7 +28,7 @@
                                     <MenuItem fx:id="menuFileSave" mnemonicParsing="false" onAction="#onSave" text="Save" />
                                     <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" onAction="#onSaveAs" text="Save As..." />
                                     <MenuItem fx:id="menuFileCloseTab" mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
-                                    <MenuItem fx:id="menuFileExit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
+                                    <MenuItem fx:id="menuFileExit" mnemonicParsing="false" onAction="#onQuit" text="Quit" />
                                  </items>
                               </Menu>
                               <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">
