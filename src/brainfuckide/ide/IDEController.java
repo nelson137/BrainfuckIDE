@@ -203,14 +203,14 @@ public class IDEController implements Initializable,
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Pane fadePane = new Pane();
-        fadePane.getStyleClass().add(CSS_SPLASH_FADE);
-        this.root.getChildren().add(fadePane);
+        this.fadeIn();
 
         this.fileChooser = new FileChooser();
         this.fileChooser.setInitialDirectory(new File(
             System.getProperty("user.home")
         ));
+
+        this.asciiTablePopup = new AsciiPopup();
 
         this.unsavedWorkAlert = new Alert(
             Alert.AlertType.WARNING,
@@ -222,8 +222,6 @@ public class IDEController implements Initializable,
         this.setupListeners();
 
         this.setupUI();
-
-        this.fadeOutPane(fadePane);
     }
 
     private void setupListeners() {
@@ -275,8 +273,6 @@ public class IDEController implements Initializable,
     }
 
     private void setupUI() {
-        this.asciiTablePopup = new AsciiPopup();
-
         this.iconifyButton.setText(null);
         this.iconifyButton.setGraphic(ICONIFY_BUTTON_GRAPHIC);
 
@@ -295,6 +291,7 @@ public class IDEController implements Initializable,
         this.menuVisualizerEnabled.selectedProperty().bindBidirectional(
             this.visualizerEnabled.selectedProperty());
 
+        // Populate Menu Help > How To Brainfuck
         this.forEachExampleFile((String name) -> {
             if (name.startsWith(EXAMPLES_DIR) && name.endsWith(".bf")) {
                 MenuItem menuItem = new MenuItem(
@@ -310,16 +307,19 @@ public class IDEController implements Initializable,
         this.editorTabPane.getTabs().add(this.welcomeTab);
     }
 
-    private void fadeOutPane(Pane pane) {
-        FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(1000));
-        fadeTransition.setNode(pane);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.setInterpolator(Interpolator.EASE_IN);
-        fadeTransition.setOnFinished(event ->
-            this.root.getChildren().remove(pane));
-        fadeTransition.play();
+    private void fadeIn() {
+        Pane pane = new Pane();
+        pane.getStyleClass().add(CSS_SPLASH_FADE);
+        this.root.getChildren().add(pane);
+
+        FadeTransition transition = new FadeTransition();
+        transition.setDuration(Duration.millis(1000));
+        transition.setNode(pane);
+        transition.setFromValue(1);
+        transition.setToValue(0);
+        transition.setInterpolator(Interpolator.EASE_IN);
+        transition.setOnFinished(e -> this.root.getChildren().remove(pane));
+        transition.play();
     }
 
     // </editor-fold>
