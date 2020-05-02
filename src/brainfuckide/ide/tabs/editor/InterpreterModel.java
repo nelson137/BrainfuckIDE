@@ -163,6 +163,8 @@ public class InterpreterModel extends MVCModel {
                     this.timeline.pause();
                     this.setWaitingForInput(true);
                     this.firePropertyChange(READ_CHAR, null);
+                } else {
+                    this.firePropertyChange(SET_VALUE, frame.cursorValue);
                 }
                 break;
 
