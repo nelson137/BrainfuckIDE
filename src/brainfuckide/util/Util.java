@@ -14,6 +14,13 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
  */
 public class Util {
 
+    public static final String TITLE = "Brainfuck IDE";
+
+    public static final String WELCOME_FONT =
+        "/resources/fonts/MuseoSans_500.otf";
+
+    public static final String ICON = "/resources/images/icon.png";
+
     public static final GlyphFont FONT_AWESOME =
         GlyphFontRegistry.font("FontAwesome");
 

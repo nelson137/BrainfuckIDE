@@ -4,6 +4,10 @@ import brainfuckide.util.BfLogger;
 import static brainfuckide.util.Constants.CSS_STYLE;
 import static brainfuckide.util.Constants.CSS_THEME_DARK;
 import static brainfuckide.util.Constants.SPLASH_FXML;
+import static brainfuckide.util.Util.ICON;
+import static brainfuckide.util.Util.TITLE;
+import static brainfuckide.util.Util.WELCOME_FONT;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,22 +23,15 @@ import javafx.stage.StageStyle;
  */
 public class BrainfuckIDE extends Application {
 
-    private static final String TITLE = "Brainfuck IDE";
-
-    private static final String WELCOME_FONT =
-        "/resources/fonts/MuseoSans_500.otf";
-
-    private static final String ICON = "/resources/images/icon.png";
-
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void bf_init(final Stage stage, final String fxml)
+            throws IOException {
         BfLogger.setActiveTags("interpreter");
 
         Font.loadFont(
             this.getClass().getResource(WELCOME_FONT).toExternalForm(),
             12);
 
-        Parent root = FXMLLoader.load(this.getClass().getResource(SPLASH_FXML));
+        Parent root = FXMLLoader.load(this.getClass().getResource(fxml));
 
         Scene scene = new Scene(root);
         scene.getStylesheets().addAll(CSS_STYLE, CSS_THEME_DARK);
@@ -46,9 +43,11 @@ public class BrainfuckIDE extends Application {
         stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    @Override
+    public void start(Stage stage) throws IOException {
+        this.bf_init(stage, SPLASH_FXML);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
