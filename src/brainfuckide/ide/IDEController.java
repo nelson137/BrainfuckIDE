@@ -13,10 +13,13 @@ import static brainfuckide.util.Util.FONT_AWESOME;
 import brainfuckide.util.ui.MaximizeController;
 import brainfuckide.util.ui.StageControlBuilder;
 import brainfuckide.util.ui.StageResizerBuilder;
+import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -26,11 +29,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
+import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -39,12 +44,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import static javafx.scene.input.KeyCode.CONTROL;
 import static javafx.scene.input.KeyCode.SHIFT;
@@ -55,7 +63,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -85,6 +95,8 @@ public class IDEController implements Initializable,
     private AsciiPopup asciiTablePopup;
 
     public Alert unsavedWorkAlert;
+
+    private Alert openReadmeFailedAlert;
 
     private FileChooser fileChooser;
 
@@ -160,6 +172,9 @@ public class IDEController implements Initializable,
     private Menu menuHelpHowToBrainfuck;
     private static final String EXAMPLES_DIR = "resources/examples/";
 
+    private static final String README_URL =
+        "https://github.com/nelson137/BrainfuckIDE/blob/master/README.md";
+
     /* Program Run Controls */
 
     @FXML
@@ -212,16 +227,13 @@ public class IDEController implements Initializable,
 
         this.asciiTablePopup = new AsciiPopup();
 
-        this.unsavedWorkAlert = new Alert(
-            Alert.AlertType.WARNING,
-            "Do you want to quit without saving?",
-            ButtonType.YES, ButtonType.NO);
-
         this.welcomeTab = new WelcomeTab();
 
         this.setupListeners();
 
         this.setupUI();
+
+        this.setupAlerts();
     }
 
     private void setupListeners() {
@@ -305,6 +317,44 @@ public class IDEController implements Initializable,
         this.updateExecutionRateSliderTooltip();
 
         this.editorTabPane.getTabs().add(this.welcomeTab);
+    }
+
+    private void setupAlerts() {
+        /* Unsaved Work */
+
+        this.unsavedWorkAlert = new Alert(
+            Alert.AlertType.WARNING,
+            "Do you want to quit without saving?",
+            ButtonType.YES, ButtonType.NO);
+
+        /* Open Readme Failed */
+
+        this.openReadmeFailedAlert = new Alert(
+            Alert.AlertType.WARNING,
+            null,
+            ButtonType.CLOSE);
+
+        this.openReadmeFailedAlert.setHeaderText(null);
+
+        Text text = new Text(
+            "Failed to open the README in your default browser.");
+
+        Button copyButton = new Button("Copy Url");
+        copyButton.setContentDisplay(ContentDisplay.RIGHT);
+        copyButton.setGraphicTextGap(8);
+        copyButton.setGraphic(FONT_AWESOME.create(FontAwesome.Glyph.COPY));
+        copyButton.setOnAction(event -> {
+            ClipboardContent cc = new ClipboardContent();
+            cc.putString(README_URL);
+            Clipboard.getSystemClipboard().setContent(cc);
+
+            this.flashTooltipAboveNode(copyButton, "Copied!");
+        });
+
+        VBox content = new VBox(text, copyButton);
+        content.setSpacing(12);
+
+        this.openReadmeFailedAlert.getDialogPane().setContent(content);
     }
 
     private void fadeIn() {
@@ -429,6 +479,33 @@ public class IDEController implements Initializable,
         double rate = this.executionRateSlider.getValue();
         this.executionRateSlider.setTooltip(new Tooltip(
             String.format("x%.2f", rate)));
+    }
+
+    private void flashTooltipAboveNode(Node node, String text) {
+        Tooltip notify = new Tooltip(text);
+
+        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+        notify.show(
+            node,
+            bounds.getMinX(),
+            bounds.getMinY() + bounds.getHeight() + 2
+        );
+
+        new Transition() {
+
+            {
+                this.setDelay(Duration.millis(1200));
+                this.setCycleCount(1);
+                this.setCycleDuration(Duration.millis(500));
+                this.setOnFinished(e -> notify.hide());
+            }
+
+            @Override
+            protected void interpolate(double frac) {
+                notify.setOpacity(1 - frac);
+            }
+
+        }.play();
     }
 
     // </editor-fold>
@@ -621,7 +698,17 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onHelpAbout() {
-        new BfLogger().logMethod();
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI(README_URL));
+            } catch (URISyntaxException ex) {
+                new BfLogger().logMethod("Failed to open README: " + README_URL);
+            } catch (IOException ex) {
+                new BfLogger().logMethod("Failed to open README: " + README_URL);
+            }
+        } else {
+            this.openReadmeFailedAlert.show();
+        }
     }
 
     // </editor-fold>
