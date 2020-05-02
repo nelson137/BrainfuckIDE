@@ -1,4 +1,4 @@
-package brainfuckide.util.ui;
+package brainfuckide.util;
 
 import java.util.LinkedList;
 import javafx.event.Event;

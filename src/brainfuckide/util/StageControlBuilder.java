@@ -1,4 +1,4 @@
-package brainfuckide.util.ui;
+package brainfuckide.util;
 
 import brainfuckide.util.Util;
 import javafx.geometry.Rectangle2D;

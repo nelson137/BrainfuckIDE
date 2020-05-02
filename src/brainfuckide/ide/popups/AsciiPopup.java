@@ -1,6 +1,6 @@
 package brainfuckide.ide.popups;
 
-import brainfuckide.util.ui.WindowControlBuilder;
+import brainfuckide.util.WindowControlBuilder;
 import javafx.scene.Cursor;
 import javafx.stage.Popup;
 

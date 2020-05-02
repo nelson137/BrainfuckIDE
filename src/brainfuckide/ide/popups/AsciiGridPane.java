@@ -1,6 +1,6 @@
 package brainfuckide.ide.popups;
 
-import static brainfuckide.util.ui.AsciiTable.ASCII_TABLE;
+import static brainfuckide.util.AsciiTable.ASCII_TABLE;
 import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.Label;

@@ -2,7 +2,7 @@ package brainfuckide.ide.tabs.editor.visualizer;
 
 import brainfuckide.ide.tabs.editor.interpreter.InterpreterModel;
 import brainfuckide.util.Util;
-import brainfuckide.util.ui.PulseAnimation;
+import brainfuckide.util.PulseAnimation;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;

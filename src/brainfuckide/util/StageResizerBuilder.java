@@ -1,4 +1,4 @@
-package brainfuckide.util.ui;
+package brainfuckide.util;
 
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
