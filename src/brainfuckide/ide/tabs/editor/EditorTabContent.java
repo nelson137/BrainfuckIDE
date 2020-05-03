@@ -339,7 +339,11 @@ public class EditorTabContent
     public void onInputButton() {
         this.inputAlert.showAndWait().ifPresent(ret -> {
             if (ret.equals(ButtonType.OK))
+                // Update program input
                 this.programInput = this.inputTextArea.getText();
+            else
+                // Reset input TextArea back to the current program input
+                this.inputTextArea.setText(this.programInput);
         });
     }
 
