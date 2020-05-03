@@ -7,12 +7,12 @@ import brainfuckide.ide.tabs.editor.InterpreterModel;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;
-import brainfuckide.util.PropertiesState;
-import brainfuckide.util.Util;
-import static brainfuckide.util.Util.FONT_AWESOME;
 import brainfuckide.util.MaximizeController;
+import brainfuckide.util.PropertiesState;
 import brainfuckide.util.StageControlBuilder;
 import brainfuckide.util.StageResizerBuilder;
+import brainfuckide.util.Util;
+import static brainfuckide.util.Util.FONT_AWESOME;
 import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,12 +30,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
-import javafx.animation.Transition;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -356,7 +354,8 @@ public class IDEController implements Initializable,
             cc.putString(README_URL);
             Clipboard.getSystemClipboard().setContent(cc);
 
-            this.flashTooltipAboveNode(copyButton, "Copied!");
+            Util.flashTooltipAboveNode(
+                copyButton, Duration.millis(1200), "Copied!");
         });
 
         VBox aboutContent = new VBox(text, copyButton);
@@ -535,33 +534,6 @@ public class IDEController implements Initializable,
         double rate = this.executionRateSlider.getValue();
         this.executionRateSlider.setTooltip(new Tooltip(
             String.format("x%.2f", rate)));
-    }
-
-    private void flashTooltipAboveNode(Node node, String text) {
-        Tooltip notify = new Tooltip(text);
-
-        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
-        notify.show(
-            node,
-            bounds.getMinX(),
-            bounds.getMinY() + bounds.getHeight() + 2
-        );
-
-        new Transition() {
-
-            {
-                this.setDelay(Duration.millis(1200));
-                this.setCycleCount(1);
-                this.setCycleDuration(Duration.millis(500));
-                this.setOnFinished(e -> notify.hide());
-            }
-
-            @Override
-            protected void interpolate(double frac) {
-                notify.setOpacity(1 - frac);
-            }
-
-        }.play();
     }
 
     // </editor-fold>

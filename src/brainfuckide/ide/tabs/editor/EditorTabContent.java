@@ -5,8 +5,10 @@ import brainfuckide.ide.tabs.editor.spinner.BfSpinner;
 import brainfuckide.ide.tabs.editor.visualizer.Visualizer;
 import brainfuckide.util.BfLogger;
 import brainfuckide.util.Util;
+import static brainfuckide.util.Util.FONT_AWESOME;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,6 +18,10 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -23,8 +29,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.glyphfont.FontAwesome;
 
 /**
  *
@@ -66,7 +76,11 @@ public class EditorTabContent
     private FadeTransition inputPromptAnimation;
 
     @FXML
-    private TextField input;
+    private Button inputButton;
+    private Alert inputAlert;
+    private TextArea inputTextArea;
+    private FileChooser inputFileChooser;
+    private String programInput = "";
 
     // </editor-fold>
 
@@ -101,11 +115,17 @@ public class EditorTabContent
             this.visualizerController
         );
 
+        this.inputFileChooser = new FileChooser();
+        this.inputFileChooser.setInitialDirectory(new File(
+            System.getProperty("user.home")));
+
         this.setupListeners();
 
         this.setupUI();
 
         this.setupAnimations();
+
+        this.setupAlerts();
     }
 
     private void setupListeners() {
@@ -125,6 +145,14 @@ public class EditorTabContent
     }
 
     private void setupUI() {
+        Util.bindManagedToVisible(this.inputButton);
+        this.inputButton.toFront();
+        this.inputButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        this.inputButton.setGraphic(FONT_AWESOME.create(
+            FontAwesome.Glyph.KEYBOARD_ALT)
+                .color(Color.WHITE)
+                .size(24));
+
         this.inputPrompt.toFront();
         Util.bindManagedToVisible(this.inputPrompt);
     }
@@ -134,6 +162,44 @@ public class EditorTabContent
             Duration.millis(150),
             this.inputPrompt
         );
+    }
+
+    private void setupAlerts() {
+        this.inputAlert = new Alert(
+            Alert.AlertType.NONE,
+            null,
+            ButtonType.OK, ButtonType.CANCEL);
+        this.inputAlert.setTitle("Program Input");
+
+        this.inputAlert.setHeaderText(
+            "Enter input here or choose a file to use as input:");
+
+        this.inputAlert.setOnCloseRequest(event -> {
+            this.inputAlert.close();
+        });
+
+        this.inputTextArea = new TextArea();
+
+        Button openFileButton = new Button("Choose File");
+        openFileButton.setOnAction(event -> {
+            File file = this.inputFileChooser.showOpenDialog(
+                this.inputAlert.getOwner());
+            if (file == null)
+                return;
+            try {
+                this.inputTextArea.setText(Util.readFile(file));
+            } catch (IOException ex) {
+                Util.flashTooltipAboveNode(
+                    openFileButton,
+                    Duration.millis(3000),
+                    ex.getLocalizedMessage());
+            }
+        });
+
+        VBox content = new VBox(this.inputTextArea, openFileButton);
+        content.setSpacing(8);
+
+        this.inputAlert.getDialogPane().setContent(content);
     }
 
     // </editor-fold>
@@ -210,10 +276,12 @@ public class EditorTabContent
         // Reset
         this.output.clear();
         this.visualizerController.resetVisualizer();
+        // Setup
+        this.inputButton.setVisible(false);
         // Start interpreter
         this.interpreterModel.startNewInterpreter(
             this.textArea.getText(),
-            this.input.getText());
+            this.programInput);
         // Start spinnerController
         this.spinnerController.start();
     }
@@ -236,6 +304,7 @@ public class EditorTabContent
         this.interpreterModel.stopInterpreter();
         this.inputPromptSetVisible(false);
         this.spinnerController.stop();
+        this.inputButton.setVisible(true);
     }
 
     // </editor-fold>
@@ -264,6 +333,14 @@ public class EditorTabContent
 
         // Prevent event bubbling so text doesn't appear in inputPromptCursor
         event.consume();
+    }
+
+    @FXML
+    public void onInputButton() {
+        this.inputAlert.showAndWait().ifPresent(ret -> {
+            if (ret.equals(ButtonType.OK))
+                this.programInput = this.inputTextArea.getText();
+        });
     }
 
     // </editor-fold>

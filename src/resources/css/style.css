@@ -318,6 +318,14 @@
  * Input
  */
 
+.input-button {
+    -fx-background-color: primary-lightest-color;
+    -fx-background-radius: 8px;
+}
+.input-button:hover {
+    -fx-background-color: derive(primary-lightest-color, 15%);
+}
+
 .input-prompt {
     -fx-background-color: #ffffff70;
     -fx-background-radius: 8px;
@@ -328,7 +336,4 @@
 .input-prompt-cursor {
     -fx-text-fill: #000000;
     -fx-background-color: transparent;
-}
-
-.predef-input {
 }

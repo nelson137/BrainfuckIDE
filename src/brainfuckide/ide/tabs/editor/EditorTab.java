@@ -2,7 +2,7 @@ package brainfuckide.ide.tabs.editor;
 
 import brainfuckide.ide.IDEController;
 import brainfuckide.ide.tabs.BfTab;
-import java.io.BufferedReader;
+import brainfuckide.util.Util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -207,28 +207,12 @@ public final class EditorTab extends BfTab {
     }
 
     private void openFile(Reader reader) {
-        StringBuilder document = new StringBuilder();
-        BufferedReader buffReader = null;
-
         try {
-            buffReader = new BufferedReader(reader);
-            buffReader.lines().forEach(
-                line -> document.append(line).append('\n'));
-            buffReader.close();
-
-            String text = document.toString();
+            String text = Util.readFile(reader);
             this.textOnLastSave = text;
             this.content.setEditorText(text);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             this.alertError(ex);
-        } finally {
-            if (buffReader != null) {
-                try {
-                    buffReader.close();
-                } catch (IOException ex) {
-                    this.alertError(ex);
-                }
-            }
         }
     }
 

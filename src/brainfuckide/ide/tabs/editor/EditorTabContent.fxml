@@ -18,10 +18,9 @@
                         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                      </VBox.margin>
                   </TextArea>
-                  <TextField fx:id="input" styleClass="predef-input" VBox.vgrow="NEVER" />
                </children></VBox>
-            <fx:include fx:id="spinner" source="spinner/BfSpinner.fxml" AnchorPane.bottomAnchor="52.0" AnchorPane.rightAnchor="20.0" />
-            <HBox fx:id="inputPrompt" alignment="CENTER_LEFT" onMouseClicked="#forwardFocusToInputPromptCursor" opacity="0.0" styleClass="input-prompt" visible="false" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="10.0">
+            <fx:include fx:id="spinner" source="spinner/BfSpinner.fxml" AnchorPane.bottomAnchor="17.0" AnchorPane.rightAnchor="10.0" />
+            <HBox fx:id="inputPrompt" alignment="CENTER_LEFT" onMouseClicked="#forwardFocusToInputPromptCursor" opacity="0.0" styleClass="input-prompt" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                <children>
                   <Label onMouseClicked="#forwardFocusToInputPromptCursor" styleClass="input-prompt-text" text="Press any key...">
                      <padding>
@@ -33,6 +32,7 @@
                         <Insets right="2.0" />
                      </HBox.margin></TextField>
                </children></HBox>
+            <Button fx:id="inputButton" mnemonicParsing="false" onAction="#onInputButton" styleClass="input-button" text="Input" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
          </children>
       </AnchorPane>
    </items>
