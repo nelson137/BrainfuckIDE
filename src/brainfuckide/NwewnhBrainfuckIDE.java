@@ -21,7 +21,7 @@ import javafx.stage.StageStyle;
  *
  * @author Nelson Earle (nwewnh)
  */
-public class BrainfuckIDE extends Application {
+public class NwewnhBrainfuckIDE extends Application {
 
     public void bf_init(final Stage stage, final String fxml)
             throws IOException {

@@ -1,6 +1,6 @@
 package test;
 
-import brainfuckide.BrainfuckIDE;
+import brainfuckide.NwewnhBrainfuckIDE;
 import static brainfuckide.util.Constants.MAIN_FXML;
 import java.io.IOException;
 import javafx.stage.Stage;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
  *
  * @author Nelson Earle (nwewnh)
  */
-public class Test extends BrainfuckIDE {
+public class Test extends NwewnhBrainfuckIDE {
 
     @Override
     public void start(Stage stage) throws IOException {
