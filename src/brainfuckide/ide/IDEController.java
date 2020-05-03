@@ -3,6 +3,7 @@ package brainfuckide.ide;
 import brainfuckide.ide.popups.AsciiPopup;
 import brainfuckide.ide.tabs.BfTab;
 import brainfuckide.ide.tabs.editor.EditorTab;
+import brainfuckide.ide.tabs.editor.EditorTabReadonly;
 import brainfuckide.ide.tabs.editor.InterpreterModel;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
@@ -315,7 +316,7 @@ public class IDEController implements Initializable,
                 MenuItem menuItem = new MenuItem(
                     name.substring(EXAMPLES_DIR.length()));
                 menuItem.setOnAction(event ->
-                    this.newEditorTab().openResource("/" + name));
+                    this.newEditorTabReadonly().openResource("/" + name));
                 this.menuHelpHowToBrainfuck.getItems().add(menuItem);
             }
         });
@@ -484,18 +485,33 @@ public class IDEController implements Initializable,
     }
 
     public EditorTab newEditorTab() {
-        int newTabIndex = this.editorTabPane.getTabs().size();
-
-        EditorTab newTab = new EditorTab(this);
-
-        // Add the newTab to the view
-        this.editorTabPane.getTabs().add(newTab);
-
-        // Switch to the new newTab
-        this.editorTabPane.getSelectionModel().select(newTabIndex);
+        EditorTab newTab = (EditorTab) this.newTab(EditorTab.class);
 
         // Set focus on TextArea
         newTab.requestFocus();
+
+        return newTab;
+    }
+
+    public EditorTabReadonly newEditorTabReadonly() {
+        return (EditorTabReadonly) this.newTab(EditorTabReadonly.class);
+    }
+
+    private BfTab newTab(Class<?> tabType) {
+        BfTab newTab;
+        try {
+            newTab = (BfTab) tabType.getDeclaredConstructor(this.getClass())
+                .newInstance(this);
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+            return null;
+        }
+
+        int newTabIndex = this.editorTabPane.getTabs().size();
+
+        this.editorTabPane.getTabs().add(newTab);
+
+        this.editorTabPane.getSelectionModel().select(newTabIndex);
 
         return newTab;
     }

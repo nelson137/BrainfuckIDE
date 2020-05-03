@@ -26,7 +26,7 @@ import javafx.stage.FileChooser;
  *
  * @author Nelson Earle (nwewnh)
  */
-public final class EditorTab extends BfTab {
+public class EditorTab extends BfTab {
 
     /**************************************************************************
      * Fields & Constructor
@@ -62,7 +62,7 @@ public final class EditorTab extends BfTab {
         });
         super.setBfContent(this.content);
 
-        this.setOnCloseRequest(event -> {
+        super.setOnCloseRequest(event -> {
             if (this.isDirty()) {
                 controller.unsavedWorkAlert.setHeaderText(
                     "This file has unsaved changes.");
@@ -118,7 +118,7 @@ public final class EditorTab extends BfTab {
         this.fileType = FileType.RESOURCE;
     }
 
-    private void updateDirtyIndicator() {
+    protected void updateDirtyIndicator() {
         super.setText(this.isDirty() ? "• " + this.title : this.title);
     }
 
