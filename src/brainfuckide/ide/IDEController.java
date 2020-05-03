@@ -291,13 +291,13 @@ public class IDEController implements Initializable,
     }
 
     private void setupUI() {
-        this.iconifyButton.setText(null);
+        this.iconifyButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.iconifyButton.setGraphic(ICONIFY_BUTTON_GRAPHIC);
 
-        this.maximizeButton.setText(null);
+        this.maximizeButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.maximizeButton.setGraphic(MAXIMIZE_BUTTON_GRAPHIC_EXPAND);
 
-        this.closeButton.setText(null);
+        this.closeButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.closeButton.setGraphic(CLOSE_BUTTON_GRAPHIC);
 
         Util.bindManagedToVisible(this.interpreterControlsBox);

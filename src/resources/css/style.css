@@ -329,7 +329,6 @@
 .input-prompt {
     -fx-background-color: #ffffff70;
     -fx-background-radius: 8px;
-    /*-fx-effect: bf-shadow;*/
 }
 
 .input-prompt > .label,
