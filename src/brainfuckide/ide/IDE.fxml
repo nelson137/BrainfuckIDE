@@ -28,7 +28,7 @@
                                     <MenuItem fx:id="menuFileSave" mnemonicParsing="false" onAction="#onSave" text="Save" />
                                     <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" onAction="#onSaveAs" text="Save As..." />
                                     <MenuItem fx:id="menuFileCloseTab" mnemonicParsing="false" onAction="#onCloseTab" text="Close Tab" />
-                                    <MenuItem fx:id="menuFileExit" mnemonicParsing="false" onAction="#onQuit" text="Quit" />
+                                    <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quit" />
                                  </items>
                               </Menu>
                               <Menu fx:id="menuVisualizer" mnemonicParsing="false" text="Visualizer">
@@ -51,7 +51,7 @@
                               <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
                                  <items>
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
-                                    <Menu fx:id="menuHelpHowToBrainfuck" mnemonicParsing="false" text="How To Brainfuck" />
+                                    <Menu fx:id="menuHelpHowTo" mnemonicParsing="false" text="How To Brainfuck" />
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAbout" text="About" />
                                  </items>
                               </Menu>
