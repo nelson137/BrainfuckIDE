@@ -8,12 +8,13 @@ import brainfuckide.ide.tabs.editor.InterpreterModel;
 import brainfuckide.ide.tabs.welcome.WelcomeTab;
 import static brainfuckide.splash.Splash.CSS_SPLASH_FADE;
 import brainfuckide.util.BfLogger;
+import static brainfuckide.util.Constants.FONT_AWESOME;
+import static brainfuckide.util.Constants.README_URL;
 import brainfuckide.util.MaximizeController;
 import brainfuckide.util.PropertiesState;
 import brainfuckide.util.StageControlBuilder;
 import brainfuckide.util.StageResizerBuilder;
 import brainfuckide.util.Util;
-import static brainfuckide.util.Util.FONT_AWESOME;
 import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -112,28 +113,16 @@ public class IDEController implements Initializable,
 
     @FXML
     private Button iconifyButton;
-    private final Glyph ICONIFY_BUTTON_GRAPHIC = FONT_AWESOME
-        .create(FontAwesome.Glyph.MINUS)
-        .size(18)
-        .color(Color.WHITE);
+    private Glyph ICONIFY_BUTTON_GRAPHIC;
 
     @FXML
     private Button maximizeButton;
-    private final Glyph MAXIMIZE_BUTTON_GRAPHIC_EXPAND = FONT_AWESOME
-        .create(FontAwesome.Glyph.EXPAND)
-        .size(18)
-        .color(Color.WHITE);
-    private final Glyph MAXIMIZE_BUTTON_GRAPHIC_COMPRESS = FONT_AWESOME
-        .create(FontAwesome.Glyph.COMPRESS)
-        .size(18)
-        .color(Color.WHITE);
+    private Glyph MAXIMIZE_BUTTON_GRAPHIC_EXPAND;
+    private Glyph MAXIMIZE_BUTTON_GRAPHIC_COMPRESS;
 
     @FXML
     private Button closeButton;
-    private final Glyph CLOSE_BUTTON_GRAPHIC = FONT_AWESOME
-        .create(FontAwesome.Glyph.TIMES)
-        .size(18)
-        .color(Color.WHITE);
+    private Glyph CLOSE_BUTTON_GRAPHIC;
 
     /* Menu File */
 
@@ -148,7 +137,7 @@ public class IDEController implements Initializable,
     @FXML
     private MenuItem menuFileCloseTab;
     @FXML
-    private MenuItem menuFileExit;
+    private MenuItem menuFileQuit;
 
     /* Menu Visualizer */
 
@@ -176,11 +165,8 @@ public class IDEController implements Initializable,
     private Menu menuHelp;
 
     @FXML
-    private Menu menuHelpHowToBrainfuck;
+    private Menu menuHelpHowTo;
     private static final String EXAMPLES_DIR = "resources/examples/";
-
-    private static final String README_URL =
-        "https://github.com/nelson137/BrainfuckIDE/blob/master/README.md";
 
     /* Program Run Controls */
 
@@ -227,6 +213,26 @@ public class IDEController implements Initializable,
     public void initialize(URL url, ResourceBundle rb) {
         this.fadeIn();
 
+        ICONIFY_BUTTON_GRAPHIC = FONT_AWESOME
+            .create(FontAwesome.Glyph.MINUS)
+            .size(18)
+            .color(Color.WHITE);
+
+        MAXIMIZE_BUTTON_GRAPHIC_EXPAND = FONT_AWESOME
+            .create(FontAwesome.Glyph.EXPAND)
+            .size(18)
+            .color(Color.WHITE);
+
+        MAXIMIZE_BUTTON_GRAPHIC_COMPRESS = FONT_AWESOME
+            .create(FontAwesome.Glyph.COMPRESS)
+            .size(18)
+            .color(Color.WHITE);
+
+        CLOSE_BUTTON_GRAPHIC = FONT_AWESOME
+            .create(FontAwesome.Glyph.TIMES)
+            .size(18)
+            .color(Color.WHITE);
+
         this.fileChooser = new FileChooser();
         this.fileChooser.setInitialDirectory(new File(
             System.getProperty("user.home")
@@ -245,7 +251,7 @@ public class IDEController implements Initializable,
 
     private void setupListeners() {
         this.root.sceneProperty().addListener((os, oldScene, newScene) ->
-            this.onStageChange(os, oldScene, newScene));
+            this.onSceneChange(newScene));
 
         this.menuFileNew.setAccelerator(new KeyCodeCombination(
             KeyCode.N,
@@ -263,7 +269,7 @@ public class IDEController implements Initializable,
         this.menuFileCloseTab.setAccelerator(new KeyCodeCombination(
             KeyCode.W,
             KeyCombination.CONTROL_DOWN));
-        this.menuFileExit.setAccelerator(new KeyCodeCombination(
+        this.menuFileQuit.setAccelerator(new KeyCodeCombination(
             KeyCode.Q,
             KeyCombination.SHIFT_DOWN,
             KeyCombination.CONTROL_DOWN));
@@ -279,7 +285,10 @@ public class IDEController implements Initializable,
 
         this.welcomeTab.setOnNewFile(e -> this.onNewFile());
         this.welcomeTab.setOnOpenFile(e -> this.onOpenFile());
-        this.welcomeTab.setOnHowTo(e -> this.onHelpHowToBrainfuck());
+        this.welcomeTab.setOnHowTo(e -> {
+            this.menuHelp.show();
+            this.menuHelpHowTo.show();
+        });
 
         this.editorTabPane.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) -> {
@@ -317,7 +326,7 @@ public class IDEController implements Initializable,
                     name.substring(EXAMPLES_DIR.length()));
                 menuItem.setOnAction(event ->
                     this.newEditorTabReadonly().openResource("/" + name));
-                this.menuHelpHowToBrainfuck.getItems().add(menuItem);
+                this.menuHelpHowTo.getItems().add(menuItem);
             }
         });
 
@@ -484,7 +493,7 @@ public class IDEController implements Initializable,
         tab.onLeave();
     }
 
-    public EditorTab newEditorTab() {
+    private EditorTab newEditorTab() {
         EditorTab newTab = (EditorTab) this.newTab(EditorTab.class);
 
         // Set focus on TextArea
@@ -493,7 +502,7 @@ public class IDEController implements Initializable,
         return newTab;
     }
 
-    public EditorTabReadonly newEditorTabReadonly() {
+    private EditorTabReadonly newEditorTabReadonly() {
         return (EditorTabReadonly) this.newTab(EditorTabReadonly.class);
     }
 
@@ -739,12 +748,6 @@ public class IDEController implements Initializable,
     }
 
     @FXML
-    public void onHelpHowToBrainfuck() {
-        this.menuHelp.show();
-        this.menuHelpHowToBrainfuck.show();
-    }
-
-    @FXML
     public void onHelpAbout() {
         if (Desktop.isDesktopSupported()) {
             try {
@@ -774,7 +777,7 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onButtonStop() {
-        this.onFinish();
+        this.onStop();
         this.currentEditorTabDo((EditorTab tab) -> tab.onStop());
     }
 
@@ -792,12 +795,8 @@ public class IDEController implements Initializable,
 
     // <editor-fold defaultstate="collapsed">
 
-    private void onStageChange(
-        ObservableValue<? extends Scene> observableScene,
-        Scene oldScene,
-        Scene scene
-    ) {
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+    private void onSceneChange(Scene newScene) {
+        newScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ALT)
                 // Prevent focusing MenuBar when Alt pressed
                 event.consume();
@@ -808,7 +807,7 @@ public class IDEController implements Initializable,
                 this.asciiTablePopup.show(this.getStage());
         });
 
-        scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+        newScene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
             switch (event.getCode()) {
                 case CONTROL: case SHIFT: case Z:
                     this.asciiTablePopup.hide();
@@ -816,22 +815,18 @@ public class IDEController implements Initializable,
             }
         });
 
-        scene.windowProperty().addListener((ow, oldWindow, newWindow) ->
-            this.onWindowChange(ow, oldWindow, newWindow));
+        newScene.windowProperty().addListener((ow, oldWindow, newWindow) ->
+            this.onWindowChange(newWindow));
     }
 
-    private void onWindowChange(
-        ObservableValue<? extends Window> observableValue,
-        Window oldWindow,
-        Window window
-    ) {
+    private void onWindowChange(Window newWindow) {
         // Setup window drag and resize listeners
-        new StageControlBuilder((Stage) window)
+        new StageControlBuilder((Stage) newWindow)
             .doubleClickToMaximize(this)
             .node(this.ribbon)
             .build();
         new StageResizerBuilder()
-            .stage((Stage) window)
+            .stage((Stage) newWindow)
             .build();
     }
 
@@ -849,7 +844,7 @@ public class IDEController implements Initializable,
         this.buttonPlayPause.setText("Pause");
     }
 
-    private void onFinish() {
+    private void onStop() {
         this.buttonPlayPause.setText("Play");
         this.buttonStop.setDisable(true);
         this.visualizerEnabled.setDisable(false);
@@ -866,10 +861,10 @@ public class IDEController implements Initializable,
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         switch (event.getPropertyName()) {
-            case InterpreterModel.START:  this.onStart();  break;
-            case InterpreterModel.PAUSE:  this.onPause();  break;
-            case InterpreterModel.PLAY:   this.onPlay();   break;
-            case InterpreterModel.FINISH: this.onFinish(); break;
+            case InterpreterModel.START: this.onStart(); break;
+            case InterpreterModel.PAUSE: this.onPause(); break;
+            case InterpreterModel.PLAY:  this.onPlay();  break;
+            case InterpreterModel.STOP:  this.onStop();  break;
         }
     }
 

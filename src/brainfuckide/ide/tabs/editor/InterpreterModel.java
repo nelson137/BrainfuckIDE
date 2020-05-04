@@ -30,13 +30,13 @@ public class InterpreterModel extends MVCModel {
 
     public static final String CURSOR_LEFT = "CURSOR_LEFT";
     public static final String CURSOR_RIGHT = "CURSOR_RIGHT";
-    public static final String FINISH = "FINISH";
     public static final String PAUSE = "PAUSE";
     public static final String PLAY = "PLAY";
     public static final String PRINT_CHAR = "PRINT_CHAR";
     public static final String READ_CHAR = "READ_CHAR";
     public static final String SET_VALUE = "SET_VALUE";
     public static final String START = "START";
+    public static final String STOP = "STOP";
 
     public InterpreterModel() {
         this.timeline = new Timeline(
@@ -133,7 +133,7 @@ public class InterpreterModel extends MVCModel {
         Interpreter.Frame frame = this.interpreter.interpretNextCommand();
 
         if (frame.isFinished()) {
-            this.firePropertyChange(FINISH, null);
+            this.firePropertyChange(STOP, null);
             return;
         }
 

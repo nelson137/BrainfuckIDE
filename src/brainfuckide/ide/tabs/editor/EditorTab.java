@@ -85,7 +85,7 @@ public class EditorTab extends BfTab {
     @Override
     public void onEnter() {
         super.onEnter();
-        if (this.content.inputPromptIsVisible())
+        if (this.content.isInputPromptVisible())
             this.content.forwardFocusToInputPromptCursor();
     }
 
@@ -296,7 +296,7 @@ public class EditorTab extends BfTab {
     }
 
     public void setVisualizerVisible(boolean value) {
-        this.content.visualizerController.setVisible(value);
+        this.content.setVisualizerVisible(value);
     }
 
     // </editor-fold>

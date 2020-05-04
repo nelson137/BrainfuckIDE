@@ -4,8 +4,8 @@ import brainfuckide.ide.IDEController;
 import brainfuckide.ide.tabs.editor.spinner.BfSpinner;
 import brainfuckide.ide.tabs.editor.visualizer.Visualizer;
 import brainfuckide.util.BfLogger;
+import static brainfuckide.util.Constants.FONT_AWESOME;
 import brainfuckide.util.Util;
-import static brainfuckide.util.Util.FONT_AWESOME;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -60,7 +60,7 @@ public class EditorTabContent
     private InterpreterModel interpreterModel;
 
     @FXML
-    public Visualizer visualizerController;
+    private Visualizer visualizerController;
 
     @FXML
     private TextArea output;
@@ -231,6 +231,10 @@ public class EditorTabContent
         this.textArea.setText(text);
     }
 
+    public void setVisualizerVisible(boolean value) {
+        this.visualizerController.setVisible(value);
+    }
+
     // </editor-fold>
 
     /**************************************************************************
@@ -252,11 +256,11 @@ public class EditorTabContent
         return this.interpreterModel.getStatus();
     }
 
-    public boolean inputPromptIsVisible() {
+    public boolean isInputPromptVisible() {
         return this.inputPrompt.isVisible();
     }
 
-    private void inputPromptSetVisible(boolean value) {
+    private void setInputPromptVisible(boolean value) {
         if (value)
             this.inputPrompt.setVisible(true);
 
@@ -295,14 +299,14 @@ public class EditorTabContent
     public void pause() {
         new BfLogger("interpreter").logMethod();
         this.interpreterModel.pauseInterpreter();
-        this.inputPromptSetVisible(false);
+        this.setInputPromptVisible(false);
         this.spinnerController.stop();
     }
 
     public void stop() {
         new BfLogger("interpreter").logMethod();
         this.interpreterModel.stopInterpreter();
-        this.inputPromptSetVisible(false);
+        this.setInputPromptVisible(false);
         this.spinnerController.stop();
         this.inputButton.setVisible(true);
     }
@@ -327,7 +331,7 @@ public class EditorTabContent
         if (Character.isLetterOrDigit(c)
          || Character.isWhitespace(c)
          || SPECIAL_CHARS.contains(value)) {
-            this.inputPromptSetVisible(false);
+            this.setInputPromptVisible(false);
             this.interpreterModel.pushInput(c);
         }
 
@@ -364,9 +368,9 @@ public class EditorTabContent
                 this.output.appendText(newValue.toString());
                 break;
             case InterpreterModel.READ_CHAR:
-                this.inputPromptSetVisible(true);
+                this.setInputPromptVisible(true);
                 break;
-            case InterpreterModel.FINISH:
+            case InterpreterModel.STOP:
                 this.stop();
         }
     }

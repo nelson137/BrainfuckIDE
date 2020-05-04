@@ -1,8 +1,8 @@
 package brainfuckide.ide.tabs.editor.visualizer;
 
 import brainfuckide.ide.tabs.editor.InterpreterModel;
-import brainfuckide.util.Util;
 import brainfuckide.util.PulseAnimation;
+import brainfuckide.util.Util;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -31,7 +31,7 @@ public class Visualizer implements Initializable, PropertyChangeListener {
     private HBox cellViews;
 
     private CellView currentCell;
-    public Animation cellPulseAnimation;
+    private Animation cellPulseAnimation;
     private static final double TICK_RATE = 1_000;
 
     /**************************************************************************
@@ -41,7 +41,7 @@ public class Visualizer implements Initializable, PropertyChangeListener {
     // <editor-fold defaultstate="collapsed">
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle rb) {
         // Prevent height from shrinking < height calculated from children:
         // https://stackoverflow.com/a/32997239/5673922
         this.scrollPane.minHeightProperty().bind(this.scrollPane.heightProperty());

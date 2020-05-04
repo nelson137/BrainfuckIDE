@@ -20,7 +20,7 @@ public class WindowControlBuilder {
 
     protected static final LinkedList<DragOffset> OFFSETS = new LinkedList<>();
 
-    protected DragOffset dragOffset = new DragOffset();
+    protected DragOffset dragOffset;
 
     protected Window window;
     protected Node node;

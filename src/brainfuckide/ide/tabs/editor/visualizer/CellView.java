@@ -46,7 +46,7 @@ public class CellView extends VBox implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle rb) {
         this.cellLabel.textProperty().addListener(
             (ObservableValue<? extends String> ov, String o, String value) -> {
                 this.onCellChange(value);

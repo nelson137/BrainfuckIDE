@@ -20,7 +20,7 @@ public class Interpreter {
     private final String code;
     private int codeIndex;
 
-    LinkedList<Character> input;
+    private LinkedList<Character> input;
 
     private final HashMap<Integer, Integer> bracemap;
 

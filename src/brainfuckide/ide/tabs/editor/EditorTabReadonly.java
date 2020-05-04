@@ -1,7 +1,7 @@
 package brainfuckide.ide.tabs.editor;
 
 import brainfuckide.ide.IDEController;
-import static brainfuckide.util.Util.FONT_AWESOME;
+import static brainfuckide.util.Constants.FONT_AWESOME;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;

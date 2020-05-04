@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.function.Consumer;
 import javafx.animation.Transition;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
@@ -15,24 +16,12 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  *
  * @author Nelson Earle (nwewnh)
  */
 public class Util {
-
-    public static final String TITLE = "Brainfuck IDE";
-
-    public static final String WELCOME_FONT =
-        "/resources/fonts/MuseoSans_500.otf";
-
-    public static final String ICON = "/resources/images/icon.png";
-
-    public static final GlyphFont FONT_AWESOME =
-        GlyphFontRegistry.font("FontAwesome");
 
     /**
      * Set the visible property of node to also control whether the node is
@@ -42,16 +31,12 @@ public class Util {
         node.managedProperty().bind(node.visibleProperty());
     }
 
-    public interface ScreenAction {
-        void doAction(Screen screen);
-    }
-
-    public static void currentScreenDo(Stage stage, ScreenAction action) {
+    public static void currentScreenDo(Stage stage, Consumer<Screen> action) {
         ObservableList<Screen> screens = Screen.getScreensForRectangle(
             stage.getX(), stage.getY(),
             stage.getWidth(), stage.getHeight());
         if (screens.size() > 0)
-            action.doAction(screens.get(0));
+            action.accept(screens.get(0));
     }
 
     public static Slider cloneSlider(Slider reference) {

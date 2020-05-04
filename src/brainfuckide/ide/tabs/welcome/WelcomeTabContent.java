@@ -1,6 +1,6 @@
 package brainfuckide.ide.tabs.welcome;
 
-import static brainfuckide.util.Util.FONT_AWESOME;
+import static brainfuckide.util.Constants.FONT_AWESOME;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
