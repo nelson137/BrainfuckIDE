@@ -9,17 +9,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.nio.file.Paths;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 /**
@@ -157,30 +151,6 @@ public class EditorTab extends BfTab {
         */
     }
 
-    private void alertError(Exception exception) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Exception Dialog");
-        alert.setHeaderText("Exception!");
-        alert.setContentText(exception.getMessage());
-
-        // Create expandable Exception
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        exception.printStackTrace(pw);
-        String exceptionText = sw.toString();
-
-        Label label = new Label("The exception stacktrace was:");
-
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-
-        // Set expandable Exception into the dialog pane.
-        alert.getDialogPane().setExpandableContent(new VBox(label, textArea));
-
-        alert.showAndWait();
-    }
-
     // </editor-fold>
 
     /**************************************************************************
@@ -202,7 +172,7 @@ public class EditorTab extends BfTab {
         try {
             this.openFile(new FileReader(file));
         } catch (FileNotFoundException ex) {
-            this.alertError(ex);
+            Util.alertError(ex);
         }
     }
 
@@ -211,8 +181,8 @@ public class EditorTab extends BfTab {
             String text = Util.readFile(reader);
             this.textOnLastSave = text;
             this.content.setEditorText(text);
-        } catch (Exception ex) {
-            this.alertError(ex);
+        } catch (IOException ex) {
+            Util.alertError(ex);
         }
     }
 
@@ -247,13 +217,13 @@ public class EditorTab extends BfTab {
             this.textOnLastSave = this.content.getEditorText();
             this.updateDirtyIndicator();
         } catch (IOException ex) {
-            this.alertError(ex);
+            Util.alertError(ex);
         } finally {
             if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException ex) {
-                    this.alertError(ex);
+                    Util.alertError(ex);
                 }
             }
         }
