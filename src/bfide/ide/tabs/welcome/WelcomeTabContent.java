@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -31,7 +31,7 @@ public class WelcomeTabContent extends AnchorPane implements Initializable {
     private Button openFileButton;
 
     @FXML
-    private Button howToButton;
+    private MenuButton howToMenuButton;
 
     public WelcomeTabContent() {
         try {
@@ -54,7 +54,7 @@ public class WelcomeTabContent extends AnchorPane implements Initializable {
             FontAwesome.Glyph.FILE_ALT));
         this.openFileButton.setGraphic(this.makeGlyph(
             FontAwesome.Glyph.FOLDER_OPEN_ALT));
-        this.howToButton.setGraphic(this.makeGlyph(
+        this.howToMenuButton.setGraphic(this.makeGlyph(
             FontAwesome.Glyph.QUESTION_CIRCLE));
     }
 
@@ -70,8 +70,8 @@ public class WelcomeTabContent extends AnchorPane implements Initializable {
         this.openFileButton.setOnAction(handler);
     }
 
-    public void setOnHowTo(EventHandler<MouseEvent> handler) {
-        this.howToButton.setOnMouseClicked(handler);
+    public MenuButton getHowToMenuButton() {
+        return this.howToMenuButton;
     }
 
 }

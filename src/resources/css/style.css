@@ -201,7 +201,7 @@
     -fx-text-fill: welcome-gradient;
 }
 
-.welcome-content .button {
+.welcome-button {
     -fx-background-color: primary-color;
     -fx-background-radius: 24px;
     -fx-border-color: derive(primary-color, 50%);
@@ -210,14 +210,17 @@
     -fx-font-size: 24px;
     -fx-text-fill: derive(primary-color, 50%);
 }
-.welcome-content .button > * {
+.welcome-button * {
     -fx-text-fill: derive(primary-color, 50%);
 }
-.welcome-content .button:hover {
+.welcome-button .context-menu {
+    -fx-font-size: 18px;
+}
+.welcome-button:hover {
     -fx-border-color: welcome-gradient;
     -fx-text-fill: welcome-gradient;
 }
-.welcome-content .button:hover > * {
+.welcome-button:hover * {
     -fx-text-fill: welcome-gradient;
 }
 

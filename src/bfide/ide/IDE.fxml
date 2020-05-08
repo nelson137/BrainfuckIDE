@@ -51,7 +51,6 @@
                               <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
                                  <items>
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAsciiTable" text="ASCII Table" />
-                                    <Menu fx:id="menuHelpHowTo" mnemonicParsing="false" text="How To" />
                                     <MenuItem mnemonicParsing="false" onAction="#onHelpAbout" text="About" />
                                  </items>
                               </Menu>

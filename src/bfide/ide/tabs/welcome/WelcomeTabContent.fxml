@@ -15,21 +15,21 @@
             <Label text="Welcome" />
             <HBox alignment="CENTER" spacing="48.0">
                <children>
-                  <Button fx:id="newFileButton" graphicTextGap="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="New File">
+                  <Button fx:id="newFileButton" graphicTextGap="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" styleClass="welcome-button" text="New File">
                      <padding>
                         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="openFileButton" graphicTextGap="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Open File">
+                  <Button fx:id="openFileButton" graphicTextGap="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" styleClass="welcome-button" text="Open File">
                      <padding>
                         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="howToButton" graphicTextGap="24.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="How To">
+                  <MenuButton fx:id="howToMenuButton" graphicTextGap="24.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" styleClass="welcome-button" text="How To">
                      <padding>
-                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                        <Insets left="20.0" right="20.0" />
                      </padding>
-                  </Button>
+                  </MenuButton>
                </children>
             </HBox>
          </children>

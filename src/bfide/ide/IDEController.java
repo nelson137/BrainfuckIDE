@@ -98,6 +98,8 @@ public class IDEController implements Initializable,
 
     private FileChooser fileChooser;
 
+    private static final String EXAMPLES_DIR = "resources/examples/";
+
     @FXML
     private HBox ribbon;
 
@@ -158,15 +160,6 @@ public class IDEController implements Initializable,
     private CheckMenuItem menuViewVisualizerEnabled;
     @FXML
     private CheckMenuItem menuViewVisualizerSetExecutionRate;
-
-    /* Menu Help */
-
-    @FXML
-    private Menu menuHelp;
-
-    @FXML
-    private Menu menuHelpHowTo;
-    private static final String EXAMPLES_DIR = "resources/examples/";
 
     /* Program Run Controls */
 
@@ -285,10 +278,6 @@ public class IDEController implements Initializable,
 
         this.welcomeTab.setOnNewFile(e -> this.onNewFile());
         this.welcomeTab.setOnOpenFile(e -> this.onOpenFile());
-        this.welcomeTab.setOnHowTo(e -> {
-            this.menuHelp.show();
-            this.menuHelpHowTo.show();
-        });
 
         this.editorTabPane.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) -> {
@@ -319,14 +308,14 @@ public class IDEController implements Initializable,
         this.menuVisualizerEnabled.selectedProperty().bindBidirectional(
             this.visualizerEnabled.selectedProperty());
 
-        // Populate Menu Help > How To
+        // Populate How To Menu
         this.forEachExampleFile((String name) -> {
             if (name.startsWith(EXAMPLES_DIR) && name.endsWith(".bf")) {
                 MenuItem menuItem = new MenuItem(
                     name.substring(EXAMPLES_DIR.length()));
                 menuItem.setOnAction(event ->
                     this.newEditorTabReadonly().openResource("/" + name));
-                this.menuHelpHowTo.getItems().add(menuItem);
+                this.welcomeTab.getHowToMenuButton().getItems().add(menuItem);
             }
         });
 

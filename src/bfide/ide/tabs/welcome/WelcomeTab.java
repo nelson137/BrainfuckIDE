@@ -3,7 +3,7 @@ package bfide.ide.tabs.welcome;
 import bfide.ide.tabs.BfTab;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.MenuButton;
 
 /**
  *
@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class WelcomeTab extends BfTab {
 
-    private WelcomeTabContent content;
+    private final WelcomeTabContent content;
 
     public WelcomeTab() {
         super("Welcome");
@@ -33,8 +33,8 @@ public class WelcomeTab extends BfTab {
         this.content.setOnOpenFile(handler);
     }
 
-    public void setOnHowTo(EventHandler<MouseEvent> handler) {
-        this.content.setOnHowTo(handler);
+    public MenuButton getHowToMenuButton() {
+        return this.content.getHowToMenuButton();
     }
 
 }
