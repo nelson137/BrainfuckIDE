@@ -37,6 +37,7 @@ public class Interpreter {
         this.bracemap = new HashMap<>();
         StringBuilder codeBuilder = new StringBuilder();
 
+        int ci = 0;
         int start;
         CharacterIterator it = new StringCharacterIterator(rawCode);
         for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
@@ -44,18 +45,19 @@ public class Interpreter {
                 case '>': case '<': case '+': case '-': case '.': case ',':
                     break;
                 case '[':
-                    braceStack.push(it.getIndex());
+                    braceStack.push(ci);
                     break;
                 case ']':
                     start = (int) braceStack.pop();
-                    bracemap.put(start, it.getIndex());
-                    bracemap.put(it.getIndex(), start);
+                    bracemap.put(start, ci);
+                    bracemap.put(ci, start);
                     break;
                 default:
                     // Non-brainfuck character
                     continue;
             }
             codeBuilder.append(c);
+            ci++;
         }
 
         this.code = codeBuilder.toString();
