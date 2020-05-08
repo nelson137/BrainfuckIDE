@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import javafx.event.Event;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -120,7 +121,7 @@ public class WindowControlBuilder {
     }
 
     protected void onMouseClick(MouseEvent event) {
-        if (event.isSecondaryButtonDown())
+        if (event.getButton().equals(MouseButton.SECONDARY))
             this.onSecondaryClick.run();
     }
 
