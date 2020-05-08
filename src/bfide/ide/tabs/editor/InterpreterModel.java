@@ -1,6 +1,7 @@
 package bfide.ide.tabs.editor;
 
 import bfide.interpreter.Interpreter;
+import bfide.interpreter.Interpreter.MismatchedBracketException;
 import bfide.util.BfLogger;
 import bfide.util.MVCModel;
 import javafx.animation.Animation;
@@ -30,6 +31,7 @@ public class InterpreterModel extends MVCModel {
 
     public static final String CURSOR_LEFT = "CURSOR_LEFT";
     public static final String CURSOR_RIGHT = "CURSOR_RIGHT";
+    public static final String EXCEPTION = "EXCEPTION";
     public static final String PAUSE = "PAUSE";
     public static final String PLAY = "PLAY";
     public static final String PRINT_CHAR = "PRINT_CHAR";
@@ -87,12 +89,15 @@ public class InterpreterModel extends MVCModel {
 
     public void startNewInterpreter(String code, String input) {
         new BfLogger("interpreter").logMethod();
-        // Only start new interpreter if stopped
-        if (this.timeline.getStatus() == Status.STOPPED)
+        try {
             this.interpreter = new Interpreter(code, input);
-        this.playInterpreter();
-        this.isInterpreting = true;
-        this.firePropertyChange(START, null);
+            this.playInterpreter();
+            this.isInterpreting = true;
+            this.firePropertyChange(START, null);
+        } catch (MismatchedBracketException ex) {
+            this.firePropertyChange(EXCEPTION, ex);
+            this.firePropertyChange(STOP, null);
+        }
     }
 
     public void playInterpreter() {

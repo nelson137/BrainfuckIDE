@@ -282,12 +282,11 @@ public class EditorTabContent
         this.visualizerController.resetVisualizer();
         // Setup
         this.inputButton.setVisible(false);
+        this.spinnerController.start();
         // Start interpreter
         this.interpreterModel.startNewInterpreter(
             this.textArea.getText(),
             this.programInput);
-        // Start spinnerController
-        this.spinnerController.start();
     }
 
     public void play() {
@@ -364,6 +363,9 @@ public class EditorTabContent
         Object newValue = event.getNewValue();
 
         switch (event.getPropertyName()) {
+            case InterpreterModel.EXCEPTION:
+                this.output.appendText(((Exception) newValue).getMessage());
+                break;
             case InterpreterModel.PRINT_CHAR:
                 this.output.appendText(newValue.toString());
                 break;

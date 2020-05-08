@@ -13,6 +13,20 @@ import java.util.stream.Collectors;
  */
 public class Interpreter {
 
+    public static class MismatchedBracketException extends Exception {
+        public MismatchedBracketException(String msg) {
+            super(msg);
+        }
+    }
+
+    public static final MismatchedBracketException MBE_OPEN =
+        new MismatchedBracketException(
+            "Opening bracket ([) has no matching closing bracket (])");
+
+    public static final MismatchedBracketException MBE_CLOSE =
+        new MismatchedBracketException(
+            "Closing bracket (]) has no matching opening bracket ([)");
+
     /**************************************************************************
      * Fields & Constructor & Utility Methods
      *************************************************************************/
@@ -29,7 +43,7 @@ public class Interpreter {
 
     private boolean outOfInput;
 
-    public Interpreter(String rawCode, String input) {
+    public Interpreter(String rawCode, String input) throws MismatchedBracketException {
         this.tape = new Tape();
         this.cursor = new Cursor(this.tape);
 
@@ -48,17 +62,22 @@ public class Interpreter {
                     braceStack.push(ci);
                     break;
                 case ']':
+                    if (braceStack.empty())
+                        throw MBE_CLOSE;
                     start = (int) braceStack.pop();
                     bracemap.put(start, ci);
                     bracemap.put(ci, start);
                     break;
                 default:
-                    // Non-brainfuck character
+                    // Skip non-brainfuck character
                     continue;
             }
             codeBuilder.append(c);
             ci++;
         }
+
+        if (braceStack.empty() == false)
+            throw MBE_OPEN;
 
         this.code = codeBuilder.toString();
         this.codeIndex = -1;
