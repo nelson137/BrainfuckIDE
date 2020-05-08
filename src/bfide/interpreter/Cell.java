@@ -13,7 +13,7 @@ public class Cell {
     }
 
     public void set(char c) {
-        this.value = c;
+        this.value = c > 255 ? 0 : c;
     }
 
     public char getChar() {
@@ -21,11 +21,17 @@ public class Cell {
     }
 
     public void inc() {
-        this.value++;
+        if (this.value >= 255)
+            this.value = 0;
+        else
+            this.value++;
     }
 
     public void dec() {
-        this.value--;
+        if (this.value <= 0)
+            this.value = 255;
+        else
+            this.value--;
     }
 
 }
