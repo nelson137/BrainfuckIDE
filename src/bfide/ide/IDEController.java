@@ -16,6 +16,7 @@ import bfide.util.StageControlBuilder;
 import bfide.util.StageResizerBuilder;
 import bfide.util.Util;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -738,17 +739,17 @@ public class IDEController implements Initializable,
 
     @FXML
     public void onHelpAbout() {
-        if (Desktop.isDesktopSupported()) {
-            try {
-                Desktop.getDesktop().browse(new URI(README_URL));
-            } catch (URISyntaxException ex) {
-                new BfLogger().logMethod("Failed to open README: " + README_URL);
-            } catch (IOException ex) {
-                new BfLogger().logMethod("Failed to open README: " + README_URL);
+        new Thread(() -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(README_URL));
+                } catch (HeadlessException | URISyntaxException | IOException ex) {
+                    this.openReadmeFailedAlert.show();
+                }
+            } else {
+                this.openReadmeFailedAlert.show();
             }
-        } else {
-            this.openReadmeFailedAlert.show();
-        }
+        }).start();
     }
 
     // </editor-fold>
