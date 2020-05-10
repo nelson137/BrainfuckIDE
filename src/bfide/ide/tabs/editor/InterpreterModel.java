@@ -20,8 +20,6 @@ public class InterpreterModel extends MVCModel {
      * Fields & Constructor
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     private final Timeline timeline;
     private static final double TICK_RATE = 1_000;
 
@@ -52,13 +50,9 @@ public class InterpreterModel extends MVCModel {
         this.isInterpreting = false;
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public Status getStatus() {
         Status status = this.timeline.getStatus();
@@ -79,13 +73,9 @@ public class InterpreterModel extends MVCModel {
         this.timeline.setRate((double) rate);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Control Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public void startNewInterpreter(String code, String input) {
         new BfLogger("interpreter").logMethod();
@@ -175,7 +165,5 @@ public class InterpreterModel extends MVCModel {
 
         }
     }
-
-    // </editor-fold>
 
 }

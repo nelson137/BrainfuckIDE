@@ -57,8 +57,6 @@ public class WindowControlBuilder {
      * Manipulators
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     public WindowControlBuilder node(Node node) {
         this.node = node;
         return this;
@@ -107,13 +105,9 @@ public class WindowControlBuilder {
             MouseEvent.MOUSE_EXITED, event -> this.onMouseExit(event));
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Event Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     protected void onMouseEnter(MouseEvent event) {
         if (event.isPrimaryButtonDown() == false)
@@ -151,7 +145,5 @@ public class WindowControlBuilder {
         if (event.isPrimaryButtonDown() == false)
             this.node.setCursor(this.cursorOnExit);
     }
-
-    // </editor-fold>
 
 }

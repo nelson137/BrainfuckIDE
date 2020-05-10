@@ -90,8 +90,6 @@ public class IDEController implements Initializable,
      * Fields
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     @FXML
     private StackPane root;
 
@@ -192,13 +190,9 @@ public class IDEController implements Initializable,
     private boolean isMaximized = false;
     private Rectangle2D unmaximizedState = Rectangle2D.EMPTY;
 
-    // </editor-fold>
-
     /**************************************************************************
      * Initialization
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     /**
      * Initializes the content class.
@@ -426,13 +420,9 @@ public class IDEController implements Initializable,
         transition.play();
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     private Stage getStage() {
         return (Stage) this.root.getScene().getWindow();
@@ -551,13 +541,9 @@ public class IDEController implements Initializable,
             String.format("x%.2f", rate)));
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Window Button Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void onIconify() {
@@ -628,13 +614,9 @@ public class IDEController implements Initializable,
         }
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * MenuBar Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void onNewFile() {
@@ -752,13 +734,9 @@ public class IDEController implements Initializable,
         }).start();
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Interpreter & Visualizer Control Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void onButtonPlayPause() {
@@ -777,13 +755,9 @@ public class IDEController implements Initializable,
             tab.setVisualizerVisible(this.visualizerEnabled.isSelected()));
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Event Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     private void onSceneChange(Scene newScene) {
         newScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -840,13 +814,9 @@ public class IDEController implements Initializable,
         this.visualizerEnabled.setDisable(false);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -857,7 +827,5 @@ public class IDEController implements Initializable,
             case InterpreterModel.STOP:  this.onStop();  break;
         }
     }
-
-    // </editor-fold>
 
 }

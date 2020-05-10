@@ -26,8 +26,6 @@ public class EditorTab extends BfTab {
      * Fields & Constructor
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     private static int NUM_UNTITLED_TABS = 0;
 
     private EditorTabContent content;
@@ -68,13 +66,9 @@ public class EditorTab extends BfTab {
         });
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * BfTab
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void onEnter() {
@@ -83,13 +77,9 @@ public class EditorTab extends BfTab {
             this.content.forwardFocusToInputPromptCursor();
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     private String getUserHome() {
         return System.getProperty("user.home");
@@ -151,13 +141,9 @@ public class EditorTab extends BfTab {
         */
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * File Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public void openResource(String path) {
         this.assignResource(path);
@@ -229,13 +215,9 @@ public class EditorTab extends BfTab {
         }
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Visualizer Control
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public void onPlayPause() {
         switch (this.content.getStatus()) {
@@ -249,13 +231,9 @@ public class EditorTab extends BfTab {
         this.content.stop();
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Pass through to content
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public void setExecutionRate(Number value) {
         this.content.setExecutionRate(value);
@@ -268,7 +246,5 @@ public class EditorTab extends BfTab {
     public void setVisualizerVisible(boolean value) {
         this.content.setVisualizerVisible(value);
     }
-
-    // </editor-fold>
 
 }

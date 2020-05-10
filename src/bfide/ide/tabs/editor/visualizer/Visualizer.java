@@ -38,8 +38,6 @@ public class Visualizer implements Initializable, PropertyChangeListener {
      * Initialization
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     @Override
     public void initialize(URL location, ResourceBundle rb) {
         // Prevent height from shrinking < height calculated from children:
@@ -63,13 +61,9 @@ public class Visualizer implements Initializable, PropertyChangeListener {
         this.currentCell.setHighlighted(true);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     private void addToTape() {
         this.cellViews.getChildren().add(new CellView());
@@ -105,13 +99,9 @@ public class Visualizer implements Initializable, PropertyChangeListener {
         this.currentCell.setHighlighted(true);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -140,7 +130,5 @@ public class Visualizer implements Initializable, PropertyChangeListener {
 
         }
     }
-
-    // </editor-fold>
 
 }

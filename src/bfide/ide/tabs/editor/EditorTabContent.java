@@ -48,8 +48,6 @@ public class EditorTabContent
      * Fields
      *************************************************************************/
 
-    // <editor-fold defaultstate="collapsed">
-
     private static final String FXML_PATH = "EditorTabContent.fxml";
 
     private final IDEController controller;
@@ -82,13 +80,9 @@ public class EditorTabContent
     private FileChooser inputFileChooser;
     private String programInput = "";
 
-    // </editor-fold>
-
     /**************************************************************************
      * Initialization
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public EditorTabContent(IDEController controller) {
         super();
@@ -202,13 +196,9 @@ public class EditorTabContent
         this.inputAlert.getDialogPane().setContent(content);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Utility Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public Stage getStage() {
         return (Stage) this.textArea.getScene().getWindow();
@@ -235,13 +225,9 @@ public class EditorTabContent
         this.visualizerController.setVisible(value);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Interpreter Control Methods
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     public double getExecutionRate() {
         return this.interpreterModel.getRate();
@@ -310,13 +296,9 @@ public class EditorTabContent
         this.inputButton.setVisible(true);
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * Event Handlers
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @FXML
     public void forwardFocusToInputPromptCursor() {
@@ -350,13 +332,9 @@ public class EditorTabContent
         });
     }
 
-    // </editor-fold>
-
     /**************************************************************************
      * MVC Communication
      *************************************************************************/
-
-    // <editor-fold defaultstate="collapsed">
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
@@ -376,7 +354,5 @@ public class EditorTabContent
                 this.stop();
         }
     }
-
-    // </editor-fold>
 
 }
