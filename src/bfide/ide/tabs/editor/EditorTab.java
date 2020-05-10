@@ -129,16 +129,6 @@ public class EditorTab extends BfTab {
             return currentText.length() != 0;
 
         return currentText.equals(this.textOnLastSave) == false;
-
-        /*
-        diff_match_patch dmp = new diff_match_patch();
-        LinkedList<diff_match_patch.Diff> diff =
-            dmp.diff_main(this.textOnLastSave, currentText);
-        System.out.println("diff : " + diff);
-
-        return diff.size() != 1
-            || diff.getFirst().operation != diff_match_patch.Operation.EQUAL;
-        */
     }
 
     /**************************************************************************
