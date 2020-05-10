@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="BrainfuckIDE" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+<project name="NwewnhBrainfuckIDE" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
-    <description>Builds, tests, and runs the project BrainfuckIDE.</description>
+    <description>Builds, tests, and runs the project NwewnhBrainfuckIDE.</description>
     <import file="nbproject/build-impl.xml"/>
 
     <!--
