@@ -1,6 +1,6 @@
 package bfide.ide.tabs.editor;
 
-import bfide.ide.IDEController;
+import bfide.ide.IDE;
 import bfide.ide.tabs.editor.spinner.BfSpinner;
 import bfide.ide.tabs.editor.visualizer.Visualizer;
 import bfide.util.BfLogger;
@@ -50,7 +50,7 @@ public class EditorTabContent
 
     private static final String FXML_PATH = "EditorTabContent.fxml";
 
-    private final IDEController controller;
+    private final IDE controller;
 
     @FXML
     private TextArea textArea;
@@ -84,7 +84,7 @@ public class EditorTabContent
      * Initialization
      *************************************************************************/
 
-    public EditorTabContent(IDEController controller) {
+    public EditorTabContent(IDE controller) {
         super();
 
         this.controller = controller;

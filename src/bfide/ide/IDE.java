@@ -82,9 +82,9 @@ import org.controlsfx.glyphfont.Glyph;
  *
  * @author Nelson Earle (nwewnh)
  */
-public class IDEController implements Initializable,
-                                      PropertyChangeListener,
-                                      MaximizeController {
+public class IDE implements Initializable,
+                            PropertyChangeListener,
+                            MaximizeController {
 
     /**************************************************************************
      * Fields

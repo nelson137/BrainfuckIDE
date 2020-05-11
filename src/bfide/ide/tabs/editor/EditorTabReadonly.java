@@ -1,6 +1,6 @@
 package bfide.ide.tabs.editor;
 
-import bfide.ide.IDEController;
+import bfide.ide.IDE;
 import static bfide.util.Constants.FONT_AWESOME;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -15,7 +15,7 @@ public class EditorTabReadonly extends EditorTab {
 
     private boolean readonlyWarningShown;
 
-    public EditorTabReadonly(IDEController controller) {
+    public EditorTabReadonly(IDE controller) {
         super(controller);
         this.readonlyWarningShown = false;
     }

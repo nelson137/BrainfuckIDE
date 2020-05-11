@@ -1,6 +1,6 @@
 package bfide.ide.tabs.editor;
 
-import bfide.ide.IDEController;
+import bfide.ide.IDE;
 import bfide.ide.tabs.BfTab;
 import bfide.util.Util;
 import java.io.File;
@@ -41,7 +41,7 @@ public class EditorTab extends BfTab {
     private File parentDirectory = null;
     private String textOnLastSave = null;
 
-    public EditorTab(IDEController controller) {
+    public EditorTab(IDE controller) {
         super(null);
 
         this.content = new EditorTabContent(controller);
