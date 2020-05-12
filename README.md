@@ -5,13 +5,14 @@
 - [BrainfuckIDE](#brainfuckide)
   - [Table of Contents](#table-of-contents)
   - [About](#about)
+  - [Disclaimer](#disclaimer)
   - [Assignment Requirements](#assignment-requirements)
-        - [Object Oriented Concepts](#object-oriented-concepts)
-        - [Code Elements](#code-elements)
-        - [MVC](#mvc)
-        - [Multiple Scenes](#multiple-scenes)
-        - [About](#about-1)
-        - [Data](#data)
+      - [Object Oriented Concepts](#object-oriented-concepts)
+      - [Code Elements](#code-elements)
+      - [MVC](#mvc)
+      - [Multiple Scenes](#multiple-scenes)
+      - [About](#about-1)
+      - [Data](#data)
   - [Screenshots](#screenshots)
   - [Brainfuck Intro](#brainfuck-intro)
 
@@ -19,9 +20,13 @@
 
 This application is an IDE for the programming language Brainfuck. It provides a built-in interpreter for .bf scripts, a visualizer for program execution, and an ASCII table reference (Ctrl+Shift+Z or `Help > About`).
 
+## Disclaimer
+
+There is a syntax error in the file `0-hello-world.bf` found on the Welcome Page under the `How To` dropdown menu. The file cannot be executed unless the closing square bracket (`]`) is deleted in the line starting with `Remember that a loop terminates...`
+
 ## Assignment Requirements
 
-##### Object Oriented Concepts
+#### Object Oriented Concepts
 
 | Concept | Examples |
 |:--------|:-----------|
@@ -30,7 +35,7 @@ This application is an IDE for the programming language Brainfuck. It provides a
 | Abstract Classes | `BfTab`, `MVCModel` |
 | Interfaces | `AsciiTable`, `Constants`, `MaximizeController`, `Target` |
 
-##### Code Elements
+#### Code Elements
 
 Collections:
 
@@ -46,7 +51,7 @@ Exception Handling:
 | `src/bfide/IDE.java:726` | Not all systems will support opening a URL in the default browser programmatically. This piece of code will display an alert if the system does not support `Desktop` actions or if opening the URL fails. |
 | `src/bfide/ide/tabs/editor/EditorTab.java:148,156,189` | These pieces of code handle file IO, and will all display an `Alert` if an exception occurs while opening, reading from, or writing to a file. |
 
-##### MVC
+#### MVC
 
 The following directory tree highlights the MVC structure of this application:
 
@@ -76,15 +81,15 @@ The following directory tree highlights the MVC structure of this application:
 
 The IDE is broken down into multiple sub and sub-sub controllers with their own sub and sub-sub views. The IDE contains a `TabPane` for the various kinds of tabs that the editor supports. One of these tabs is the `WelcomeTab`. The other main kind of tab is the `EditorTab`, which itself is composed the `Visualizer` and the `BfSpinner`. The `EditorTab` also makes use of the primary model of this application, `InterpreterModel`.
 
-##### Multiple Scenes
+#### Multiple Scenes
 
 This application has two scenes: the splash screen (`src/bfide/splash`) and the IDE (`src/bfide/ide`). The splash screen displays a loading animation then switches to the IDE via a fade transition.
 
-##### About
+#### About
 
 This README can be accessed from the application under the menu `Help > About`.
 
-##### Data
+#### Data
 
 This application is, at the end of the day, a text editor. It can Open and Save files, as well as Save As to copy and rename a file. This logic can be found in `src/bfide/ide/tabs/editor/EditorTab.java`; methods `openFile()`, `openResource()`, `save()`, `saveAs()`, `writeToFile()`; lines `138-206`
 
